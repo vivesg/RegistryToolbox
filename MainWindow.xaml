@@ -1,0 +1,117 @@
+﻿<Window x:Class="RegistryToolbox.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RegistryToolbox"
+        xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
+        mc:Ignorable="d"
+       
+        Title="Registry Toolbox Version" MinHeight="768" MinWidth="1024">
+
+    <Grid Margin="0,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.1*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="0.1*"/>
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="11*"/>
+
+        </Grid.ColumnDefinitions>
+        <Rectangle  HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0" Stretch="UniformToFill"  Grid.RowSpan="7" Grid.ColumnSpan="3">
+            <Rectangle.Fill>
+                <LinearGradientBrush MappingMode="RelativeToBoundingBox"
+                             StartPoint="0,0" EndPoint="0,1" ColorInterpolationMode="ScRgbLinearInterpolation">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Color="#FF0000AA" Offset="0.005"/>
+
+                        <GradientStop Color="#0080ff" Offset="0.9"/>
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+
+
+        <Viewbox  Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" >
+            <emoji:TextBlock   FontWeight="Bold" Text="  Made with ♥ from Costa Rica V 1.0  " HorizontalAlignment="Center"/>
+        </Viewbox>
+
+        <Button x:Name="btnOpenReg" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Opacity="0.8" HorizontalContentAlignment="Left" Background="White">
+          
+                <StackPanel Orientation="Horizontal" >
+                    <Image Source="Resources\registry.ico" Stretch="Uniform"/>
+                <Viewbox VerticalAlignment="Stretch" >
+                    <emoji:TextBlock FontWeight="Medium" Text="Load Registry"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
+                </Viewbox>
+            </StackPanel>
+          
+        </Button>
+
+        <Button x:Name="btnCMPReg" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" Opacity="0.8" HorizontalContentAlignment="Left" Background="White">
+
+            <StackPanel Orientation="Horizontal" >
+                <Image Source="Resources\compare.ico" Stretch="Uniform"/>
+                <Viewbox VerticalAlignment="Stretch" >
+                    <emoji:TextBlock FontWeight="Medium" Text="Compare .Reg"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
+                </Viewbox>
+            </StackPanel>
+
+        </Button>
+        <Button x:Name="btnExportReg" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="1" Opacity="0.8" HorizontalContentAlignment="Left" Background="White">
+
+            <StackPanel Orientation="Horizontal" >
+                <Image Source="Resources\export.ico" Stretch="Uniform"/>
+                <Viewbox VerticalAlignment="Stretch" >
+                    <emoji:TextBlock FontWeight="Medium" Text="Export 2 Reg"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
+                </Viewbox>
+            </StackPanel>
+
+        </Button>
+
+        <Button x:Name="btnAbout" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="1" HorizontalContentAlignment="Left" >
+     
+            <StackPanel Orientation="Horizontal" >
+                <Image Source="Resources\info.ico" Stretch="Uniform"/>
+                <Viewbox VerticalAlignment="Stretch" >
+                    <emoji:TextBlock FontWeight="Medium" Text="About this"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
+                </Viewbox>
+            </StackPanel>
+           
+            <Button.Style>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="White" />
+                <Setter Property="Opacity" Value="0.8"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="1">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Opacity" Value="1"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+           </Button.Style>
+
+        </Button>
+
+
+    </Grid>
+
+</Window>
