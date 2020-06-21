@@ -15,7 +15,8 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="6*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="3*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
 
@@ -28,7 +29,7 @@
             <ColumnDefinition Width="11*"/>
 
         </Grid.ColumnDefinitions>
-        <Rectangle  HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0" Stretch="UniformToFill"  Grid.RowSpan="7" Grid.ColumnSpan="3">
+        <Rectangle  HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0" Stretch="UniformToFill"  Grid.RowSpan="8" Grid.ColumnSpan="3">
             <Rectangle.Fill>
                 <LinearGradientBrush MappingMode="RelativeToBoundingBox"
                              StartPoint="0,0" EndPoint="0,1" ColorInterpolationMode="ScRgbLinearInterpolation">
@@ -41,24 +42,40 @@
             </Rectangle.Fill>
         </Rectangle>
 
+        <Button x:Name="btnOpenReg" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1"  HorizontalContentAlignment="Left" Click="btnOpenReg_Click">
 
-
-        <Viewbox  Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" >
-            <emoji:TextBlock   FontWeight="Bold" Text="  Made with ♥ from Costa Rica V 1.0  " HorizontalAlignment="Center"/>
-        </Viewbox>
-
-        <Button x:Name="btnOpenReg" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Opacity="0.8" HorizontalContentAlignment="Left" Background="White">
-          
-                <StackPanel Orientation="Horizontal" >
-                    <Image Source="Resources\registry.ico" Stretch="Uniform"/>
+            <StackPanel Orientation="Horizontal" >
+                <Image Source="Resources\registry.ico" Stretch="Uniform"/>
                 <Viewbox VerticalAlignment="Stretch" >
                     <emoji:TextBlock FontWeight="Medium" Text="Load Registry"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
                 </Viewbox>
             </StackPanel>
-          
-        </Button>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Opacity" Value="0.7"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="1"/>
+                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="BorderThickness" Value="5"/>
 
-        <Button x:Name="btnCMPReg" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" Opacity="0.8" HorizontalContentAlignment="Left" Background="White">
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+
+        </Button>
+        <Button x:Name="btnCMPReg" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1"  HorizontalContentAlignment="Left">
 
             <StackPanel Orientation="Horizontal" >
                 <Image Source="Resources\compare.ico" Stretch="Uniform"/>
@@ -66,9 +83,31 @@
                     <emoji:TextBlock FontWeight="Medium" Text="Compare .Reg"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
                 </Viewbox>
             </StackPanel>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Opacity" Value="0.8"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="1"/>
+                            <Setter Property="BorderThickness" Value="4"/>
+                            <Setter Property="Background" Value="White"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
 
         </Button>
-        <Button x:Name="btnExportReg" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="1" Opacity="0.8" HorizontalContentAlignment="Left" Background="White">
+        <Button x:Name="btnExportReg" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="1" HorizontalContentAlignment="Left">
 
             <StackPanel Orientation="Horizontal" >
                 <Image Source="Resources\export.ico" Stretch="Uniform"/>
@@ -76,42 +115,79 @@
                     <emoji:TextBlock FontWeight="Medium" Text="Export 2 Reg"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
                 </Viewbox>
             </StackPanel>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Opacity" Value="0.8"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="1"/>
+                            <Setter Property="BorderThickness" Value="4"/>
+                            <Setter Property="Background" Value="White"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
 
         </Button>
+        <Button x:Name="btnAbout" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="1" HorizontalContentAlignment="Left" >
 
-        <Button x:Name="btnAbout" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="1" HorizontalContentAlignment="Left" >
-     
             <StackPanel Orientation="Horizontal" >
                 <Image Source="Resources\info.ico" Stretch="Uniform"/>
                 <Viewbox VerticalAlignment="Stretch" >
                     <emoji:TextBlock FontWeight="Medium" Text="About this"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
                 </Viewbox>
             </StackPanel>
-           
             <Button.Style>
-            <Style TargetType="{x:Type Button}">
-                <Setter Property="Background" Value="White" />
-                <Setter Property="Opacity" Value="0.8"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="1">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Opacity" Value="1"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-           </Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Opacity" Value="0.7"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="1"/>
+                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="BorderThickness" Value="5"/>
+
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
 
         </Button>
+        <StackPanel Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center">
+            <Viewbox  >
+                <emoji:TextBlock FontWeight="Bold" Text=" Made with ♥ from Costa Rica " HorizontalAlignment="Center"/>
+            </Viewbox>
+            <Viewbox  >
+                <emoji:TextBlock FontWeight="Bold" Text="    gevivesh@microsoft.com    " HorizontalAlignment="Center"/>
+            </Viewbox>
 
-
+        </StackPanel>
+        <TreeView Name="Reg1Tree" Grid.Column="3" Grid.Row="0" Grid.RowSpan="4"/>
+        <TreeView Name="Reg2Tree" Grid.Column="4" Grid.Row="0" Grid.RowSpan="5"/>
+        <DataGrid Name="Reg1Values" Grid.Column="3" Grid.Row="4" Grid.RowSpan="3" ItemsSource="{Binding}" IsReadOnly="True">
+            
+        </DataGrid>
+        <DataGrid Name="Reg2Values" Grid.Column="4" Grid.Row="5" Grid.RowSpan="2"/>
+        <ProgressBar Name="progress1" Grid.Column="3" Grid.Row="7" IsIndeterminate="True" Opacity="0" />
     </Grid>
 
 </Window>
