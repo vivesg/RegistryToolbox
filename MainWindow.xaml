@@ -75,7 +75,7 @@
             </Button.Style>
 
         </Button>
-        <Button x:Name="btnCMPReg" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1"  HorizontalContentAlignment="Left">
+        <Button x:Name="btnCMPReg" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1"  HorizontalContentAlignment="Left" Click="btnCMPReg_Click">
 
             <StackPanel Orientation="Horizontal" >
                 <Image Source="Resources\compare.ico" Stretch="Uniform"/>
@@ -165,7 +165,6 @@
                             <Setter Property="Opacity" Value="1"/>
                             <Setter Property="BorderBrush" Value="Black"/>
                             <Setter Property="BorderThickness" Value="5"/>
-
                         </Trigger>
                     </Style.Triggers>
                 </Style>
@@ -181,13 +180,45 @@
             </Viewbox>
 
         </StackPanel>
-        <TreeView Name="Reg1Tree" Grid.Column="3" Grid.Row="0" Grid.RowSpan="4"/>
-        <TreeView Name="Reg2Tree" Grid.Column="4" Grid.Row="0" Grid.RowSpan="5"/>
-        <DataGrid Name="Reg1Values" Grid.Column="3" Grid.Row="4" Grid.RowSpan="3" ItemsSource="{Binding}" IsReadOnly="True">
-            
-        </DataGrid>
-        <DataGrid Name="Reg2Values" Grid.Column="4" Grid.Row="5" Grid.RowSpan="2"/>
-        <ProgressBar Name="progress1" Grid.Column="3" Grid.Row="7" IsIndeterminate="True" Opacity="0" />
+        <ScrollViewer Name="Scroll1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Column="3" Grid.Row="3" Grid.RowSpan="3">
+            <DataGrid Name="Reg1Values"  ItemsSource="{Binding}" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Path=Name}"  ClipboardContentBinding="{x:Null}" FontSize="15" Header="Name" HeaderStringFormat="Name"/>
+                    <DataGridTextColumn Binding="{Binding Path=Type}"  ClipboardContentBinding="{x:Null}" FontSize="15" Header="Type" HeaderStringFormat="Type"/>
+                    <DataGridTextColumn Binding="{Binding Path=Value}" ClipboardContentBinding="{x:Null}" FontSize="15" Header="Value" HeaderStringFormat="Value"/>
+                </DataGrid.Columns>
+
+            </DataGrid>
+        </ScrollViewer>
+        <ScrollViewer Name="Scroll2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Column="4" Grid.Row="3" Grid.RowSpan="3">
+            <DataGrid Name="Reg2Values"  ItemsSource="{Binding}" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Path=Name}"  ClipboardContentBinding="{x:Null}" FontSize="15" Header="Name" HeaderStringFormat="Name"/>
+                    <DataGridTextColumn Binding="{Binding Path=Type}"  ClipboardContentBinding="{x:Null}" FontSize="15" Header="Type" HeaderStringFormat="Type"/>
+                    <DataGridTextColumn Binding="{Binding Path=Value}" ClipboardContentBinding="{x:Null}" FontSize="15" Header="Value" HeaderStringFormat="Value"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </ScrollViewer>
+
+        <TreeView Name="Reg1Tree" Grid.Column="3" Grid.Row="0" Grid.RowSpan="3" FontSize="15"/>
+        <TreeView Name="Reg2Tree" Grid.Column="4" Grid.Row="0" Grid.RowSpan="3" FontSize="15"/>
+       
+       
+        <!--<ProgressBar Name="progress1" Grid.Column="3" Grid.Row="7" IsIndeterminate="True" Opacity="0" />-->
+
+        <Grid Margin="0,0,0,0"  Grid.Row="6" Grid.Column="3" Grid.RowSpan="2" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Label Name="lbloutput" Content="HOLA MUNDO" Grid.Row="0" Grid.Column="0"></Label>
+        </Grid>
     </Grid>
 
 </Window>
