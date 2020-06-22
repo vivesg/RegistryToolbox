@@ -14,7 +14,6 @@ namespace RegistryToolbox
     {
         Registry.RegistryHive Registry1 = null;
         Registry.RegistryHive Registry2 = null;
-        
 
         string actualpath1 = "";
         string actualpath2 = "";
@@ -26,12 +25,12 @@ namespace RegistryToolbox
             Scroll1.Visibility = Visibility.Hidden;
             Reg2Tree.Visibility = Visibility.Hidden;
             Scroll2.Visibility = Visibility.Hidden;
-            
+
         }
 
         private void btnOpenReg_Click(object sender, RoutedEventArgs e)
         {
-            lbloutput.Content = ("UserName: {0}", Environment.UserName);
+          //  lbloutput.Content = ("UserName: {0}", Environment.UserName);
             Scroll1.Visibility = Visibility.Visible;
             Scroll1.SetValue(Grid.ColumnSpanProperty, (int)Scroll1.GetValue(Grid.ColumnSpanProperty) + 1);
             Reg1Tree.Visibility = Visibility.Visible;
@@ -44,9 +43,9 @@ namespace RegistryToolbox
             {
                 try
                 {
-                    
+
                     path = openFileDialog.FileName;
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -54,9 +53,9 @@ namespace RegistryToolbox
                     $"Details:\n\n{ex.StackTrace}");
                 }
             }
-            File_Load(path,1);
+            File_Load(path, 1);
         }
-        private void File_Load(string path,int registryfile)
+        private void File_Load(string path, int registryfile)
         {
             if (registryfile == 1)
             {
@@ -91,11 +90,9 @@ namespace RegistryToolbox
                 }
 
             }
-            
-           
-           
+
         }
-        private RegistryKey Subnode_Route(string route,int currentreg)
+        private RegistryKey Subnode_Route(string route, int currentreg)
         {
 
             string[] routes = route.Split('\\');
@@ -108,7 +105,7 @@ namespace RegistryToolbox
             {
                 actual = this.Registry2.Root;
             }
-           
+
             foreach (string vroute in routes)
             {
                 actual = this.Look_Leaf(vroute, actual);
@@ -140,12 +137,12 @@ namespace RegistryToolbox
                     return (TreeView)child;
                 else
                 {
-                    return MyTreeViewParent( ((TreeViewItem)child).Parent );
+                    return MyTreeViewParent(((TreeViewItem)child).Parent);
                 }
             }
         }
-      // THIS NEEDS TO BE OPTIMIZED
-      
+        // THIS NEEDS TO BE OPTIMIZED
+
         void treeItem_Selected(object sender, RoutedEventArgs e)
         {
             if (MyTreeViewParent(sender) == Reg1Tree)
@@ -174,9 +171,9 @@ namespace RegistryToolbox
         ItemsControl GetParentItem(ItemsControl nodo)
         {
             return ItemsControl.ItemsControlFromItemContainer(nodo);
-           
+
         }
-        private void loadtable(string ruta,int tabla)
+        private void loadtable(string ruta, int tabla)
         {
             string selectedNodeText = ruta;
             RegistryKey value = null;
@@ -185,16 +182,18 @@ namespace RegistryToolbox
             {
                 value = Registry1.Root;
                 currentTable = Reg1Values;
+                lblpath1.Content = ruta;
             }
             else
             {
                 value = Registry2.Root;
                 currentTable = Reg2Values;
+                lblpath2.Content = ruta;
             }
-            
+
             DataTable dt = new DataTable();
             DataRow dr;
-            RegistryKey res = this.Subnode_Route(selectedNodeText,tabla);
+            RegistryKey res = this.Subnode_Route(selectedNodeText, tabla);
             DataColumn dc;
             dc = new DataColumn("Name", typeof(String));
             dt.Columns.Add(dc);
@@ -206,11 +205,11 @@ namespace RegistryToolbox
             dt.Columns.Add(dc);
             foreach (KeyValue obj in res.Values)
             {
-            dr = dt.NewRow();
-            dr[0] = obj.ValueName;
-            dr[1] = obj.ValueType;
-            dr[2] = obj.ValueData;
-            dt.Rows.Add(dr);
+                dr = dt.NewRow();
+                dr[0] = obj.ValueName;
+                dr[1] = obj.ValueType;
+                dr[2] = obj.ValueData;
+                dt.Rows.Add(dr);
             }
 
             currentTable.AutoGenerateColumns = false;
@@ -228,8 +227,6 @@ namespace RegistryToolbox
         }
         public string GetFullPath(TreeViewItem node)
         {
-
-
             if (node == null)
                 throw new ArgumentNullException();
             var result = Convert.ToString(node.Header);
@@ -250,7 +247,7 @@ namespace RegistryToolbox
             return Registry2.Root;
         }
 
-        private RegistryKey Drawhive(RegistryKey pKey, TreeViewItem guiNode,int registryfile)
+        private RegistryKey Drawhive(RegistryKey pKey, TreeViewItem guiNode, int registryfile)
         {
             if (pKey.SubKeys.Count == 0)
                 return null;
@@ -261,18 +258,18 @@ namespace RegistryToolbox
                     TreeViewItem guiNodechild = new TreeViewItem();
                     guiNodechild.Header = subkey.KeyName;
                     guiNodechild.Selected += treeItem_Selected;
-                   
+
                     if (subkey.Parent == ActiveRegistry(registryfile))
                     {
                         if (registryfile == 1)
                         {
                             this.Reg1Tree.Items.Add(guiNodechild);
-                            Drawhive(subkey, guiNodechild,registryfile);
+                            Drawhive(subkey, guiNodechild, registryfile);
                         }
                         else
                         {
                             this.Reg2Tree.Items.Add(guiNodechild);
-                            Drawhive(subkey, guiNodechild,registryfile);
+                            Drawhive(subkey, guiNodechild, registryfile);
                         }
                     }
                     else
@@ -290,7 +287,7 @@ namespace RegistryToolbox
         private void btnCMPReg_Click(object sender, RoutedEventArgs e)
         {
 
-            lbloutput.Content = ("UserName: {0}", Environment.UserName);
+           // lbloutput.Content = ("UserName: {0}", Environment.UserName);
             Scroll1.Visibility = Visibility.Visible;
             Scroll1.SetValue(Grid.ColumnSpanProperty, 3);
             Reg1Tree.Visibility = Visibility.Visible;
@@ -316,7 +313,7 @@ namespace RegistryToolbox
                     $"Details:\n\n{ex.StackTrace}");
                 }
             }
-            File_Load(path,1);
+            File_Load(path, 1);
             MessageBox.Show("Select Second File to analyze", "Please select a second registry file to analyze", MessageBoxButton.OK, MessageBoxImage.Information);
             Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
             openFileDialog.Title = "Registry2 Binary File";
@@ -335,7 +332,7 @@ namespace RegistryToolbox
                     $"Details:\n\n{ex.StackTrace}");
                 }
             }
-            File_Load(path,2);
+            File_Load(path, 2);
         }
     }
 }
