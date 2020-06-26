@@ -457,5 +457,24 @@ namespace RegistryToolbox
             }
 
         }
+
+        private void btnload2_Click(object sender, RoutedEventArgs e)
+        {
+            TreeViewItem item = Select_FullPath(txtpath2.Text, null, Reg2Tree);
+
+            ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateLayout();
+            if (item == null)
+            {
+                MessageBox.Show("Invalid path", "Invalid Path", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateLayout();
+                item.IsSelected = true;
+                item.Focus();
+                item.IsExpanded = true;
+                ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateLayout();
+            }
+        }
     }
 }

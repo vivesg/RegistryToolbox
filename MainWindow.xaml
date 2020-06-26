@@ -224,7 +224,7 @@
             <TextBox Name="txtpath2" Text="" Grid.Row="0" Grid.Column="2"></TextBox>
             <Button Name="btnCompare" Content="Compare" Grid.Row="1" Grid.Column="1" Click="btnCompare_Click" />
             <Button Name="btnload1" Content="Load" Grid.Row="1" Grid.Column="0" Click="btnload1_Click"  />
-            <Button Name="btnload2" Content="Load" Grid.Row="1" Grid.Column="2"  />
+            <Button Name="btnload2" Content="Load" Grid.Row="1" Grid.Column="2"  Click="btnload2_Click"/> 
             
         </Grid>
     </Grid>
