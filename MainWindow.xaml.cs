@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Registry;
 using Registry.Abstractions;
 
@@ -22,19 +25,20 @@ namespace RegistryToolbox
         {
             InitializeComponent();
             Reg1Tree.Visibility = Visibility.Hidden;
-            Scroll1.Visibility = Visibility.Hidden;
+            gridClientsContainer1.Visibility = Visibility.Hidden;
             Reg2Tree.Visibility = Visibility.Hidden;
-            Scroll2.Visibility = Visibility.Hidden;
+            Reg2Values.Visibility = Visibility.Hidden;
 
         }
 
         private void btnOpenReg_Click(object sender, RoutedEventArgs e)
         {
-          //  lbloutput.Content = ("UserName: {0}", Environment.UserName);
-            Scroll1.Visibility = Visibility.Visible;
-            Scroll1.SetValue(Grid.ColumnSpanProperty, (int)Scroll1.GetValue(Grid.ColumnSpanProperty) + 1);
+            //  lbloutput.Content = ("UserName: {0}", Environment.UserName);
+            gridClientsContainer1.Visibility = Visibility.Visible;
+            gridClientsContainer1.SetValue(Grid.ColumnSpanProperty, 2);
             Reg1Tree.Visibility = Visibility.Visible;
-            Reg1Tree.SetValue(Grid.ColumnSpanProperty, (int)Reg1Tree.GetValue(Grid.ColumnSpanProperty) + 1);
+            Reg1Tree.SetValue(Grid.ColumnSpanProperty, 2);
+
 
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
             openFileDialog.Title = "Registry2 Binary File";
@@ -68,7 +72,7 @@ namespace RegistryToolbox
                     registryHive.ParseHive();
                     Drawhive(Registry1.Root, null, registryfile);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     MessageBox.Show("The file you selected for registry 1 it is not a registry file", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
@@ -84,7 +88,7 @@ namespace RegistryToolbox
                     registryHive.ParseHive();
                     Drawhive(Registry2.Root, null, registryfile);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     MessageBox.Show("The file you selected for registry 2 it is not a registryfile", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
@@ -150,6 +154,7 @@ namespace RegistryToolbox
                 if (sender is TreeView)
                     actualpath1 = "";
                 TreeViewItem item = sender as TreeViewItem;
+                
                 string path = GetFullPath(item);
                 if (!this.actualpath1.Contains(path))
                     loadtable(GetFullPath(item), 1);
@@ -182,14 +187,16 @@ namespace RegistryToolbox
             {
                 value = Registry1.Root;
                 currentTable = Reg1Values;
-                lblpath1.Content = ruta;
+                txtpath1.Text = ruta;
             }
             else
             {
                 value = Registry2.Root;
                 currentTable = Reg2Values;
-                lblpath2.Content = ruta;
+                txtpath2.Text = ruta;
             }
+            currentTable.DataContext = null;
+                 
 
             DataTable dt = new DataTable();
             DataRow dr;
@@ -211,7 +218,7 @@ namespace RegistryToolbox
                 dr[2] = obj.ValueData;
                 dt.Rows.Add(dr);
             }
-
+            
             currentTable.AutoGenerateColumns = false;
             currentTable.DataContext = dt;
             foreach (DataGridColumn column in currentTable.Columns)
@@ -238,6 +245,54 @@ namespace RegistryToolbox
                 }
             }
             return result;
+        }
+
+        public TreeViewItem Select_FullPath(string path,TreeViewItem pleaf,TreeView ptree)
+        {
+            if (path == "")
+            {
+                
+                return null;
+            }
+            string[] routes;
+            routes = path.Split('\\');
+            ItemCollection subleafs;
+            string actualp = routes[0];
+            if (pleaf == null)
+            {
+                subleafs = ptree.Items;
+            }
+            else
+            {
+                if (pleaf.Header.ToString() == routes[0])
+                    return pleaf;
+                subleafs = pleaf.Items;
+                
+            }
+            
+
+            foreach(TreeViewItem leaf in subleafs)
+            {
+                if  (leaf.Header.ToString() == actualp.ToString())
+                {
+                    if (routes.Length > 1)
+                    {
+                        leaf.IsExpanded = true;
+                        leaf.IsSelected = true;
+                        leaf.Focus();
+                        return Select_FullPath(path.Substring(path.IndexOf(@"\")+1), leaf, null);
+                    }
+                    else
+                    {
+                        leaf.IsExpanded = true;
+                        leaf.IsSelected = true;
+                        leaf.Focus();
+                        return leaf;
+                    }
+                }
+            }
+
+            return null;
         }
 
         private RegistryKey ActiveRegistry(int value)
@@ -287,15 +342,13 @@ namespace RegistryToolbox
         private void btnCMPReg_Click(object sender, RoutedEventArgs e)
         {
 
-           // lbloutput.Content = ("UserName: {0}", Environment.UserName);
-            Scroll1.Visibility = Visibility.Visible;
-            Scroll1.SetValue(Grid.ColumnSpanProperty, 3);
+            // lbloutput.Content = ("UserName: {0}", Environment.UserName);
+            gridClientsContainer1.Visibility = Visibility.Visible;
+            gridClientsContainer1.SetValue(Grid.ColumnSpanProperty, 1);
             Reg1Tree.Visibility = Visibility.Visible;
-            Reg1Tree.SetValue(Grid.ColumnSpanProperty, 3);
-            Scroll2.Visibility = Visibility.Visible;
+            Reg1Tree.SetValue(Grid.ColumnSpanProperty, 1);
+            Reg2Values.Visibility = Visibility.Visible;
             Reg2Tree.Visibility = Visibility.Visible;
-
-
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
             openFileDialog.Title = "Registry2 Binary File";
             string path = "";
@@ -333,6 +386,76 @@ namespace RegistryToolbox
                 }
             }
             File_Load(path, 2);
+            
+        }
+        private Boolean CompareRow(ItemsControl row1,ItemsControl row2)
+        {
+            return false;
+        }
+        private void btnCompare_Click(object sender, RoutedEventArgs e)
+        {
+            int i = 0;
+            int j = 0;
+            Reg1Values.UpdateLayout();
+            Reg2Values.UpdateLayout();
+            foreach (DataRowView row2 in Reg2Values.Items)
+            {
+                j = 0;
+                foreach (DataRowView row1 in Reg1Values.Items)
+                {
+                    //KEY IS THE SAME CHECK VALUE
+                    if( row2.Row.ItemArray[0].ToString() == row1.Row.ItemArray[0].ToString())
+                    {
+                      if  (row2.Row.ItemArray[2].ToString() != row1.Row.ItemArray[2].ToString())
+                        {
+                            //((DataGridRow)Reg1Values.Items[i]).Background = Brushes.Red;
+                   
+                            DataGridRow row = (DataGridRow) Reg2Values.ItemContainerGenerator.ContainerFromIndex(i);
+                         //   if (row != null)
+                                row.Background = Brushes.Red;
+                            //else
+                            //{
+                            //    Reg2Values.UpdateLayout();
+                            //    Reg2Values.ScrollIntoView(Reg2Values.Items[i]);
+                            //    row = (DataGridRow)Reg2Values.ItemContainerGenerator.ContainerFromIndex(i);
+                            //    row.Background = Brushes.Red;
+                            //}
+                            //    Debug.WriteLine("j value" + j);
+
+                        }
+                    }
+                    j++;
+                }   
+                i++;
+            }
+
+        }
+
+        private void btnAbout_Click(object sender, RoutedEventArgs e)
+        {
+            About win2 = new About();
+            win2.Show();
+        }
+
+        private void btnload1_Click(object sender, RoutedEventArgs e)
+        {
+            
+            TreeViewItem item =  Select_FullPath(txtpath1.Text, null, Reg1Tree);
+            
+            ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateLayout();
+            if (item == null)
+            {
+                MessageBox.Show("Invalid path", "Invalid Path", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateLayout();
+                item.IsSelected = true;
+                item.Focus();
+                item.IsExpanded = true;
+                ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateLayout();
+            }
+
         }
     }
 }

@@ -1,0 +1,15 @@
+﻿<Window x:Class="RegistryToolbox.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RegistryToolbox"
+        mc:Ignorable="d"
+        Title="About" Height="544.779" Width="868.857" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Image HorizontalAlignment="Left" Height="496" VerticalAlignment="Top" Width="357" Source="Resources/ABOUT.PNG" Margin="10,10,0,0"/>
+        <Label Content="Registry Toolbox V 1.0" HorizontalAlignment="Left" Height="62" Margin="335,10,0,0" VerticalAlignment="Top" Width="371" Cursor="" FontSize="30" FontWeight="Bold"/>
+        <TextBlock HorizontalAlignment="Left" Height="403" Margin="304,72,0,0" TextWrapping="Wrap" Text="Made by German Vives on .Net 4.7 " VerticalAlignment="Top" Width="525"/>
+
+    </Grid>
+</Window>
