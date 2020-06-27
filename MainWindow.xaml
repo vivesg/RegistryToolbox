@@ -207,7 +207,7 @@
         <TreeView Name="Reg2Tree" Grid.Column="4" Grid.Row="0" Grid.RowSpan="3" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False" />
 
 
-        <!--<ProgressBar Name="progress1" Grid.Column="3" Grid.Row="7" IsIndeterminate="True" Opacity="0" />-->
+ 
 
         <Grid Margin="0,0,0,0"  Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2" Grid.RowSpan="2" >
             <Grid.RowDefinitions>
@@ -222,7 +222,9 @@
             </Grid.ColumnDefinitions>
             <TextBox Name="txtpath1" Text="" Grid.Row="0" Grid.Column="0"></TextBox>
             <TextBox Name="txtpath2" Text="" Grid.Row="0" Grid.Column="2"></TextBox>
-            <Button Name="btnCompare" Content="Compare" Grid.Row="1" Grid.Column="1" Click="btnCompare_Click" />
+            <Button Name="btnCompare" Content="Compare Current Values" Grid.Row="1" Grid.Column="1" Click="btnCompare_Click" />
+            <Button Name="btnalign" Content="Match Path" Grid.Row="0" Grid.Column="1" Click="btnalign_Click" />
+            <Button Name="btnCompareKeyandsub" Content="Compare Subkeys Values" Grid.Row="2" Grid.Column="1" Click="btnCompareKeyandsub_Click" />
             <Button Name="btnload1" Content="Load" Grid.Row="1" Grid.Column="0" Click="btnload1_Click"  />
             <Button Name="btnload2" Content="Load" Grid.Row="1" Grid.Column="2"  Click="btnload2_Click"/> 
             

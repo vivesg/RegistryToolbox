@@ -485,5 +485,21 @@ namespace RegistryToolbox
                 ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateLayout();
             }
         }
+
+        private void btnalign_Click(object sender, RoutedEventArgs e)
+        {
+            txtpath2.Text = txtpath1.Text;
+            btnload2_Click(null,null);
+            btnload1_Click(null, null);
+        }
+
+        private void btnCompareKeyandsub_Click(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine(Registry1.GetKey(txtpath1.Text).ToString());
+        }
+        private void Compare_Structure()
+        {
+
+        }
     }
 }
