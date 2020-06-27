@@ -392,42 +392,51 @@ namespace RegistryToolbox
         {
             return false;
         }
-        private void btnCompare_Click(object sender, RoutedEventArgs e)
+        private void Paint_Differences(DataGrid values1, DataGrid values2)
         {
-            int i = 0;
             int j = 0;
-            Reg1Values.UpdateLayout();
-            Reg2Values.UpdateLayout();
-            foreach (DataRowView row2 in Reg2Values.Items)
+            int i = 0;
+            foreach (DataRowView row2 in values2.Items)
             {
                 j = 0;
-                foreach (DataRowView row1 in Reg1Values.Items)
+                Boolean found2 = false;
+                foreach (DataRowView row1 in values1.Items)
                 {
                     //KEY IS THE SAME CHECK VALUE
-                    if( row2.Row.ItemArray[0].ToString() == row1.Row.ItemArray[0].ToString())
+                    if (row2.Row.ItemArray[0].ToString() == row1.Row.ItemArray[0].ToString())
                     {
-                      if  (row2.Row.ItemArray[2].ToString() != row1.Row.ItemArray[2].ToString())
+                        //KEY IS DIFFERENT VALUE ON REG2
+                        if (row2.Row.ItemArray[2].ToString() != row1.Row.ItemArray[2].ToString())
                         {
-                            //((DataGridRow)Reg1Values.Items[i]).Background = Brushes.Red;
-                   
-                            DataGridRow row = (DataGridRow) Reg2Values.ItemContainerGenerator.ContainerFromIndex(i);
-                         //   if (row != null)
-                                row.Background = Brushes.Red;
-                            //else
-                            //{
-                            //    Reg2Values.UpdateLayout();
-                            //    Reg2Values.ScrollIntoView(Reg2Values.Items[i]);
-                            //    row = (DataGridRow)Reg2Values.ItemContainerGenerator.ContainerFromIndex(i);
-                            //    row.Background = Brushes.Red;
-                            //}
-                            //    Debug.WriteLine("j value" + j);
-
+                            DataGridRow row = (DataGridRow)values2.ItemContainerGenerator.ContainerFromIndex(i);
+                            row.Background = new SolidColorBrush(Color.FromRgb(255, 204, 203));
                         }
+                        else
+                        {
+                            DataGridRow rowclean = (DataGridRow)values2.ItemContainerGenerator.ContainerFromIndex(i);
+                            rowclean.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                        }
+                        found2 = true;
                     }
+                                      
                     j++;
-                }   
+                }
+                //This value does not exists on the registry 1
+                if (!found2)
+                {
+                    DataGridRow row = (DataGridRow)values2.ItemContainerGenerator.ContainerFromIndex(i);
+                    row.Background = Brushes.LightCyan;
+                }
                 i++;
             }
+        }
+        private void btnCompare_Click(object sender, RoutedEventArgs e)
+        {
+           
+            Reg1Values.UpdateLayout();
+            Reg2Values.UpdateLayout();
+            Paint_Differences(Reg2Values, Reg1Values);
+            Paint_Differences(Reg1Values, Reg2Values);
 
         }
 
