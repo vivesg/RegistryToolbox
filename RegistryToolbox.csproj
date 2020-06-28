@@ -122,6 +122,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExportReg.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -196,6 +197,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ABOUT.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\file.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="appico.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

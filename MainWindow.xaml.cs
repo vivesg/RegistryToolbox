@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Converters;
@@ -169,6 +170,7 @@ namespace RegistryToolbox
                         Reg2Values.UpdateLayout();
                         Paint_Differences(Reg2Values, Reg1Values);
                         Paint_Differences(Reg1Values, Reg2Values);
+
                     }
                 }
                 this.actualpath1 = path;
@@ -654,6 +656,104 @@ namespace RegistryToolbox
                 }
             }
             return true;
+        }
+
+        private void btnExportReg_Click(object sender, RoutedEventArgs e)
+        {
+            ExportReg export;
+            export = new ExportReg(Registry1, txtpath1.Text, "HKEY_LOCAL_MACHINE\\SYSTEM");
+            export.ExpToReg("c:\\temp\\prueba.reg");
+        }
+
+        private void btnCMPRegF_Click(object sender, RoutedEventArgs e)
+        {
+
+            string texto = Environment.GetEnvironmentVariable("path");
+            if (texto.Contains("Microsoft VS Code"))
+
+            {
+                Microsoft.Win32.OpenFileDialog openFileDialog1 = new Microsoft.Win32.OpenFileDialog();
+                Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
+                openFileDialog1.Title = "Registry .reg File";
+                openFileDialog1.Filter = ".Reg Files|*.reg";
+                openFileDialog2.Title = "Registry .reg File";
+                openFileDialog2.Filter = ".Reg Files|*.reg";
+                string path1 = "";
+                string path2 = "";
+                if (openFileDialog1.ShowDialog() == true)
+                {
+                    try
+                    {
+
+                        path1 = openFileDialog1.FileName;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
+                        $"Details:\n\n{ex.StackTrace}");
+                    }
+                }
+                if (openFileDialog2.ShowDialog() == true)
+                {
+                    try
+                    {
+
+                        path2 = openFileDialog2.FileName;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
+                        $"Details:\n\n{ex.StackTrace}");
+                    }
+                }
+
+
+                string param = "--diff \"" + path1 + "\" \"" + path2 + "\"";
+                //MessageBox.Show(param);
+                // Process.Start("cmd", "/C /Q code "+param);
+
+                //Process proc = new Process();
+                //proc.StartInfo.FileName = "CMD.exe";
+                //proc.StartInfo.Arguments = "/c code " + param;
+                //proc.StartInfo.UseShellExecute = false;
+                //proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                //proc.Start();
+                //proc.WaitForExit();
+
+
+
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
+                System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+                startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                startInfo.FileName = "cmd.exe";
+                startInfo.Arguments = "/c code " + param;
+                process.StartInfo = startInfo;
+                process.Start();
+            }
+            else
+            {
+                MessageBox.Show("This functionality Needs VS Code Installed, please install it on the PC","VSCODE Not Installed",MessageBoxButton.OK,MessageBoxImage.Error);
+            }
+
+            //ProcessStartInfo startInfo = new ProcessStartInfo ("code");
+            //startInfo.Arguments = param;
+            //startInfo.UseShellExecute = false;
+            //System.Diagnostics.Process.Start(startInfo);
+
+            // Process p = new Process();
+            // p.StartInfo.FileName = "code";
+            // p.StartInfo.Arguments = param;
+            //// p.Start();
+
+            // ProcessStartInfo startInfo = new ProcessStartInfo("code");
+            // startInfo.Arguments = param;
+            // startInfo.UseShellExecute = false;
+            //System.Diagnostics.Process.Start(startInfo);
+
+            // var proc = System.Diagnostics.Process.Start("code", param);
+
         }
     }
 }

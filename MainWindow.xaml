@@ -7,7 +7,7 @@
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         mc:Ignorable="d"
        
-        Title="Registry Toolbox Version ALPHA 0.1 NOT FOR PROD" MinHeight="768" MinWidth="1024">
+        Title="Registry Toolbox Version ALPHA 0.1 NOT FOR PROD" MinHeight="768" MinWidth="1024" Icon="appico.ico">
 
     <Grid  Margin="0,0,0,0">
         <Grid.RowDefinitions>
@@ -107,12 +107,44 @@
             </Button.Style>
 
         </Button>
-        <Button x:Name="btnExportReg" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="1" HorizontalContentAlignment="Left">
+        <Button x:Name="btnExportReg" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="1" HorizontalContentAlignment="Left" Click="btnExportReg_Click" >
 
             <StackPanel Orientation="Horizontal" >
                 <Image Source="Resources\export.ico" Stretch="Uniform"/>
                 <Viewbox VerticalAlignment="Stretch" >
                     <emoji:TextBlock FontWeight="Medium" Text="Export 2 Reg"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
+                </Viewbox>
+            </StackPanel>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Opacity" Value="0.8"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="1"/>
+                            <Setter Property="BorderThickness" Value="4"/>
+                            <Setter Property="Background" Value="White"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+
+        </Button>
+        <Button x:Name="btnCMPRegF" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="1" HorizontalContentAlignment="Left" Click="btnCMPRegF_Click" >
+
+            <StackPanel Orientation="Horizontal" >
+                <Image Source="Resources\file.png" Stretch="Uniform"/>
+                <Viewbox VerticalAlignment="Stretch" >
+                    <emoji:TextBlock FontWeight="Medium" Text="Compare .Reg Files"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
                 </Viewbox>
             </StackPanel>
             <Button.Style>
