@@ -209,7 +209,14 @@
             </Viewbox>
             <Viewbox  >
                 <emoji:TextBlock FontWeight="Bold" Text="    gevivesh@microsoft.com    " HorizontalAlignment="Center"/>
+         
             </Viewbox>
+            <TextBlock>
+
+                <Hyperlink NavigateUri="mailto:gevivesh@microsoft.com?subject=RegistryToolbox_Feedback" RequestNavigate="Hyperlink_RequestNavigate" >
+                    Click here
+                </Hyperlink>
+            </TextBlock>
 
         </StackPanel>
 

@@ -664,7 +664,7 @@ namespace RegistryToolbox
             export = new ExportReg(Registry1, txtpath1.Text, "HKEY_LOCAL_MACHINE\\SYSTEM");
             export.ExpToReg("c:\\temp\\prueba.reg");
         }
-
+      
         private void btnCMPRegF_Click(object sender, RoutedEventArgs e)
         {
 
@@ -754,6 +754,12 @@ namespace RegistryToolbox
 
             // var proc = System.Diagnostics.Process.Start("code", param);
 
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            Process.Start(e.Uri.AbsoluteUri);
+            e.Handled = true;
         }
     }
 }
