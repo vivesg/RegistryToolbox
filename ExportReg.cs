@@ -17,11 +17,11 @@ namespace RegistryToolbox
         private string Path;
         private string root;
 
-        public ExportReg(RegistryHive myHive, string path, string root)
+        public ExportReg(RegistryHive myHive, string path, string proot)
         {
             this.myHive = myHive;
             Path = path;
-            this.root = "HKEY_LOCAL_MACHINE\\SYSTEM";
+            this.root = proot;
         }
         public void ExpToReg(string fPath)
         {
@@ -83,6 +83,13 @@ namespace RegistryToolbox
                     output.Add(a);
                 }
                 else if (value.ValueType.ToString() == "RegSz")
+                {
+
+                    string b = "=" + "\"" + value.ValueData + "\""; //THIS ASSUMES dword
+                    a = a + b;
+                    output.Add(a);
+                }
+                else if (value.ValueType.ToString() == "RegQword")
                 {
 
                     string b = "=" + "\"" + value.ValueData + "\""; //THIS ASSUMES dword

@@ -23,5 +23,10 @@ namespace RegistryToolbox
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://forms.office.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR4t8jW939JRFosWxHm34rHRUNVEzVjhaUk4zQVQxM1hSNU82SkgxS1JFQS4u");
+        }
     }
 }

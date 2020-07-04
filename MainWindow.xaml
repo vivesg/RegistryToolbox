@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RegistryToolbox"
+        xmlns:models="clr-namespace:RegistryToolbox.Models"
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         mc:Ignorable="d"
        
-        Title="Registry Toolbox Version ALPHA 0.1 NOT FOR PROD" MinHeight="768" MinWidth="1024" Icon="appico.ico">
+        Title="Registry Toolbox Version Beta 1.0 " MinHeight="768" MinWidth="1024" Icon="Resources\registry.ico" Closing="Window_Closing">
 
     <Grid  Margin="0,0,0,0">
         <Grid.RowDefinitions>
@@ -68,7 +69,6 @@
                             <Setter Property="Opacity" Value="1"/>
                             <Setter Property="BorderBrush" Value="Black"/>
                             <Setter Property="BorderThickness" Value="5"/>
-
                         </Trigger>
                     </Style.Triggers>
                 </Style>
@@ -80,7 +80,7 @@
             <StackPanel Orientation="Horizontal" >
                 <Image Source="Resources\compare.ico" Stretch="Uniform"/>
                 <Viewbox VerticalAlignment="Stretch" >
-                    <emoji:TextBlock FontWeight="Medium" Text="Compare .Reg"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
+                    <emoji:TextBlock FontWeight="Medium" Text="Compare Hives"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" TextAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
             </StackPanel>
             <Button.Style>
@@ -112,7 +112,7 @@
             <StackPanel Orientation="Horizontal" >
                 <Image Source="Resources\export.ico" Stretch="Uniform"/>
                 <Viewbox VerticalAlignment="Stretch" >
-                    <emoji:TextBlock FontWeight="Medium" Text="Export 2 Reg"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
+                    <emoji:TextBlock FontWeight="Medium" Text="Export to .Reg"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
                 </Viewbox>
             </StackPanel>
             <Button.Style>
@@ -213,9 +213,7 @@
             </Viewbox>
             <TextBlock>
 
-                <Hyperlink NavigateUri="mailto:gevivesh@microsoft.com?subject=RegistryToolbox_Feedback" RequestNavigate="Hyperlink_RequestNavigate" >
-                    Click here
-                </Hyperlink>
+               
             </TextBlock>
 
         </StackPanel>
@@ -242,8 +240,28 @@
 
 
 
-        <TreeView Name="Reg1Tree" Grid.Column="3" Grid.Row="0" Grid.RowSpan="3" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False" />
-        <TreeView Name="Reg2Tree" Grid.Column="4" Grid.Row="0" Grid.RowSpan="3" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False" />
+        <TreeView Name="Reg1Tree" Grid.Column="3" Grid.Row="0" Grid.RowSpan="3" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False" ItemsSource="{Binding Name}" SelectedItemChanged="Reg1Tree_SelectedItemChanged" KeyDown="Reg1Tree_KeyDown">
+            <TreeView.Resources>
+                <!-- Top level template -->
+                <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}" ItemsSource="{Binding  Subkeys}">
+            <TextBlock Text="{Binding Name}" />
+            </HierarchicalDataTemplate>
+            </TreeView.Resources>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=Diff}" Value="False">
+                            <Setter Property="Foreground" Value="Blue"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=Diff}" Value="True">
+                            <Setter Property="Foreground" Value="Red"></Setter>
+                            <Setter Property="FontWeight" Value="Bold"></Setter>
+                         </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
+        <TreeView Name="Reg2Tree" Grid.Column="4" Grid.Row="0" Grid.RowSpan="3" FontSize="15" VirtualizingStackPanel.IsVirtualizing="True" />
 
 
  
@@ -259,11 +277,17 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <TextBox Name="txtpath1" Text="" Grid.Row="0" Grid.Column="0"></TextBox>
-            <TextBox Name="txtpath2" Text="" Grid.Row="0" Grid.Column="2"></TextBox>
-            <Button Name="btnCompare" Content="Compare Current Values" Grid.Row="1" Grid.Column="1" Click="btnCompare_Click" />
-            <Button Name="btnalign" Content="Match Path" Grid.Row="0" Grid.Column="1" Click="btnalign_Click" />
-            <Button Name="btnCompareKeyandsub" Content="Compare Subkeys Values" Grid.Row="2" Grid.Column="1" Click="btnCompareKeyandsub_Click" />
+            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Name="txtpath1" Text="" Grid.Row="0" Grid.Column="0"></TextBox>
+                <TextBox Name="txtpath2" Text="" Grid.Row="0" Grid.Column="2"></TextBox>
+            </Grid>
+            <Button Name="btnCompare" Content="Compare Current Values" Grid.Row="1" Grid.Column="1" Click="btnCompare_Click"  Visibility="Hidden"/>
+            <Button Name="btnalign" Content="Match Path" Grid.Row="1" Grid.Column="1" Click="btnalign_Click" />
+            <Button Name="btnCompareKeyandsub" Content="Compare Keys" Grid.Row="2" Grid.Column="1" Click="btnCompareKeyandsub_Click" />
             <Button Name="btnload1" Content="Load" Grid.Row="1" Grid.Column="0" Click="btnload1_Click"  />
             <Button Name="btnload2" Content="Load" Grid.Row="1" Grid.Column="2"  Click="btnload2_Click"/> 
             
