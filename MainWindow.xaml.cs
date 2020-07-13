@@ -555,18 +555,9 @@ namespace RegistryToolbox
         {
 
             //Reg1Values.UpdateLayout();
-            //Reg2Values.UpdateLayout();
-            //Paint_Differences(Reg2Values, Reg1Values);
-            //Paint_Differences(Reg1Values, Reg2Values);
-
-            //TreeViewItem node1 = (TreeViewItem)Reg1Tree.SelectedItem;
-            //TreeViewItem node2 = (TreeViewItem)Reg2Tree.SelectedItem;
-            //PaintDifferencesTree(node1, node2);
-           // string path = this.Reg2Tree.SelectedValuePath;
+          
              ((ModelRegistryKey)this.Reg2Tree.SelectedItem).FindDifferences((ModelRegistryKey)this.Reg1Tree.SelectedItem);
-            //Reg2Tree.Items.Refresh();
-           // Reg2Tree.SelectedValuePath = path;
-           // Reg2Tree.UpdateLayout();
+          
 
         }
         private bool Compare_RegkeyEq(KeyValue pvalues1, KeyValue pvalues2)
@@ -886,6 +877,20 @@ namespace RegistryToolbox
         {
             ModelRegistryKey Selected = (ModelRegistryKey)((TreeView)sender).SelectedItem;
             loadtable(Selected, 2);
+        }
+
+     
+        private void TreeViewItem_MouseDoubleClick_1(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is TreeViewItem)
+            {
+                if (!((TreeViewItem)sender).IsSelected)
+                {
+                    return;
+                }
+            }
+            Debug.WriteLine(sender.ToString());
+            MessageBox.Show(sender.ToString());
         }
     }
 }

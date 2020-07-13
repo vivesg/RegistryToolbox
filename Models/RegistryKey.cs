@@ -121,10 +121,17 @@ namespace RegistryToolbox.Models
 
         public bool EqualsValues(ModelRegistryKey NodeB)
         {
-            bool diffs = false;
+         
+
+            if (this._SubKeysValues.Count != NodeB.SubkeysValues.Count)
+            {
+                this.Diff = true;
+                return false;
+            }
             foreach (ModelRegistryKeyValues kvaluea in this.SubkeysValues)
             {
                 bool found = false;
+                
                 foreach (ModelRegistryKeyValues kvalueb in NodeB.SubkeysValues)
                 {
                     if (kvaluea.Name == kvalueb.Name)
@@ -133,9 +140,8 @@ namespace RegistryToolbox.Models
                         if (!kvaluea.Equals(kvalueb)) //There is no difference on the value
                         {
                             this.Diff = true;
-                            diffs = true;
+                            return false;   
                         }
-                     
                         break; // the value has been found
                     }
                 }
@@ -143,11 +149,11 @@ namespace RegistryToolbox.Models
                 {
                     //Non existent value in the other registry
                     this.Diff = true;
-                    diffs = true;
+                    return false;
                 }
             }
-            this.Diff = diffs;
-            return !diffs;
+            this.Diff = false;
+            return true;
         }
 
 
@@ -158,8 +164,6 @@ namespace RegistryToolbox.Models
             if (!this.EqualsValues(NodeB))
             {
                 res1 = true;
-
-
             }
             if (!this.EqualsChilds(NodeB))
             {

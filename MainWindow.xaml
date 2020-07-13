@@ -48,7 +48,8 @@
             <StackPanel Orientation="Horizontal" >
                 <Image Source="Resources\registry.ico" Stretch="Uniform"/>
                 <Viewbox VerticalAlignment="Stretch" >
-                    <emoji:TextBlock FontWeight="Medium" Text="Load Registry"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
+                    <emoji:TextBlock FontWeight="Medium" Text="Load Registry"  UseLayoutRounding="False"  LineHeight="60" LineStackingStrategy="BlockLineHeight" />
+                    
                 </Viewbox>
             </StackPanel>
             <Button.Style>
@@ -67,7 +68,7 @@
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Opacity" Value="1"/>
-                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="BorderBrush" Value="Yellow"/>
                             <Setter Property="BorderThickness" Value="5"/>
                         </Trigger>
                     </Style.Triggers>
@@ -80,7 +81,7 @@
             <StackPanel Orientation="Horizontal" >
                 <Image Source="Resources\compare.ico" Stretch="Uniform"/>
                 <Viewbox VerticalAlignment="Stretch" >
-                    <emoji:TextBlock FontWeight="Medium" Text="Compare Hives"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" TextAlignment="Center" HorizontalAlignment="Center" />
+                    <emoji:TextBlock FontWeight="Medium" Text="Compare Hives"  UseLayoutRounding="False"  LineHeight="60" LineStackingStrategy="BlockLineHeight" TextAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
             </StackPanel>
             <Button.Style>
@@ -112,7 +113,7 @@
             <StackPanel Orientation="Horizontal" >
                 <Image Source="Resources\export.ico" Stretch="Uniform"/>
                 <Viewbox VerticalAlignment="Stretch" >
-                    <emoji:TextBlock FontWeight="Medium" Text="Export to .Reg"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
+                    <emoji:TextBlock FontWeight="Medium" Text="Export to .Reg"  UseLayoutRounding="False"  LineHeight="60" LineStackingStrategy="BlockLineHeight" />
                 </Viewbox>
             </StackPanel>
             <Button.Style>
@@ -144,7 +145,7 @@
             <StackPanel Orientation="Horizontal" >
                 <Image Source="Resources\file.png" Stretch="Uniform"/>
                 <Viewbox VerticalAlignment="Stretch" >
-                    <emoji:TextBlock FontWeight="Medium" Text="Compare .Reg Files"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
+                    <emoji:TextBlock FontWeight="Medium" Text="Compare .Reg Files"  UseLayoutRounding="False"  LineHeight="60" LineStackingStrategy="BlockLineHeight" />
                 </Viewbox>
             </StackPanel>
             <Button.Style>
@@ -176,7 +177,7 @@
             <StackPanel Orientation="Horizontal" >
                 <Image Source="Resources\info.ico" Stretch="Uniform"/>
                 <Viewbox VerticalAlignment="Stretch" >
-                    <emoji:TextBlock FontWeight="Medium" Text="About this"  UseLayoutRounding="False"  LineHeight="50" LineStackingStrategy="BlockLineHeight" />
+                    <emoji:TextBlock FontWeight="Medium" Text="About this"  UseLayoutRounding="False"  LineHeight="60" LineStackingStrategy="BlockLineHeight" />
                 </Viewbox>
             </StackPanel>
             <Button.Style>
@@ -240,7 +241,7 @@
 
 
 
-        <TreeView Name="Reg1Tree" Grid.Column="3" Grid.Row="0" Grid.RowSpan="3" FontSize="15" ItemsSource="{Binding Name}" SelectedItemChanged="Reg1Tree_SelectedItemChanged" KeyDown="Reg1Tree_KeyDown">
+        <TreeView Name="Reg1Tree" Grid.Column="3" Grid.Row="0" Grid.RowSpan="3" FontSize="15" ItemsSource="{Binding Name}" SelectedItemChanged="Reg1Tree_SelectedItemChanged" KeyDown="Reg1Tree_KeyDown" >
             <TreeView.Resources>
             <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}" ItemsSource="{Binding Subkeys}">
                 <TextBlock Text="{Binding Name}" />
@@ -258,8 +259,12 @@
                             <Setter Property="FontWeight" Value="Bold" ></Setter>
                          </DataTrigger>
                     </Style.Triggers>
+                    <EventSetter Event="MouseDoubleClick" Handler="TreeViewItem_MouseDoubleClick_1" />
                 </Style>
             </TreeView.ItemContainerStyle>
+            <!--<Style TargetType="{x:Type TreeViewItem}">
+                <EventSetter Event="MouseDoubleClick" Handler="TreeViewItem_MouseDoubleClick_1" />
+            </Style>-->
 
         </TreeView>
         <TreeView Name="Reg2Tree" Grid.Column="4" Grid.Row="0" Grid.RowSpan="3" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False" ItemsSource="{Binding Name}" KeyDown="Reg2Tree_KeyDown" SelectedItemChanged="Reg2Tree_SelectedItemChanged">
