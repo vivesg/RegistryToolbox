@@ -233,6 +233,7 @@ namespace RegistryToolbox
                 return;
             foreach (ModelRegistryKeyValues KeyValue in Selected.SubkeysValues)
             {
+               // ModelRegistryKeyValues KeyValue = Selected.SubkeysValues.Get(index);
                 dr = dt.NewRow();
                 dr[0] = KeyValue.Name;
                 dr[1] = KeyValue.Type;

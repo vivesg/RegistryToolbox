@@ -37,7 +37,7 @@ namespace RegistryToolbox.Models
             return (a & b & c);
         }
     }
-    public class ModelRegistryKey : INotifyPropertyChanged 
+    public class ModelRegistryKey : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -54,12 +54,14 @@ namespace RegistryToolbox.Models
         private ObservableCollection<ModelRegistryKeyValues> _SubKeysValues;
 
         public string Name { get => _Name; set => _Name = value; }
-        public bool Diff {
-            get => _diff; 
-            set  {
+        public bool Diff
+        {
+            get => _diff;
+            set
+            {
                 _diff = value;
                 OnPropertyChanged("Diff");
-            } 
+            }
         }
 
         public ObservableCollection<ModelRegistryKey> Subkeys
@@ -100,7 +102,7 @@ namespace RegistryToolbox.Models
                             else
                             {
                                 cDiff = true;
-                            }     
+                            }
                         }
                         else
                         {
@@ -112,16 +114,16 @@ namespace RegistryToolbox.Models
                 if (!found)
                 {
                     this.Diff = true; //this key was not found so differences on childs
-               
+
                 }
             }
-            this.Diff = cDiff;    
+            this.Diff = cDiff;
             return !this.Diff;
         }
 
         public bool EqualsValues(ModelRegistryKey NodeB)
         {
-         
+
 
             if (this._SubKeysValues.Count != NodeB.SubkeysValues.Count)
             {
@@ -131,7 +133,7 @@ namespace RegistryToolbox.Models
             foreach (ModelRegistryKeyValues kvaluea in this.SubkeysValues)
             {
                 bool found = false;
-                
+
                 foreach (ModelRegistryKeyValues kvalueb in NodeB.SubkeysValues)
                 {
                     if (kvaluea.Name == kvalueb.Name)
@@ -140,7 +142,7 @@ namespace RegistryToolbox.Models
                         if (!kvaluea.Equals(kvalueb)) //There is no difference on the value
                         {
                             this.Diff = true;
-                            return false;   
+                            return false;
                         }
                         break; // the value has been found
                     }
