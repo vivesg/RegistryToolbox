@@ -231,9 +231,9 @@ namespace RegistryToolbox
             ModelRegistryKey Selected = key;
             if (Selected == null)
                 return;
-            foreach (ModelRegistryKeyValues KeyValue in Selected.SubkeysValues)
+            foreach (string index in Selected.SubkeysValues.Keys())
             {
-               // ModelRegistryKeyValues KeyValue = Selected.SubkeysValues.Get(index);
+                ModelRegistryKeyValues KeyValue = Selected.SubkeysValues.Get(index);
                 dr = dt.NewRow();
                 dr[0] = KeyValue.Name;
                 dr[1] = KeyValue.Type;
@@ -329,7 +329,7 @@ namespace RegistryToolbox
                 foreach (KeyValue value in rk.Values)
                 {
                     ModelRegistryKeyValues currentvalue = new ModelRegistryKeyValues(value.ValueName, value.ValueType, value.ValueData);
-                    current.SubkeysValues.Add(currentvalue);
+                    current.SubkeysValues.Add(currentvalue.Name,currentvalue);
                 }
                 Drawhive(rk, current.Subkeys);
                 mKey.Add(current);
