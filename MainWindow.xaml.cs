@@ -4,8 +4,10 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Converters;
@@ -231,9 +233,9 @@ namespace RegistryToolbox
             ModelRegistryKey Selected = key;
             if (Selected == null)
                 return;
-            foreach (string index in Selected.SubkeysValues.Keys())
+            foreach (ModelRegistryKeyValues KeyValue in Selected.SubkeysValues)
             {
-                ModelRegistryKeyValues KeyValue = Selected.SubkeysValues.Get(index);
+               
                 dr = dt.NewRow();
                 dr[0] = KeyValue.Name;
                 dr[1] = KeyValue.Type;
@@ -329,8 +331,9 @@ namespace RegistryToolbox
                 foreach (KeyValue value in rk.Values)
                 {
                     ModelRegistryKeyValues currentvalue = new ModelRegistryKeyValues(value.ValueName, value.ValueType, value.ValueData);
-                    current.SubkeysValues.Add(currentvalue.Name,currentvalue);
+                    current.SubkeysValues.Add(currentvalue);
                 }
+                current.SortValues();
                 Drawhive(rk, current.Subkeys);
                 mKey.Add(current);
             }
@@ -556,9 +559,22 @@ namespace RegistryToolbox
         {
 
             //Reg1Values.UpdateLayout();
-          
-             ((ModelRegistryKey)this.Reg2Tree.SelectedItem).FindDifferences((ModelRegistryKey)this.Reg1Tree.SelectedItem);
-          
+
+
+            //Reg1Values.UpdateLayout();
+            Process.GetCurrentProcess().ProcessorAffinity =
+            new IntPtr(2); // Uses the second Core or Processor for the Test
+            Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
+            Thread.CurrentThread.Priority = ThreadPriority.Highest;
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Reset();
+
+            stopwatch.Start();
+            ((ModelRegistryKey)this.Reg2Tree.SelectedItem).FindDifferences((ModelRegistryKey)this.Reg1Tree.SelectedItem);
+            stopwatch.Stop();
+            Debug.WriteLine("Ticks: " + stopwatch.ElapsedTicks + " mS: " + stopwatch.ElapsedMilliseconds);
+
+
 
         }
         private bool Compare_RegkeyEq(KeyValue pvalues1, KeyValue pvalues2)

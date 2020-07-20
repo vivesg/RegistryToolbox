@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.Design;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -13,57 +15,13 @@ using System.Windows.Forms;
 
 namespace RegistryToolbox.Models
 {
-    public class ObservableDictionary<T> : INotifyPropertyChanged
-    {
-
-        Dictionary<String, T> dict;
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string prop)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-            }
-        }
-        public ObservableDictionary()
-        {
-            dict = new Dictionary<String, T>();
-        }
-        public T Get(string Index)
-        {
-            return dict[Index];
-        }
-        public void Clear()
-        {
-            this.dict.Clear();
-        }
-        public void Add(string index, T obj)
-        {
-            this.dict.Add(index, obj);
-            OnPropertyChanged("dict");
-
-        }
-        public void Remove(string index)
-        {
-            this.dict.Remove(index);
-            OnPropertyChanged("dict");
-        }
-        public List<String> Keys()
-        {
-            List<String> myKeys = dict.Keys.ToList();
-            return myKeys;
-        }
-        public int Count()
-        {
-            return dict.Count();
-        }
-
-
-
+    public abstract class ModelRegistry {
+       
+        abstract public string Name { get; set; }
+      
 
     }
-    public class ModelRegistryKeyValues
+    public class ModelRegistryKeyValues : ModelRegistry
     {
 
         private string _Name;
@@ -71,7 +29,7 @@ namespace RegistryToolbox.Models
         private string _Value;
         private bool _Diff;
 
-        public string Name { get => _Name; set => _Name = value; }
+        public override string Name { get => _Name; set => _Name = value; }
         public string Type { get => _Type; set => _Type = value; }
         public string Value { get => _Value; set => _Value = value; }
         public bool Diff { get => _Diff; set => _Diff = value; }
@@ -90,9 +48,10 @@ namespace RegistryToolbox.Models
             bool c = this.Value == Value.Value;
             return (a & b & c);
         }
+       
     }
 
-    public class ModelRegistryKey : INotifyPropertyChanged
+    public class ModelRegistryKey : ModelRegistry, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -106,9 +65,9 @@ namespace RegistryToolbox.Models
         private string _Name;
         private bool _diff;  //This is True if differences has been found 
         private ObservableCollection<ModelRegistryKey> _SubKeys;
-        private ObservableDictionary<ModelRegistryKeyValues> _SubKeysValues;
+        private ObservableCollection<ModelRegistryKeyValues> _SubKeysValues;
 
-        public string Name { get => _Name; set => _Name = value; }
+        public override string Name { get => _Name; set => _Name = value; }
         public bool Diff
         {
             get => _diff;
@@ -124,20 +83,26 @@ namespace RegistryToolbox.Models
             get { return _SubKeys; }
             set { _SubKeys = value; }
         }
-        public ObservableDictionary<ModelRegistryKeyValues> SubkeysValues
+        public ObservableCollection<ModelRegistryKeyValues> SubkeysValues
         {
             get { return _SubKeysValues; }
             set { _SubKeysValues = value; }
         }
+        public void SortValues()
+        {
+            var SubkeysValues = this.SubkeysValues.OrderBy(x => x.Name);
+            this.SubkeysValues = new ObservableCollection<ModelRegistryKeyValues>(SubkeysValues);
 
+        }
         public ModelRegistryKey(string name)
         {
             _Name = name;
             _diff = false;
             _SubKeys = new ObservableCollection<ModelRegistryKey>();
-            _SubKeysValues = new ObservableDictionary<ModelRegistryKeyValues>();
+            _SubKeysValues = new ObservableCollection<ModelRegistryKeyValues>();
 
         }
+
         public ModelRegistryKey BinarySearch(ObservableCollection<ModelRegistryKey> list, string value)
         {
             if (list == null)
@@ -146,40 +111,80 @@ namespace RegistryToolbox.Models
             }
             else
             {
-                if (list.Count <= 2)
+                if (list.Count == 0)
                 {
-                    int half = (list.Count / 2) - 1;
-                    ObservableCollection<ModelRegistryKey> chunklist = new ObservableCollection<ModelRegistryKey>();
-                    if (list[half].Name[0] < value[0])
-                    { //the superior half 
-                        for (int i = half + 1; i < list.Count; i++)
-                        {
-
-                            chunklist.Add(list[i]);  //O(log n)
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 0; i <= half; i++)
-                        {
-                            chunklist.Add(list[i]); // O(log n)
-                        }
-
-                    }
-                    return BinarySearch(chunklist, value);
+                    return null;
                 }
-                else
+                return BinarySearchAux(list, 0, list.Count - 1, value);
+            }
+        }
+        private ModelRegistryKeyValues BinarySearchAux(ObservableCollection<ModelRegistryKeyValues> list, int infLim, int supLim, string value)
+        {
+
+            if (infLim < supLim)
+            {
+                int half = infLim + (supLim - infLim) / 2;
+                if (String.Compare(list[half].Name, (value)) < 0) //Superior
                 {
-                    if (list[0].Name == value)
-                    {
-                        return list[0];
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return BinarySearchAux(list, half + 1, supLim, value);
+                }
+                else //Inferior
+                {
+                    return BinarySearchAux(list, infLim, half, value);
                 }
             }
+            else
+            {
+                if (list[infLim].Name == value)
+                {
+                    return list[infLim];
+                }
+
+            }
+            return null;
+        } 
+        private ModelRegistryKey BinarySearchAux(ObservableCollection<ModelRegistryKey> list, int infLim, int supLim, string value)
+        {
+
+            if (infLim < supLim)
+            {
+                int half = infLim + (supLim - infLim) / 2;
+                if (String.Compare(list[half].Name, (value)) < 0) //Superior
+                {
+                     return BinarySearchAux(list, half + 1, supLim, value);
+                }
+                else //Inferior
+                {
+                    return BinarySearchAux(list, infLim,  half, value);
+                }
+            }
+            else
+            {
+                if (list[infLim].Name == value)
+                {
+                    return list[infLim];
+                }
+
+            }
+            return null;
+        }
+
+
+        public ModelRegistryKeyValues BinarySearch(ObservableCollection<ModelRegistryKeyValues> list, string value)
+        {
+            if (list == null)
+            {
+                return null;
+            }
+            else
+            {
+                if (list.Count == 0)
+                {
+                    return null;
+                }
+                return BinarySearchAux(list, 0, list.Count - 1, value);
+            }
+          
         }
         public bool EqualsChilds(ModelRegistryKey NodeB)
         {
@@ -188,34 +193,32 @@ namespace RegistryToolbox.Models
 
             foreach (ModelRegistryKey key in this.Subkeys)
             {
-                bool found = false;
-                foreach (ModelRegistryKey keyb in NodeB.Subkeys)
-                {
-                    if (key.Name == keyb.Name) //subkey has been found
+
+               
+                ModelRegistryKey keyb = this.BinarySearch(NodeB.Subkeys, key.Name);
+               
+                if (keyb != null){
+                    if (key.EqualsChilds(keyb))
                     {
-                        found = true;
-                        if (key.EqualsChilds(keyb))
+                        if (key.EqualsValues(keyb))
                         {
-                            if (key.EqualsValues(keyb))
-                            {
-                                cDiff = false;
-                            }
-                            else
-                            {
-                                cDiff = true;
-                            }
+                            cDiff = false;
                         }
                         else
                         {
                             cDiff = true;
-
                         }
                     }
-                }
-                if (!found)
-                {
-                    this.Diff = true; //this key was not found so differences on childs
+                    else
+                    {
+                        cDiff = true;
 
+                    }
+                }
+                else
+                {
+                    cDiff = true;
+                    this.Diff = true; //this key was not found so differences on childs
                 }
             }
             this.Diff = cDiff;
@@ -231,11 +234,14 @@ namespace RegistryToolbox.Models
                 this.Diff = true;
                 return false;
             }
-            foreach (string indexA in this.SubkeysValues.Keys())
+            foreach (ModelRegistryKeyValues KeyValA in this.SubkeysValues)
             {
                 // bool found = false;
-                ModelRegistryKeyValues KeyValA = this.SubkeysValues.Get(indexA);
-                ModelRegistryKeyValues KeyValB = NodeB.SubkeysValues.Get(indexA);
+
+               
+                
+                ModelRegistryKeyValues KeyValB = this.BinarySearch(NodeB.SubkeysValues, KeyValA.Name);
+
                 if (KeyValB != null)
                 {
                     if (!KeyValA.Equals(KeyValB)) //There is  difference on the value
