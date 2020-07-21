@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:RegistryToolbox"
         xmlns:models="clr-namespace:RegistryToolbox.Models"
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
+        
         mc:Ignorable="d"
        
-        Title="Registry Toolbox Version Beta 1.0 " MinHeight="768" MinWidth="1024" Icon="Resources\registry.ico" Closing="Window_Closing">
+        Title="Registry Toolbox Version Beta 1.0 " MinHeight="768" MinWidth="1024" Icon="Resources\registry.ico" Closing="Window_Closing" >
 
     <Grid  Margin="0,0,0,0">
         <Grid.RowDefinitions>
@@ -241,7 +242,7 @@
 
 
 
-        <TreeView Name="Reg1Tree" Grid.Column="3" Grid.Row="0" Grid.RowSpan="3" FontSize="15" ItemsSource="{Binding Name}" SelectedItemChanged="Reg1Tree_SelectedItemChanged" KeyDown="Reg1Tree_KeyDown" >
+        <TreeView Name="Reg1Tree" Grid.Column="3" Grid.Row="0" Grid.RowSpan="3" FontSize="15" VirtualizingStackPanel.IsVirtualizing="True"  ItemsSource="{Binding Name}" SelectedItemChanged="Reg1Tree_SelectedItemChanged" KeyDown="Reg1Tree_KeyDown" >
             <TreeView.Resources>
             <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}" ItemsSource="{Binding Subkeys}">
                 <TextBlock Text="{Binding Name}" />
@@ -267,7 +268,7 @@
             </Style>-->
 
         </TreeView>
-        <TreeView Name="Reg2Tree" Grid.Column="4" Grid.Row="0" Grid.RowSpan="3" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False" ItemsSource="{Binding Name}" KeyDown="Reg2Tree_KeyDown" SelectedItemChanged="Reg2Tree_SelectedItemChanged">
+        <TreeView Name="Reg2Tree" Grid.Column="4" Grid.Row="0" Grid.RowSpan="3" FontSize="15" VirtualizingStackPanel.IsVirtualizing="True" ItemsSource="{Binding Name}" KeyDown="Reg2Tree_KeyDown" SelectedItemChanged="Reg2Tree_SelectedItemChanged">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}" ItemsSource="{Binding Subkeys}">
                     <TextBlock Text="{Binding Name}" />

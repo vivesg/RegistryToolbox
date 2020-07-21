@@ -51,6 +51,8 @@ namespace RegistryToolbox
             GC.WaitForPendingFinalizers();
         }
 
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -332,9 +334,10 @@ namespace RegistryToolbox
                 {
                     ModelRegistryKeyValues currentvalue = new ModelRegistryKeyValues(value.ValueName, value.ValueType, value.ValueData);
                     current.SubkeysValues.Add(currentvalue);
-                }
-                current.SortValues();
+                } 
                 Drawhive(rk, current.Subkeys);
+                current.SortValues();
+                current.SortKeys();
                 mKey.Add(current);
             }
           
@@ -570,7 +573,9 @@ namespace RegistryToolbox
             stopwatch.Reset();
 
             stopwatch.Start();
+            UpdateLayout();
             ((ModelRegistryKey)this.Reg2Tree.SelectedItem).FindDifferences((ModelRegistryKey)this.Reg1Tree.SelectedItem);
+            ((ModelRegistryKey)this.Reg1Tree.SelectedItem).FindDifferences((ModelRegistryKey)this.Reg2Tree.SelectedItem);
             stopwatch.Stop();
             Debug.WriteLine("Ticks: " + stopwatch.ElapsedTicks + " mS: " + stopwatch.ElapsedMilliseconds);
 

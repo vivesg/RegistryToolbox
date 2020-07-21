@@ -94,6 +94,12 @@ namespace RegistryToolbox.Models
             this.SubkeysValues = new ObservableCollection<ModelRegistryKeyValues>(SubkeysValues);
 
         }
+        public void SortKeys()
+        {
+            var Subkey = this.Subkeys.OrderBy(x => x.Name);
+            this.Subkeys = new ObservableCollection<ModelRegistryKey>(Subkey);
+
+        }
         public ModelRegistryKey(string name)
         {
             _Name = name;
@@ -148,7 +154,7 @@ namespace RegistryToolbox.Models
 
             if (infLim < supLim)
             {
-                int half = infLim + (supLim - infLim) / 2;
+                int half = infLim + ((supLim - infLim) / 2);
                 if (String.Compare(list[half].Name, (value)) < 0) //Superior
                 {
                      return BinarySearchAux(list, half + 1, supLim, value);
@@ -186,6 +192,16 @@ namespace RegistryToolbox.Models
             }
           
         }
+        public void Mark_Different(ModelRegistryKey key)
+        {
+            key.Diff = true;
+            if (key.Subkeys.Count != 0){
+               foreach(ModelRegistryKey skey in key.Subkeys)
+                {
+                    Mark_Different(skey);
+                }
+            }
+        }
         public bool EqualsChilds(ModelRegistryKey NodeB)
         {
 
@@ -200,11 +216,7 @@ namespace RegistryToolbox.Models
                 if (keyb != null){
                     if (key.EqualsChilds(keyb))
                     {
-                        if (key.EqualsValues(keyb))
-                        {
-                            cDiff = false;
-                        }
-                        else
+                        if (!key.EqualsValues(keyb))
                         {
                             cDiff = true;
                         }
@@ -212,12 +224,12 @@ namespace RegistryToolbox.Models
                     else
                     {
                         cDiff = true;
-
                     }
                 }
                 else
                 {
                     cDiff = true;
+                    Mark_Different(key);  //as this does not exist on the other registry is different
                     this.Diff = true; //this key was not found so differences on childs
                 }
             }
