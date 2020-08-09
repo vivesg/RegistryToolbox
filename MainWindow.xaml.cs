@@ -1,23 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Converters;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Xml;
 using Registry;
 using Registry.Abstractions;
 using RegistryToolbox.Models;
+using System.Threading;
+
 
 namespace RegistryToolbox
 {
@@ -33,6 +26,7 @@ namespace RegistryToolbox
         string actualpath2 = "";
         private ObservableCollection<ModelRegistryKey> _Hive1;
         private ObservableCollection<ModelRegistryKey> _Hive2;
+
         public ObservableCollection<ModelRegistryKey> Hive1
         {
             get { return _Hive1; }
@@ -43,6 +37,10 @@ namespace RegistryToolbox
             get { return _Hive2; }
             set { _Hive2 = value; }
         }
+
+
+
+
         public void CleanMemory()
         {
             this.Registry1 = null;
@@ -51,14 +49,12 @@ namespace RegistryToolbox
             GC.WaitForPendingFinalizers();
         }
 
-
-
         public MainWindow()
         {
             InitializeComponent();
+
             _Hive1 = new ObservableCollection<ModelRegistryKey>();
             _Hive2 = new ObservableCollection<ModelRegistryKey>();
-
 
             Reg1Tree.Visibility = Visibility.Hidden;
             gridClientsContainer1.Visibility = Visibility.Hidden;
@@ -67,6 +63,7 @@ namespace RegistryToolbox
             btnalign.Visibility = Visibility.Hidden;
             btnCompareKeyandsub.Visibility = Visibility.Hidden;
             btnload2.Visibility = Visibility.Hidden;
+
 
             Reg1Tree.DataContext = Hive1;
             Reg1Tree.ItemsSource = Hive1;
@@ -80,25 +77,28 @@ namespace RegistryToolbox
         }
         private void btnOpenReg_Click(object sender, RoutedEventArgs e)
         {
+
             _Hive1.Clear();
             _Hive2.Clear();
-           // Reg1Values.Items.Clear();
-            Reg1Values.DataContext = null; 
-            //  lbloutput.Content = ("UserName: {0}", Environment.UserName);
+            Reg1Values.Items.Clear();
+            Reg1Values.DataContext = null;
+
             gridClientsContainer1.Visibility = Visibility.Visible;
             gridClientsContainer1.SetValue(Grid.ColumnSpanProperty, 2);
             Reg1Tree.Visibility = Visibility.Visible;
             Reg1Tree.SetValue(Grid.ColumnSpanProperty, 2);
 
 
+        }
+        private void OpenFile()
+        {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            openFileDialog.Title = "Registry2 Binary File";
+            openFileDialog.Title = "Registry Binary File";
             string path = "";
             if (openFileDialog.ShowDialog() == true)
             {
                 try
                 {
-
                     path = openFileDialog.FileName;
 
                 }
@@ -107,55 +107,43 @@ namespace RegistryToolbox
                     MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
                     $"Details:\n\n{ex.StackTrace}");
                 }
+                MessageBox.Show("Please wait", "Processing your file", MessageBoxButton.OK, MessageBoxImage.Information);
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 File_Load(path, 1);
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+
+
+
             }
-          
-          
         }
         private void File_Load(string path, int registryfile)
         {
-            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-            if (registryfile == 1)
-            {
 
-                string testFile = path;
-                try
+            var registryHive = new RegistryHive(path);
+            try
+            {
+                if (registryfile == 1)
                 {
-                    var registryHive = new RegistryHive(testFile);
                     Registry1 = registryHive;
                     registryHive.ParseHive();
-
                     Drawhive(Registry1.Root, _Hive1);
 
                 }
-                catch (Exception)
+                else
                 {
-                    MessageBox.Show("The file you selected for registry 1 it is not a registry file", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                string testFile = path;
-                try
-                {
-                    var registryHive = new RegistryHive(testFile);
                     Registry2 = registryHive;
                     registryHive.ParseHive();
                     Drawhive(Registry2.Root, _Hive2);
                 }
-                catch (Exception)
-                {
-                    MessageBox.Show("The file you selected for registry 2 it is not a registryfile", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-
             }
-            Mouse.OverrideCursor = null;
-            this.CleanMemory();
-            if (this.Registry1 == null)
+            catch (Exception)
             {
-                MessageBox.Show("memoria limpia");
+                MessageBox.Show("The file you selected for registry it is not a registry binary file", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
         }
+
+
         private RegistryKey Subnode_Route(string route, int currentreg)
         {
 
@@ -215,18 +203,7 @@ namespace RegistryToolbox
         }
         private void loadtable(ModelRegistryKey key, int tabla)
         {
-            DataTable dt = new DataTable();
-            DataRow dr;
-            DataColumn dc;
-            dc = new DataColumn("Name", typeof(String));
-            dt.Columns.Add(dc);
 
-            dc = new DataColumn("Type", typeof(String));
-            dt.Columns.Add(dc);
-
-            dc = new DataColumn("Value", typeof(String));
-            dt.Columns.Add(dc);
-            
             DataGrid currentTable = Reg1Values;
             if (tabla == 2)
                 currentTable = Reg2Values;
@@ -235,18 +212,10 @@ namespace RegistryToolbox
             ModelRegistryKey Selected = key;
             if (Selected == null)
                 return;
-            foreach (ModelRegistryKeyValues KeyValue in Selected.SubkeysValues)
-            {
-               
-                dr = dt.NewRow();
-                dr[0] = KeyValue.Name;
-                dr[1] = KeyValue.Type;
-                dr[2] = KeyValue.Value;
-                dt.Rows.Add(dr);
-            }
-            currentTable.AutoGenerateColumns = false;
-            currentTable.DataContext = dt;
 
+            currentTable.DataContext = null;
+            currentTable.DataContext = Selected.SubkeysValues;
+            currentTable.Columns.RemoveAt(3);
             foreach (DataGridColumn column in currentTable.Columns)
             {
                 column.Width = new DataGridLength(1.0, DataGridLengthUnitType.Auto);
@@ -256,65 +225,19 @@ namespace RegistryToolbox
         public string GetFullPath(TreeViewItem node)
         {
             if (node == null)
-                throw new ArgumentNullException();
-            var result = Convert.ToString(node.Header);
+                return "";
+            var result = ((ModelRegistryKey)(node.Header)).Name;
             for (var i = GetParentItem(node); i != null; i = GetParentItem(i))
             {
                 if (i is TreeViewItem)
                 {
-                    result = ((TreeViewItem)i).Header + "\\" + result;
+                    result = ((ModelRegistryKey)(((TreeViewItem)i).Header)).Name + "\\" + result;
                 }
             }
             return result;
         }
 
-        public TreeViewItem Select_FullPath(string path, TreeViewItem pleaf, TreeView ptree)
-        {
-            if (path == "")
-            {
 
-                return null;
-            }
-            string[] routes;
-            routes = path.Split('\\');
-            ItemCollection subleafs;
-            string actualp = routes[0];
-            if (pleaf == null)
-            {
-                subleafs = ptree.Items;
-            }
-            else
-            {
-                if (pleaf.Header.ToString() == routes[0])
-                    return pleaf;
-                subleafs = pleaf.Items;
-
-            }
-
-
-            foreach (TreeViewItem leaf in subleafs)
-            {
-                if (leaf.Header.ToString() == actualp.ToString())
-                {
-                    if (routes.Length > 1)
-                    {
-                        leaf.IsExpanded = true;
-                        leaf.IsSelected = true;
-                        leaf.Focus();
-                        return Select_FullPath(path.Substring(path.IndexOf(@"\") + 1), leaf, null);
-                    }
-                    else
-                    {
-                        leaf.IsExpanded = true;
-                        leaf.IsSelected = true;
-                        leaf.Focus();
-                        return leaf;
-                    }
-                }
-            }
-
-            return null;
-        }
 
         private RegistryKey ActiveRegistry(int value)
         {
@@ -324,9 +247,9 @@ namespace RegistryToolbox
 
         }
 
-        private void Drawhive(RegistryKey bKey, ObservableCollection<ModelRegistryKey> mKey)
+        private ObservableCollection<ModelRegistryKey> Drawhive(RegistryKey bKey, ObservableCollection<ModelRegistryKey> mKey)
         {
-           
+
             foreach (RegistryKey rk in bKey.SubKeys)
             {
                 ModelRegistryKey current = new ModelRegistryKey(rk.KeyName);
@@ -334,22 +257,24 @@ namespace RegistryToolbox
                 {
                     ModelRegistryKeyValues currentvalue = new ModelRegistryKeyValues(value.ValueName, value.ValueType, value.ValueData);
                     current.SubkeysValues.Add(currentvalue);
-                } 
+                }
                 Drawhive(rk, current.Subkeys);
                 current.SortValues();
                 current.SortKeys();
                 mKey.Add(current);
             }
-          
+            return mKey;
+
+
         }
 
         private void btnCMPReg_Click(object sender, RoutedEventArgs e)
         {
-          
+
 
             _Hive1.Clear();
             _Hive2.Clear();
-            
+
             Reg1Values.DataContext = null;
             Reg2Values.DataContext = null;
             // lbloutput.Content = ("UserName: {0}", Environment.UserName);
@@ -390,7 +315,7 @@ namespace RegistryToolbox
 
                         path = openFileDialog2.FileName;
                         File_Load(path, 2);
-                        this.CleanMemory();
+
 
                     }
                     catch (Exception ex)
@@ -400,63 +325,15 @@ namespace RegistryToolbox
                     }
                 }
             }
+
         }
         private Boolean CompareRow(ItemsControl row1, ItemsControl row2)
         {
             return false;
         }
-        private void Paint_Differences(DataGrid values1, DataGrid values2)
-        {
-            int j = 0;
-            int i = 0;
-            foreach (DataRowView row2 in values2.Items)
-            {
-                j = 0;
-                Boolean found2 = false;
-                foreach (DataRowView row1 in values1.Items)
-                {
-                    //KEY IS THE SAME CHECK VALUE
-                    if (row2.Row.ItemArray[0].ToString() == row1.Row.ItemArray[0].ToString())
-                    {
-                        //KEY IS DIFFERENT VALUE ON REG2
-                        if (row2.Row.ItemArray[2].ToString() != row1.Row.ItemArray[2].ToString())
-                        {
-                            DataGridRow row = (DataGridRow)values2.ItemContainerGenerator.ContainerFromIndex(i);
-                            row.Background = new SolidColorBrush(Color.FromRgb(255, 204, 203));
-                        }
-                        else
-                        {
-                            DataGridRow rowclean = (DataGridRow)values2.ItemContainerGenerator.ContainerFromIndex(i);
-                            rowclean.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                        }
-                        found2 = true;
-                    }
-
-                    j++;
-                }
-                //This value does not exists on the registry 1
-                if (!found2)
-                {
-                    DataGridRow row = (DataGridRow)values2.ItemContainerGenerator.ContainerFromIndex(i);
-                    row.Background = Brushes.LightCyan;
-                }
-                i++;
-            }
-        }
-        private void btnCompare_Click(object sender, RoutedEventArgs e)
-        {
-
-            Reg1Values.UpdateLayout();
-            Reg2Values.UpdateLayout();
-            Paint_Differences(Reg2Values, Reg1Values);
-            Paint_Differences(Reg1Values, Reg2Values);
-
-        }
 
         private void btnAbout_Click(object sender, RoutedEventArgs e)
         {
-
-
 
             About cw = new About();
             cw.ShowInTaskbar = false;
@@ -464,104 +341,15 @@ namespace RegistryToolbox
             cw.Show();
         }
 
-        private void btnload1_Click(object sender, RoutedEventArgs e)
-        {
-
-            TreeViewItem item = Select_FullPath(txtpath1.Text, null, Reg1Tree);
-
-            ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateLayout();
-            if (item == null)
-            {
-                MessageBox.Show("Invalid path", "Invalid Path", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else
-            {
-                ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateLayout();
-                item.IsSelected = true;
-                item.Focus();
-                item.IsExpanded = true;
-                ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateLayout();
-            }
-
-        }
-
-        private void btnload2_Click(object sender, RoutedEventArgs e)
-        {
-            TreeViewItem item = Select_FullPath(txtpath2.Text, null, Reg2Tree);
-
-            ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateLayout();
-            if (item == null)
-            {
-                MessageBox.Show("Invalid path", "Invalid Path", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else
-            {
-                ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateLayout();
-                item.IsSelected = true;
-                item.Focus();
-                item.IsExpanded = true;
-                ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateLayout();
-            }
-        }
 
         private void btnalign_Click(object sender, RoutedEventArgs e)
         {
             txtpath2.Text = txtpath1.Text;
-            btnload1_Click(null, null);
-            btnload2_Click(null, null);
-
+         
         }
-        private void PaintDifferencesTree(TreeViewItem pNode1, TreeViewItem pNode2)
-        {
-            if (pNode1 == null)
-            {
-                if (pNode2 != null)
-                {
-                    pNode2.Background = new SolidColorBrush(Color.FromRgb(224, 255, 255)); //CYAN
-                }
-            }
-            else
-            {
-                if (pNode2 == null)
-                {
-                    pNode1.Background = new SolidColorBrush(Color.FromRgb(224, 255, 255)); //CYAN
-                }
-                else // BOTH ARE NOT NULL THEY HAVE VALID
-                {
-                    string path1 = GetFullPath(pNode1);
-                    string path2 = GetFullPath(pNode2);
-                    RegistryKey keyA = Registry1.GetKey(path1);
-                    RegistryKey keyB = Registry2.GetKey(path2);
-                    if (!Compare_KeyEq(keyA, keyB))
-                    {
-                        {
-                            pNode1.Background = new SolidColorBrush(Color.FromRgb(255, 204, 203)); //LIGHT RED
-                            pNode2.Background = new SolidColorBrush(Color.FromRgb(255, 204, 203)); //LIGHT RED
 
-                        }
-                    }
-                    foreach (TreeViewItem item1 in pNode1.Items)
-                    {
-                        foreach (TreeViewItem item2 in pNode2.Items)
-                        {
-                            if (item1.Header.ToString() == item2.Header.ToString())
-                            {
-
-                                PaintDifferencesTree(item1, item2);
-
-                            }
-
-                        }
-                    }
-                }
-
-
-            }
-        }
         private void btnCompareKeyandsub_Click(object sender, RoutedEventArgs e)
         {
-
-            //Reg1Values.UpdateLayout();
 
 
             //Reg1Values.UpdateLayout();
@@ -579,87 +367,12 @@ namespace RegistryToolbox
             stopwatch.Stop();
             Debug.WriteLine("Ticks: " + stopwatch.ElapsedTicks + " mS: " + stopwatch.ElapsedMilliseconds);
 
+            paintdifferences(Reg2Values, Reg1Values);
+            paintdifferences(Reg1Values, Reg2Values);
 
 
         }
-        private bool Compare_RegkeyEq(KeyValue pvalues1, KeyValue pvalues2)
-        {
-            bool nameeq = pvalues1.ValueName == pvalues2.ValueName;
-            bool typeeq = pvalues1.ValueType == pvalues2.ValueType;
-            bool valueeq = pvalues1.ValueData == pvalues2.ValueData;
 
-            return (nameeq & typeeq & valueeq);
-        }
-        private bool Compare_KeyAndSubkeys(RegistryKey pValues1, RegistryKey pValues2)
-        {
-            if (pValues1.SubKeys.Count == 0)
-            {
-                if (pValues2.SubKeys.Count == 0)
-                {
-                    return Compare_KeyEq(pValues1, pValues2);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                if (pValues2.SubKeys.Count == 0)
-                {
-                    return false;
-                }
-                {
-                    //this case is both trees have leafs
-                    Boolean equals = true;
-                    foreach (RegistryKey subkey1 in pValues1.SubKeys)
-                    {
-                        Boolean found = false;
-                        foreach (RegistryKey subkey2 in pValues2.SubKeys)
-                        {
-                            if (subkey1.KeyName == subkey2.KeyName)
-                            {
-                                equals = equals & Compare_KeyAndSubkeys(subkey1, subkey2);
-                                found = true;
-                            }
-                        }
-                        if (found == false) //This is differente because we found a key with different name
-                        {
-                            return false;
-                        }
-                        if (!equals) // If equals is false we found a difference
-                        {
-                            return false;
-                        }
-
-                    }
-                }
-                return true;
-            }
-        }
-
-        private bool Compare_KeyEq(RegistryKey pValues1, RegistryKey pValues2)
-        {
-            if (pValues1.Values.Count != pValues2.Values.Count) //If different number of values we found differences
-            {
-                return false;
-            }
-            else
-            {
-                foreach (KeyValue key1 in pValues1.Values)
-                {
-                    foreach (KeyValue key2 in pValues2.Values)
-                    {
-                        if (key1.ValueName == key2.ValueName)
-                        {
-                            if (!Compare_RegkeyEq(key1, key2))
-                                return false;
-                        }
-                    }
-                }
-            }
-            return true;
-        }
 
         private void btnExportReg_Click(object sender, RoutedEventArgs e)
         {
@@ -773,13 +486,79 @@ namespace RegistryToolbox
 
         private void Reg1Tree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+
             ModelRegistryKey Selected = (ModelRegistryKey)((TreeView)sender).SelectedItem;
+            if (Selected == null)
+                return;
+
+            var tva = FindTviFromObjectRecursive(Reg1Tree, Selected);
+            txtpath1.Text = GetFullPath(tva);
             loadtable(Selected, 1);
+            if (Selected.Diff)
+            {
+                paintdifferences(Reg1Values, Reg2Values);
+                paintdifferences(Reg2Values, Reg1Values);
+            }
         }
+
+        private void Reg2Tree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            ModelRegistryKey Selected = (ModelRegistryKey)((TreeView)sender).SelectedItem;
+            if (Selected == null)
+                return;
+            var tva = FindTviFromObjectRecursive(Reg2Tree, Selected);
+            txtpath2.Text = GetFullPath(tva);
+            loadtable(Selected, 2);
+            if (Selected.Diff)
+            {
+                paintdifferences(Reg1Values, Reg2Values);
+                paintdifferences(Reg2Values, Reg1Values);
+            }
+        }
+        private void paintdifferences(DataGrid treevalues1, DataGrid treevalues2)
+        {
+            treevalues1.UpdateLayout();
+            treevalues2.UpdateLayout();
+            for (int i = 0; i < treevalues1.Items.Count; i++)
+            {
+                DataGridRow rowA = treevalues1.ItemContainerGenerator.ContainerFromIndex(i) as DataGridRow;
+                Boolean found = false;
+                for (int j = 0; j < treevalues2.Items.Count; j++)
+                {
+                    DataGridRow rowB = treevalues2.ItemContainerGenerator.ContainerFromIndex(j) as DataGridRow;
+
+
+                    ModelRegistryKeyValues ValueA = rowA.Item as ModelRegistryKeyValues;
+                    ModelRegistryKeyValues ValueB = rowB.Item as ModelRegistryKeyValues;
+
+                    if (ValueA.Name == ValueB.Name) //I have found the Key
+                    {
+                        found = true;
+                        if (!ValueA.Equals(ValueB))
+                        {
+                            rowA.Background = new SolidColorBrush(Color.FromRgb(255, 204, 203));
+                        }
+                        else
+                        {
+                            rowA.Background = Brushes.White;
+                        }
+                    }
+
+
+                }
+                if (!found)
+                {
+                    rowA.Background = Brushes.LightCyan;
+                }
+            }
+
+        }
+
         private List<ModelRegistryKey> lastselected1;
         private ObservableCollection<ModelRegistryKey> lastparentselected1;
         private List<ModelRegistryKey> lastselected2;
         private ObservableCollection<ModelRegistryKey> lastparentselected2;
+
         public static TreeViewItem FindTviFromObjectRecursive(ItemsControl ic, object o)
         {
             //Search for the object model in first level children (recursively)
@@ -797,6 +576,7 @@ namespace RegistryToolbox
             }
             return null;
         }
+
         public ItemsControl GetSelectedTreeViewItemParent(TreeViewItem item)
         {
             DependencyObject parent = VisualTreeHelper.GetParent(item);
@@ -877,6 +657,7 @@ namespace RegistryToolbox
                     if (tvi != null)
                     {
                         tvi.IsSelected = true;
+
                     }
                     clastselected.Add(subkey);
                     break;
@@ -895,13 +676,7 @@ namespace RegistryToolbox
             navigation_on_tree(2, e.Key.ToString());
         }
 
-        private void Reg2Tree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            ModelRegistryKey Selected = (ModelRegistryKey)((TreeView)sender).SelectedItem;
-            loadtable(Selected, 2);
-        }
 
-     
         private void TreeViewItem_MouseDoubleClick_1(object sender, MouseButtonEventArgs e)
         {
             if (sender is TreeViewItem)
