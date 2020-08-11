@@ -28,17 +28,21 @@ namespace RegistryToolbox.Models
         private string _Type;
         private string _Value;
         private bool _Diff;
+        private byte[] _ValueRaw;
 
         public override string Name { get => _Name; set => _Name = value; }
         public string Type { get => _Type; set => _Type = value; }
         public string Value { get => _Value; set => _Value = value; }
+        public byte[] ValueRaw { get => _ValueRaw; }
         public bool Diff { get => _Diff; set => _Diff = value; }
 
-        public ModelRegistryKeyValues(string name, string type, string value)
+        public ModelRegistryKeyValues(string name, string type, string value, byte[] bytes)
         {
             _Name = name;
             _Type = type;
             _Value = value;
+            _Value = value;
+            _ValueRaw = bytes;
             _Diff = false;
         }
         public bool Equals(ModelRegistryKeyValues Value)

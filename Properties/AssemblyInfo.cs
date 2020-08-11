@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("gevivesh@microsoft.com")]
 [assembly: AssemblyProduct("RegistryToolbox")]
-[assembly: AssemblyCopyright("German Vives")]
+[assembly: AssemblyCopyright("German Vives gevivesh@microsoft.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

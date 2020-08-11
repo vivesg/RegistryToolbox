@@ -9,7 +9,7 @@
         
         mc:Ignorable="d"
        
-        Title="Registry Toolbox Version Beta 1.0 " MinHeight="768" MinWidth="1024" Icon="Resources\registry.ico" Closing="Window_Closing" >
+        Title="Registry Toolbox Version  1.0 " MinHeight="768" MinWidth="1024" Icon="Resources\registry.ico" Closing="Window_Closing" >
 
     <Grid  Margin="0,0,0,0">
         <Grid.RowDefinitions>
@@ -30,7 +30,6 @@
             <ColumnDefinition Width="0.1*"/>
             <ColumnDefinition Width="11*"/>
             <ColumnDefinition Width="11*"/>
-
         </Grid.ColumnDefinitions>
         <Rectangle  HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0" Stretch="UniformToFill"  Grid.RowSpan="9" Grid.ColumnSpan="3">
             <Rectangle.Fill>
@@ -51,7 +50,7 @@
                 <Image Source="Resources\registry.ico" Stretch="Uniform"/>
                 <Viewbox VerticalAlignment="Stretch" >
                     <emoji:TextBlock FontWeight="Medium" Text="Load Registry"  UseLayoutRounding="False"  LineHeight="60" LineStackingStrategy="BlockLineHeight" />
-                    
+
                 </Viewbox>
             </StackPanel>
             <Button.Style>
@@ -83,7 +82,7 @@
             <StackPanel Orientation="Horizontal" >
                 <Image Source="Resources\compare.ico" Stretch="Uniform"/>
                 <Viewbox VerticalAlignment="Stretch" >
-                    <emoji:TextBlock FontWeight="Medium" Text="Compare Hives"  UseLayoutRounding="False"  LineHeight="60" LineStackingStrategy="BlockLineHeight" TextAlignment="Center" HorizontalAlignment="Center" />
+                    <emoji:TextBlock FontWeight="Medium" Text="Load 2 Hives"  UseLayoutRounding="False"  LineHeight="60" LineStackingStrategy="BlockLineHeight" TextAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
             </StackPanel>
             <Button.Style>
@@ -212,26 +211,56 @@
             </Viewbox>
             <Viewbox  >
                 <emoji:TextBlock FontWeight="Bold" Text="    gevivesh@microsoft.com    " HorizontalAlignment="Center"/>
-         
+
             </Viewbox>
             <TextBlock>
-
-               
             </TextBlock>
-
         </StackPanel>
+
+
+
+        <Grid Margin="0,0,0,0"  Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="20*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="20*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="File Path"  Grid.Row="0" Grid.Column="0"></Label>
+            <TextBox Name="txtfilepath1" Text="" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" TextWrapping="Wrap"></TextBox>
+            <Label Name="lblPath2" Content="File Path"  Grid.Row="0" Grid.Column="3"></Label>
+            <TextBox Name="txtfilepath2" Text="" Grid.Row="0" Grid.Column="4" VerticalAlignment="Top" TextWrapping="Wrap"></TextBox>
+            
+            <Button Name="color1"  Grid.Row="1" Grid.Column="0" Click="color1_Click" >
+                <Image Source="Resources/ink.png" Width="20" Height="20"/>
+            </Button>
+            <TextBox Name="txtTag1" Text="TAGS:" FontSize="16" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"></TextBox>
+            <Button Name="color2"  Grid.Row="1" Grid.Column="3" Click="color2_Click" >
+                <Image Source="Resources/ink.png" Width="20" Height="20"/>
+            </Button>
+            <TextBox Name="txtTag2" Text="TAGS:" FontSize="16" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center"></TextBox>
+
+        </Grid>
+        
+        
 
         <StackPanel x:Name="gridClientsContainer1" Grid.Column="3" Grid.Row="4" Grid.RowSpan="3">
             <DataGrid Name="Reg1Values" ItemsSource="{Binding}"  IsReadOnly="True"  VirtualizingStackPanel.IsVirtualizing="False"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
             ScrollViewer.HorizontalScrollBarVisibility="Auto" Height="{Binding ElementName=gridClientsContainer1, Path=ActualHeight}" FontSize="14">
-            
-        </DataGrid>
+
+            </DataGrid>
         </StackPanel>
 
         <DataGrid Name="Reg2Values"   Grid.Column="4" Grid.Row="4" Grid.RowSpan="3"  VirtualizingStackPanel.IsVirtualizing="False" ItemsSource="{Binding}" IsReadOnly="True"   ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
             ScrollViewer.HorizontalScrollBarVisibility="Auto" FontSize="14">
-               
-            </DataGrid>
+
+        </DataGrid>
 
 
 
@@ -239,7 +268,7 @@
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}" ItemsSource="{Binding Subkeys}" >
                     <TextBlock Text="{Binding Name}" />
-            </HierarchicalDataTemplate>
+                </HierarchicalDataTemplate>
             </TreeView.Resources>
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
@@ -251,7 +280,7 @@
                         <DataTrigger Binding="{Binding Path=Diff}" Value="True">
                             <Setter Property="Foreground" Value="Red"></Setter>
                             <Setter Property="FontWeight" Value="Bold" ></Setter>
-                         </DataTrigger>
+                        </DataTrigger>
                     </Style.Triggers>
                     <EventSetter Event="MouseDoubleClick" Handler="TreeViewItem_MouseDoubleClick_1" />
                 </Style>
@@ -261,7 +290,7 @@
             </Style>-->
 
         </TreeView>
-        <TreeView Name="Reg2Tree" Grid.Column="5" Grid.Row="1" Grid.RowSpan="3" FontSize="15" VirtualizingStackPanel.IsVirtualizing="True" ItemsSource="{Binding Name}" KeyDown="Reg2Tree_KeyDown" SelectedItemChanged="Reg2Tree_SelectedItemChanged">
+        <TreeView Name="Reg2Tree" Grid.Column="5" Grid.Row="1" Grid.RowSpan="3" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False" ItemsSource="{Binding Name}" KeyDown="Reg2Tree_KeyDown" SelectedItemChanged="Reg2Tree_SelectedItemChanged">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}" ItemsSource="{Binding Subkeys}">
                     <TextBlock Text="{Binding Name}" />
@@ -284,9 +313,6 @@
 
         </TreeView>
 
-
-
-
         <Grid Margin="0,0,0,0"  Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="2" Grid.RowSpan="2" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
@@ -301,17 +327,25 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10*"/>
                     <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="10*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Name="txtpath1" Text="" Grid.Row="0" Grid.Column="0"></TextBox>
-                <TextBox Name="txtpath2" Text="" Grid.Row="0" Grid.Column="2"></TextBox>
+                <TextBox Name="txtpath1"   Text="" Grid.Row="0" Grid.Column="0" BorderThickness="3" ></TextBox>
+                <Button x:Name="goto1" Grid.Row="0" Grid.Column="1" Click="goto1_Click"  >
+                    <Image Source="Resources/arrow.png" Width="20" Height="20"/>
+                </Button>
+                <TextBox Name="txtpath2"  Text="" Grid.Row="0" Grid.Column="3" BorderThickness="3" ></TextBox>
+                <Button x:Name="goto2"  Grid.Row="0" Grid.Column="4" Click="goto2_Click"  >
+                    <Image Source="Resources/arrow.png" Width="20" Height="20"/>
+                </Button>
             </Grid>
-           
+
             <Button Name="btnalign" Content="Match Path" Grid.Row="1" Grid.Column="1" Click="btnalign_Click" />
             <Button Name="btnCompareKeyandsub" Content="Compare Keys" Grid.Row="2" Grid.Column="1" Click="btnCompareKeyandsub_Click" />
-            <Button Name="btnload1" Content="Load" Grid.Row="1" Grid.Column="0" />
-            <Button Name="btnload2" Content="Load" Grid.Row="1" Grid.Column="2" />
+         
             <Grid  Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="3" />
         </Grid>
     </Grid>
