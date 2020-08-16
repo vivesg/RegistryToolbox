@@ -229,6 +229,7 @@ namespace RegistryToolbox
                 {
                     item.IsExpanded = false;
                 }
+                MessageBox.Show("Path not found", "Incorrect Path", MessageBoxButton.OK,MessageBoxImage.Warning);
                 return;
 
             }
@@ -502,7 +503,7 @@ namespace RegistryToolbox
                 path = saveFileDialog1.FileName;
             }
 
-            MessageBoxResult result = MessageBox.Show("This is a very experimental functionality please be aware that the application can crash or take a lot of time to process the export do you want to generate the file", "Experimental", MessageBoxButton.YesNo);
+            MessageBoxResult result = MessageBox.Show("This is a very experimental functionality please be aware that the application can crash or take a lot of time to process the export do you want to generate the file", "Experimental", MessageBoxButton.YesNo,MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes) {
 
                 ExportReg export;

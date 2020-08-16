@@ -87,9 +87,6 @@
     <Reference Include="Emoji.Wpf, Version=0.0.0.19, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Emoji.Wpf.0.0.19-experimental\lib\net30\Emoji.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="Registry">
-      <HintPath>..\..\..\Downloads\Registry-master\Registry\bin\Debug\net462\Registry.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
@@ -218,6 +215,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Registry\Registry.csproj">
+      <Project>{42b0b969-f279-42e3-b97b-5a072ef231d1}</Project>
+      <Name>Registry</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\Fody.6.0.0\build\Fody.targets" Condition="Exists('packages\Fody.6.0.0\build\Fody.targets')" />
