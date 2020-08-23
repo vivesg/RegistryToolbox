@@ -170,7 +170,7 @@ namespace RegistryToolbox
             TreeView cTree = null;
             if (registry == 1)
             {
-             reg = this.Hive1;
+                reg = this.Hive1;
                 cTree = Reg1Tree;
             }
             else
@@ -195,11 +195,12 @@ namespace RegistryToolbox
                 }
             }
            
+           
             for (int i = 1;i < routes.Length;i++)
             {
                 bool found = false;
                 if (cur == null)
-                    return;
+                    break;
                 foreach (ModelRegistryKey skey in cur.Subkeys)
                 {
                     if (skey.Name.ToUpper() == routes[i]){
@@ -606,7 +607,7 @@ namespace RegistryToolbox
             var tva = FindTviFromObjectRecursive(Reg1Tree, Selected);
             txtpath1.Text = GetFullPath(tva);
             loadtable(Selected, 1);
-            if (Selected.Diff)
+            if (Selected.Diff & txtpath1.Text == txtpath2.Text)
             {
                 paintdifferences(Reg1Values, Reg2Values);
                 paintdifferences(Reg2Values, Reg1Values);
@@ -622,7 +623,7 @@ namespace RegistryToolbox
             var tva = FindTviFromObjectRecursive(Reg2Tree, Selected);
             txtpath2.Text = GetFullPath(tva);
             loadtable(Selected, 2);
-            if (Selected.Diff)
+            if (Selected.Diff & txtpath1.Text == txtpath2.Text)
             {
                 paintdifferences(Reg1Values, Reg2Values);
                 paintdifferences(Reg2Values, Reg1Values);
@@ -803,7 +804,7 @@ namespace RegistryToolbox
                 }
             }
             Debug.WriteLine(sender.ToString());
-            MessageBox.Show(sender.ToString());
+          
         }
 
         private void color1_Click(object sender, RoutedEventArgs e)
