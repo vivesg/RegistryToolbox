@@ -9,7 +9,7 @@
         
         mc:Ignorable="d"
        
-        Title="Registry Toolbox Version  1.0 " MinHeight="768" MinWidth="1024" Icon="Resources\registry.ico" Closing="Window_Closing" >
+        Title="Registry Toolbox Version  1.1 " MinHeight="768" MinWidth="1024" Icon="Resources\registry.ico" Closing="Window_Closing" >
 
     <Grid  Margin="0,0,0,0">
         <Grid.RowDefinitions>
@@ -173,6 +173,40 @@
             </Button.Style>
 
         </Button>
+
+        <Button x:Name="btnConfig" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="1" HorizontalContentAlignment="Left" Visibility="Hidden">
+
+            <StackPanel Orientation="Horizontal" >
+                <Image Source="Resources\engine.png" Stretch="Uniform"/>
+                <Viewbox VerticalAlignment="Stretch" >
+                    <emoji:TextBlock FontWeight="Medium" Text="Configuration"  UseLayoutRounding="False"  LineHeight="60" LineStackingStrategy="BlockLineHeight" />
+                </Viewbox>
+            </StackPanel>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Opacity" Value="0.8"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="1"/>
+                            <Setter Property="BorderThickness" Value="4"/>
+                            <Setter Property="Background" Value="White"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+
+        </Button>
+
         <Button x:Name="btnAbout" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="1" HorizontalContentAlignment="Left" Click="btnAbout_Click" >
 
             <StackPanel Orientation="Horizontal" >

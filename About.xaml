@@ -8,7 +8,7 @@
         Title="About" Height="689.979" Width="900.657" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid>
         <Image HorizontalAlignment="Left" Height="496" VerticalAlignment="Top" Width="357" Source="Resources/ABOUT.PNG" Margin="10,10,0,0"/>
-        <Label Content="Registry Toolbox V 1.0" HorizontalAlignment="Left" Height="62" Margin="335,10,0,0" VerticalAlignment="Top" Width="371" Cursor="" FontSize="30" FontWeight="Bold"/>
+        <Label Content="Registry Toolbox V 1.1" HorizontalAlignment="Left" Height="62" Margin="335,10,0,0" VerticalAlignment="Top" Width="371" Cursor="" FontSize="30" FontWeight="Bold"/>
         <Grid>
             <WebBrowser Source="https://registrytoolbox.blob.core.windows.net/about/data.html" Margin="283,79,10.4,10"/>
         </Grid>

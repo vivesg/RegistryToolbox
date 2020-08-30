@@ -206,7 +206,7 @@ namespace RegistryToolbox.Models
                 }
             }
         }
-        public bool EqualsChilds(ModelRegistryKey NodeB)
+        public bool EqualsChilds(ModelRegistryKey NodeB,Collection<string> excludedproperties)
         {
 
             bool cDiff = false;
@@ -218,9 +218,9 @@ namespace RegistryToolbox.Models
                 ModelRegistryKey keyb = this.BinarySearch(NodeB.Subkeys, key.Name);
                
                 if (keyb != null){
-                    if (key.EqualsChilds(keyb))
+                    if (key.EqualsChilds(keyb, excludedproperties))
                     {
-                        if (!key.EqualsValues(keyb))
+                        if (!key.EqualsValues(keyb, excludedproperties))
                         {
                             cDiff = true;
                         }
@@ -241,7 +241,7 @@ namespace RegistryToolbox.Models
             return !this.Diff;
         }
 
-        public bool EqualsValues(ModelRegistryKey NodeB)
+        public bool EqualsValues(ModelRegistryKey NodeB, Collection<string> excludedproperties)
         {
 
 
@@ -250,43 +250,51 @@ namespace RegistryToolbox.Models
                 this.Diff = true;
                 return false;
             }
+
             foreach (ModelRegistryKeyValues KeyValA in this.SubkeysValues)
             {
-                // bool found = false;
 
-               
-                
+
+
+
+
                 ModelRegistryKeyValues KeyValB = this.BinarySearch(NodeB.SubkeysValues, KeyValA.Name);
-
-                if (KeyValB != null)
+                if (!excludedproperties.Contains(KeyValA.Name))
                 {
-                    if (!KeyValA.Equals(KeyValB)) //There is  difference on the value
+
+
+                    if (KeyValB != null)
+                    {
+                        if (!KeyValA.Equals(KeyValB)) //There is  difference on the value
+                        {
+                            this.Diff = true;
+                            return false;
+                        }
+                    }
+                    else
                     {
                         this.Diff = true;
                         return false;
                     }
                 }
-                else
-                {
-                    this.Diff = true;
-                    return false;
-                }
-            }
+             }
 
-            this.Diff = false;
-            return true;
+                this.Diff = false;
+                return true;
+            
         }
 
 
-        public void FindDifferences(ModelRegistryKey NodeB)
+        public void FindDifferences(ModelRegistryKey NodeB,Collection<string> excludedproperties)
         {
+                          
             bool res1 = false;
             bool res2 = false;
-            if (!this.EqualsValues(NodeB))
+            if (!this.EqualsValues(NodeB,excludedproperties))
             {
                 res1 = true;
             }
-            if (!this.EqualsChilds(NodeB))
+            if (!this.EqualsChilds(NodeB, excludedproperties))
             {
                 res2 = true;
             }

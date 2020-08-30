@@ -11,6 +11,7 @@ using Registry.Abstractions;
 using RegistryToolbox.Models;
 using System.Threading;
 using System.Runtime.CompilerServices;
+using System.Web.UI.Design.WebControls;
 
 namespace RegistryToolbox
 {
@@ -466,8 +467,18 @@ namespace RegistryToolbox
 
             stopwatch.Start();
             UpdateLayout();
-            ((ModelRegistryKey)this.Reg2Tree.SelectedItem).FindDifferences((ModelRegistryKey)this.Reg1Tree.SelectedItem);
-            ((ModelRegistryKey)this.Reg1Tree.SelectedItem).FindDifferences((ModelRegistryKey)this.Reg2Tree.SelectedItem);
+
+            ModelRegistryKey NodoA = new ModelRegistryKey("ROOT");
+            ModelRegistryKey NodoB = new ModelRegistryKey("ROOT");
+            NodoA.Subkeys = this.Hive1;
+            NodoB.Subkeys = this.Hive2;
+
+            Collection<String> lista = new Collection<string>();
+            NodoA.FindDifferences(NodoB, lista);
+            NodoB.FindDifferences(NodoA, lista);
+
+            //((ModelRegistryKey)this.Reg2Tree.SelectedItem).FindDifferences((ModelRegistryKey)this.Reg1Tree.SelectedItem);
+            //((ModelRegistryKey)this.Reg1Tree.SelectedItem).FindDifferences((ModelRegistryKey)this.Reg2Tree.SelectedItem);
             stopwatch.Stop();
             Debug.WriteLine("Ticks: " + stopwatch.ElapsedTicks + " mS: " + stopwatch.ElapsedMilliseconds);
 
