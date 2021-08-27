@@ -1,24 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Diagnostics.Design;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace RegistryToolbox.Models
 {
-    public abstract class ModelRegistry {
-       
+    public abstract class ModelRegistry
+    {
+
         abstract public string Name { get; set; }
-      
 
     }
     public class ModelRegistryKeyValues : ModelRegistry
@@ -34,6 +25,8 @@ namespace RegistryToolbox.Models
         public string Type { get => _Type; set => _Type = value; }
         public string Value { get => _Value; set => _Value = value; }
         public byte[] ValueRaw { get => _ValueRaw; }
+
+        [JsonIgnore]
         public bool Diff { get => _Diff; set => _Diff = value; }
 
         public ModelRegistryKeyValues(string name, string type, string value, byte[] bytes)
@@ -52,7 +45,7 @@ namespace RegistryToolbox.Models
             bool c = this.Value == Value.Value;
             return (a & b & c);
         }
-       
+
     }
 
     public class ModelRegistryKey : ModelRegistry, INotifyPropertyChanged
@@ -72,6 +65,7 @@ namespace RegistryToolbox.Models
         private ObservableCollection<ModelRegistryKeyValues> _SubKeysValues;
 
         public override string Name { get => _Name; set => _Name = value; }
+        [JsonIgnore]
         public bool Diff
         {
             get => _diff;
@@ -152,7 +146,7 @@ namespace RegistryToolbox.Models
 
             }
             return null;
-        } 
+        }
         private ModelRegistryKey BinarySearchAux(ObservableCollection<ModelRegistryKey> list, int infLim, int supLim, string value)
         {
 
@@ -161,11 +155,11 @@ namespace RegistryToolbox.Models
                 int half = infLim + ((supLim - infLim) / 2);
                 if (String.Compare(list[half].Name, (value)) < 0) //Superior
                 {
-                     return BinarySearchAux(list, half + 1, supLim, value);
+                    return BinarySearchAux(list, half + 1, supLim, value);
                 }
                 else //Inferior
                 {
-                    return BinarySearchAux(list, infLim,  half, value);
+                    return BinarySearchAux(list, infLim, half, value);
                 }
             }
             else
@@ -194,19 +188,20 @@ namespace RegistryToolbox.Models
                 }
                 return BinarySearchAux(list, 0, list.Count - 1, value);
             }
-          
+
         }
         public void Mark_Different(ModelRegistryKey key)
         {
             key.Diff = true;
-            if (key.Subkeys.Count != 0){
-               foreach(ModelRegistryKey skey in key.Subkeys)
+            if (key.Subkeys.Count != 0)
+            {
+                foreach (ModelRegistryKey skey in key.Subkeys)
                 {
                     Mark_Different(skey);
                 }
             }
         }
-        public bool EqualsChilds(ModelRegistryKey NodeB,Collection<string> excludedproperties)
+        public bool EqualsChilds(ModelRegistryKey NodeB, Collection<string> excludedproperties)
         {
 
             bool cDiff = false;
@@ -214,10 +209,11 @@ namespace RegistryToolbox.Models
             foreach (ModelRegistryKey key in this.Subkeys)
             {
 
-               
+
                 ModelRegistryKey keyb = this.BinarySearch(NodeB.Subkeys, key.Name);
-               
-                if (keyb != null){
+
+                if (keyb != null)
+                {
                     if (key.EqualsChilds(keyb, excludedproperties))
                     {
                         if (!key.EqualsValues(keyb, excludedproperties))
@@ -277,20 +273,20 @@ namespace RegistryToolbox.Models
                         return false;
                     }
                 }
-             }
+            }
 
-                this.Diff = false;
-                return true;
-            
+            this.Diff = false;
+            return true;
+
         }
 
 
-        public void FindDifferences(ModelRegistryKey NodeB,Collection<string> excludedproperties)
+        public void FindDifferences(ModelRegistryKey NodeB, Collection<string> excludedproperties)
         {
-                          
+
             bool res1 = false;
             bool res2 = false;
-            if (!this.EqualsValues(NodeB,excludedproperties))
+            if (!this.EqualsValues(NodeB, excludedproperties))
             {
                 res1 = true;
             }

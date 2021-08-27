@@ -10,8 +10,6 @@ using Registry;
 using Registry.Abstractions;
 using RegistryToolbox.Models;
 using System.Threading;
-using System.Runtime.CompilerServices;
-using System.Web.UI.Design.WebControls;
 
 namespace RegistryToolbox
 {
@@ -20,9 +18,10 @@ namespace RegistryToolbox
     /// </summary>
     public partial class MainWindow : Window
     {
+        public bool VISIBLE;
         Registry.RegistryHive Registry1 = null;
         Registry.RegistryHive Registry2 = null;
-        int ACTUAL; 
+        int ACTUAL;
         string actualpath1 = "";
         string actualpath2 = "";
         private ObservableCollection<ModelRegistryKey> _Hive1;
@@ -74,13 +73,14 @@ namespace RegistryToolbox
         }
         private void Hide2()
         {
-            
+
             txtfilepath2.Visibility = Visibility.Hidden;
             color2.Visibility = Visibility.Hidden;
             txtTag2.Visibility = Visibility.Hidden;
             txtpath2.Visibility = Visibility.Hidden;
             goto2.Visibility = Visibility.Hidden;
             lblPath2.Visibility = Visibility.Hidden;
+            chk_showonlydiff.Visibility = Visibility.Hidden;
         }
         private void Show2()
         {
@@ -90,13 +90,14 @@ namespace RegistryToolbox
             txtpath2.Visibility = Visibility.Visible;
             goto2.Visibility = Visibility.Visible;
             lblPath2.Visibility = Visibility.Visible;
+            chk_showonlydiff.Visibility = Visibility.Visible;
         }
         private void btnOpenReg_Click(object sender, RoutedEventArgs e)
         {
 
             _Hive1.Clear();
             _Hive2.Clear();
-            
+
             Reg1Values.DataContext = null;
 
             gridClientsContainer1.Visibility = Visibility.Visible;
@@ -162,7 +163,7 @@ namespace RegistryToolbox
 
         }
 
-        private void lookLeaf(string path,int registry)
+        private void lookLeaf(string path, int registry)
         {
             path = path.ToUpper();
             string[] routes = path.Split('\\');
@@ -179,7 +180,7 @@ namespace RegistryToolbox
                 reg = this.Hive2;
                 cTree = Reg2Tree;
             }
-            ModelRegistryKey cur =null;
+            ModelRegistryKey cur = null;
             foreach (ModelRegistryKey skey in reg)
             {
                 if (skey.Name.ToUpper() == routes[0])
@@ -195,28 +196,28 @@ namespace RegistryToolbox
                     }
                 }
             }
-           
-           
-            for (int i = 1;i < routes.Length;i++)
+
+            for (int i = 1; i < routes.Length; i++)
             {
                 bool found = false;
                 if (cur == null)
                     break;
                 foreach (ModelRegistryKey skey in cur.Subkeys)
                 {
-                    if (skey.Name.ToUpper() == routes[i]){
-                       found = true;
-                       cur = skey;
-                       var tva = FindTviFromObjectRecursive(cTree, cur);
+                    if (skey.Name.ToUpper() == routes[i])
+                    {
+                        found = true;
+                        cur = skey;
+                        var tva = FindTviFromObjectRecursive(cTree, cur);
                         if (tva != null)
                         {
-                            
+
                             tva.IsExpanded = true;
                             UpdateLayout();
                             itemroute.Add(tva);
 
                         }
-                       
+
                     }
                 }
                 if (!found)
@@ -227,11 +228,11 @@ namespace RegistryToolbox
 
             if (cur == null)
             {
-                foreach(TreeViewItem item in itemroute)
+                foreach (TreeViewItem item in itemroute)
                 {
                     item.IsExpanded = false;
                 }
-                MessageBox.Show("Path not found", "Incorrect Path", MessageBoxButton.OK,MessageBoxImage.Warning);
+                MessageBox.Show("Path not found", "Incorrect Path", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
 
             }
@@ -245,14 +246,8 @@ namespace RegistryToolbox
                 tva2.Focus();
 
             }
-
-
-
-
-
-
         }
-            
+
         private RegistryKey Look_Leaf(string ruta, RegistryKey regKey)
         {
 
@@ -282,9 +277,8 @@ namespace RegistryToolbox
                 }
             }
         }
-       
-        private long millisec = 0;
 
+        private long millisec = 0;
         ItemsControl GetParentItem(ItemsControl nodo)
         {
             return ItemsControl.ItemsControlFromItemContainer(nodo);
@@ -326,8 +320,6 @@ namespace RegistryToolbox
             return result;
         }
 
-
-
         private RegistryKey ActiveRegistry(int value)
         {
             if (value == 1)
@@ -344,8 +336,8 @@ namespace RegistryToolbox
                 ModelRegistryKey current = new ModelRegistryKey(rk.KeyName);
                 foreach (KeyValue value in rk.Values)
                 {
-                   
-                    ModelRegistryKeyValues currentvalue = new ModelRegistryKeyValues(value.ValueName, value.ValueType, value.ValueData,value.ValueDataRaw);
+
+                    ModelRegistryKeyValues currentvalue = new ModelRegistryKeyValues(value.ValueName, value.ValueType, value.ValueData, value.ValueDataRaw);
                     current.SubkeysValues.Add(currentvalue);
                 }
                 Drawhive(rk, current.Subkeys);
@@ -367,7 +359,7 @@ namespace RegistryToolbox
 
             Reg1Values.DataContext = null;
             Reg2Values.DataContext = null;
-            
+
             gridClientsContainer1.Visibility = Visibility.Visible;
             gridClientsContainer1.SetValue(Grid.ColumnSpanProperty, 1);
             Reg1Tree.Visibility = Visibility.Visible;
@@ -396,7 +388,7 @@ namespace RegistryToolbox
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 File_Load(path, 1);
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
-               
+
                 MessageBox.Show("Select Second File to analyze", "Please select a second registry file to analyze", MessageBoxButton.OK, MessageBoxImage.Information);
                 Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
                 openFileDialog.Title = "Registry2 Binary File";
@@ -449,15 +441,13 @@ namespace RegistryToolbox
                 txtpath1.Text = txtpath2.Text;
                 goto1_Click(sender, e);
             }
-           
-         
+
+
         }
 
         private void btnCompareKeyandsub_Click(object sender, RoutedEventArgs e)
         {
-
-
-            
+            bool showonlydiff = chk_showonlydiff.Visibility == Visibility.Visible;
             Process.GetCurrentProcess().ProcessorAffinity =
             new IntPtr(2); // Uses the second Core or Processor for the Test
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
@@ -484,8 +474,6 @@ namespace RegistryToolbox
 
             paintdifferences(Reg2Values, Reg1Values);
             paintdifferences(Reg1Values, Reg2Values);
-
-
         }
 
 
@@ -507,38 +495,35 @@ namespace RegistryToolbox
                 // Saves the Image via a FileStream created by the OpenFile method.
                 System.IO.FileStream fs =
                     (System.IO.FileStream)saveFileDialog1.OpenFile();
-                // Saves the Image in the appropriate ImageFormat based upon the
-                // File type selected in the dialog box.
-                // NOTE that the FilterIndex property is one-based.
+
 
                 fs.Close();
                 path = saveFileDialog1.FileName;
             }
 
-            MessageBoxResult result = MessageBox.Show("This is a very experimental functionality please be aware that the application can crash or take a lot of time to process the export do you want to generate the file", "Experimental", MessageBoxButton.YesNo,MessageBoxImage.Warning);
-            if (result == MessageBoxResult.Yes) {
+            MessageBoxResult result = MessageBox.Show("This is a very experimental functionality please be aware that the application can crash or take a lot of time to process the export do you want to generate the file", "Experimental", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
 
                 ExportReg export;
                 if (ACTUAL == 2)
                 {
-                   
+
                     export = new ExportReg((ModelRegistryKey)Reg2Tree.SelectedItem, txtpath1.Text, "HKEY_LOCAL_MACHINE\\SYSTEM");
                     export.ExpToReg(path);
                     MessageBox.Show("Registry 2 selected node Exported succesfully", "Export completed", MessageBoxButton.OK);
                 }
-                else{
+                else
+                {
                     export = new ExportReg((ModelRegistryKey)Reg1Tree.SelectedItem, txtpath1.Text, "HKEY_LOCAL_MACHINE\\SYSTEM");
                     export.ExpToReg(path);
                     MessageBox.Show("Registry 1 selected node Exported succesfully", "Export completed", MessageBoxButton.OK);
                 }
-          
-             }
-          
+            }
         }
 
         private void btnCMPRegF_Click(object sender, RoutedEventArgs e)
         {
-
             string texto = Environment.GetEnvironmentVariable("path");
             if (texto.Contains("Microsoft VS Code"))
 
@@ -575,8 +560,6 @@ namespace RegistryToolbox
                         $"Details:\n\n{ex.StackTrace}");
                     }
                 }
-
-
                 string param = "--diff \"" + path1 + "\" \"" + path2 + "\"";
 
                 System.Diagnostics.Process process = new System.Diagnostics.Process();
@@ -668,14 +651,12 @@ namespace RegistryToolbox
                             rowA.Background = Brushes.White;
                         }
                     }
-
                 }
                 if (!found)
                 {
                     rowA.Background = Brushes.LightCyan;
                 }
             }
-
         }
 
         private List<ModelRegistryKey> lastselected1;
@@ -695,9 +676,7 @@ namespace RegistryToolbox
                 TreeViewItem tvi2 = ic.ItemContainerGenerator.ContainerFromItem(i) as TreeViewItem;
                 if (tvi2 != null)
                 {
-                    
                     tvi = FindTviFromObjectRecursive(tvi2, o);
-                  
                 }
                 if (tvi != null)
                     return tvi;
@@ -815,7 +794,7 @@ namespace RegistryToolbox
                 }
             }
             Debug.WriteLine(sender.ToString());
-          
+
         }
 
         private void color1_Click(object sender, RoutedEventArgs e)
@@ -834,8 +813,8 @@ namespace RegistryToolbox
 
                 System.Windows.Media.Color mediaColor = System.Windows.Media.Color.FromArgb(colorDialog.Color.A, colorDialog.Color.R, colorDialog.Color.G, colorDialog.Color.B);
                 System.Windows.Media.Brush brush = new SolidColorBrush(mediaColor);
-                
-                if (table==1)
+
+                if (table == 1)
                     txtTag1.Background = brush;
                 else
                     txtTag2.Background = brush;
