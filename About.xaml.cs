@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,6 +23,10 @@ namespace RegistryToolbox
         public About()
         {
             InitializeComponent();
+            string version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + '.'
+                       + Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString()
+                       + '.' + Assembly.GetExecutingAssembly().GetName().Version.Build.ToString();
+            lblversion.Content = "Registry Toolbox V" + version;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

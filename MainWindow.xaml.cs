@@ -10,6 +10,9 @@ using Registry;
 using Registry.Abstractions;
 using RegistryToolbox.Models;
 using System.Threading;
+using System.Net;
+using System.Reflection;
+using Newtonsoft.Json;
 
 namespace RegistryToolbox
 {
@@ -70,6 +73,39 @@ namespace RegistryToolbox
             lastparentselected1 = new ObservableCollection<ModelRegistryKey>();
             lastselected2 = new List<ModelRegistryKey>();
             lastparentselected2 = new ObservableCollection<ModelRegistryKey>();
+            string version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + '.'
+                       + Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString()
+                       + '.' + Assembly.GetExecutingAssembly().GetName().Version.Build.ToString();
+            this.Title ="Registry Toolbox Version: " + version;
+            checkupdate();
+        }
+        private void checkupdate()
+        {
+            try
+            {
+                using (System.Net.WebClient w = new WebClient())
+                {
+                    var json = w.DownloadString("https://registrytoolbox.blob.core.windows.net/releases/release.json");
+
+                    string version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + '.' 
+                        + Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString()
+                        + '.' + Assembly.GetExecutingAssembly().GetName().Version.Build.ToString();
+                  
+                    ReleaseInfo result = JsonConvert.DeserializeObject<ReleaseInfo>(json);
+
+                    if (result.Version != version)
+                    {
+                        UpdateDialog upd = new UpdateDialog("Version: "+  result.Version);
+                        upd.ShowDialog();
+  
+                    }
+                }
+            }
+            catch(Exception E)
+            {
+                MessageBox.Show("Getting Updating Information Failed", "Updates", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
         }
         private void Hide2()
         {

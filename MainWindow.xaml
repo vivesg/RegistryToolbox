@@ -35,7 +35,6 @@
                              StartPoint="0,0" EndPoint="0,1" ColorInterpolationMode="ScRgbLinearInterpolation">
                     <LinearGradientBrush.GradientStops>
                         <GradientStop Color="#FF0000AA" Offset="0.005"/>
-
                         <GradientStop Color="#0080ff" Offset="0.9"/>
                     </LinearGradientBrush.GradientStops>
                 </LinearGradientBrush>
@@ -285,24 +284,16 @@
                     <Style TargetType="{x:Type DataGridRow}">
                         <Setter Property="Background" Value="White" />
                         <Style.Triggers>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-    
-                                    <Condition  Property="Background" Value="{x:Null}"/>
-                                </MultiTrigger.Conditions>
-                                <Setter Property="Background" Value="White" />
-                            </MultiTrigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition  Binding="{Binding Background, RelativeSource={RelativeSource Self}}" Value="White"/>
                                     <Condition  Binding='{Binding Path=IsChecked, ElementName=chk_showonlydiff}' Value='True' />
-                                    <Condition  Property="Background" Value="White"/>
-                                </MultiTrigger.Conditions>
+                                </MultiDataTrigger.Conditions>
                                 <Setter Property="Visibility" Value="Collapsed" />
-                            </MultiTrigger>
+                            </MultiDataTrigger>
                         </Style.Triggers>
                     </Style>
                 </DataGrid.RowStyle>
-
             </DataGrid>
         </StackPanel>
 
@@ -312,18 +303,16 @@
                 <Style TargetType="{x:Type DataGridRow}">
                     <Setter Property="Background" Value="White" />
                     <Style.Triggers>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition  Binding="{Binding Background, RelativeSource={RelativeSource Self}}" Value="White"/>
                                 <Condition  Binding='{Binding Path=IsChecked, ElementName=chk_showonlydiff}' Value='True' />
-                                <Condition Property="Background" Value="White"/>
-                            </MultiTrigger.Conditions>
+                            </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Collapsed" />
-                        </MultiTrigger>
-                       
+                        </MultiDataTrigger>
                     </Style.Triggers>
                 </Style>
             </DataGrid.RowStyle>
-
         </DataGrid>
 
         <TreeView Name="Reg1Tree" Grid.Column="3" Grid.Row="1" Grid.RowSpan="3" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False"  ItemsSource="{Binding Name}" SelectedItemChanged="Reg1Tree_SelectedItemChanged" KeyDown="Reg1Tree_KeyDown" >
@@ -334,7 +323,9 @@
             </TreeView.Resources>
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="Background" Value="White" />
                     <Style.Triggers>
+
                         <DataTrigger Binding="{Binding Path=Diff}" Value="False">
                             <Setter Property="Foreground" Value="Black"></Setter>
                             <Setter Property="FontWeight" Value="Normal" ></Setter>
@@ -352,7 +343,7 @@
                             <Setter Property="FontWeight" Value="Bold" ></Setter>
                         </DataTrigger>
                     </Style.Triggers>
-                    <EventSetter Event="MouseDoubleClick" Handler="TreeViewItem_MouseDoubleClick_1" />
+                  
                 </Style>
             </TreeView.ItemContainerStyle>
 
@@ -421,7 +412,7 @@
 
             <Button Name="btnalign" Content="Match Path" Grid.Row="1" Grid.Column="1" Click="btnalign_Click" />
             <Button Name="btnCompareKeyandsub" Content="Compare Keys" Grid.Row="2" Grid.Column="1" Click="btnCompareKeyandsub_Click" />
-            <CheckBox  Grid.Row="3" Grid.Column="1" Name="chk_showonlydiff" Content="Display Only differences" Visibility="Hidden"/>
+            <CheckBox  Grid.Row="3" Grid.Column="0" Name="chk_showonlydiff" Content="Display Only differences" Visibility="Hidden" FontWeight="Bold" FontSize="14"/>
             <Grid  Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="3" />
         </Grid>
     </Grid>
