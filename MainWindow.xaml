@@ -6,10 +6,8 @@
         xmlns:local="clr-namespace:RegistryToolbox"
         xmlns:models="clr-namespace:RegistryToolbox.Models"
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
-        
         mc:Ignorable="d"
-       
-        Title="Registry Toolbox Version  1.1 " MinHeight="768" MinWidth="1024" Icon="Resources\registry.ico" Closing="Window_Closing" >
+        Title="Registry Toolbox Version  1.1.2 " MinHeight="768" MinWidth="1024" Icon="Resources\registry.ico" Closing="Window_Closing" >
 
     <Grid  Margin="0,0,0,0">
         <Grid.RowDefinitions>
@@ -37,7 +35,6 @@
                              StartPoint="0,0" EndPoint="0,1" ColorInterpolationMode="ScRgbLinearInterpolation">
                     <LinearGradientBrush.GradientStops>
                         <GradientStop Color="#FF0000AA" Offset="0.005"/>
-
                         <GradientStop Color="#0080ff" Offset="0.9"/>
                     </LinearGradientBrush.GradientStops>
                 </LinearGradientBrush>
@@ -245,7 +242,6 @@
             </Viewbox>
             <Viewbox  >
                 <emoji:TextBlock FontWeight="Bold" Text="    gevivesh@microsoft.com    " HorizontalAlignment="Center"/>
-
             </Viewbox>
             <TextBlock>
             </TextBlock>
@@ -270,7 +266,7 @@
             <TextBox Name="txtfilepath1" Text="" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" TextWrapping="Wrap"></TextBox>
             <Label Name="lblPath2" Content="File Path"  Grid.Row="0" Grid.Column="3"></Label>
             <TextBox Name="txtfilepath2" Text="" Grid.Row="0" Grid.Column="4" VerticalAlignment="Top" TextWrapping="Wrap"></TextBox>
-            
+
             <Button Name="color1"  Grid.Row="1" Grid.Column="0" Click="color1_Click" >
                 <Image Source="Resources/ink.png" Width="20" Height="20"/>
             </Button>
@@ -279,24 +275,45 @@
                 <Image Source="Resources/ink.png" Width="20" Height="20"/>
             </Button>
             <TextBox Name="txtTag2" Text="TAGS:" FontSize="16" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center"></TextBox>
-
         </Grid>
-        
-        
 
         <StackPanel x:Name="gridClientsContainer1" Grid.Column="3" Grid.Row="4" Grid.RowSpan="3">
             <DataGrid Name="Reg1Values" ItemsSource="{Binding}"  IsReadOnly="True"  VirtualizingStackPanel.IsVirtualizing="False"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
-            ScrollViewer.HorizontalScrollBarVisibility="Auto" Height="{Binding ElementName=gridClientsContainer1, Path=ActualHeight}" FontSize="14">
-
+            ScrollViewer.HorizontalScrollBarVisibility="Auto" Height="{Binding ElementName=gridClientsContainer1, Path=ActualHeight}" FontSize="14" RowBackground="White">
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Setter Property="Background" Value="White" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition  Binding="{Binding Background, RelativeSource={RelativeSource Self}}" Value="White"/>
+                                    <Condition  Binding='{Binding Path=IsChecked, ElementName=chk_showonlydiff}' Value='True' />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
             </DataGrid>
         </StackPanel>
 
         <DataGrid Name="Reg2Values"   Grid.Column="4" Grid.Row="4" Grid.RowSpan="3"  VirtualizingStackPanel.IsVirtualizing="False" ItemsSource="{Binding}" IsReadOnly="True"   ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
-            ScrollViewer.HorizontalScrollBarVisibility="Auto" FontSize="14">
-
+            ScrollViewer.HorizontalScrollBarVisibility="Auto" FontSize="14" RowBackground="White">
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="Background" Value="White" />
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition  Binding="{Binding Background, RelativeSource={RelativeSource Self}}" Value="White"/>
+                                <Condition  Binding='{Binding Path=IsChecked, ElementName=chk_showonlydiff}' Value='True' />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
-
-
 
         <TreeView Name="Reg1Tree" Grid.Column="3" Grid.Row="1" Grid.RowSpan="3" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False"  ItemsSource="{Binding Name}" SelectedItemChanged="Reg1Tree_SelectedItemChanged" KeyDown="Reg1Tree_KeyDown" >
             <TreeView.Resources>
@@ -306,22 +323,29 @@
             </TreeView.Resources>
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="Background" Value="White" />
                     <Style.Triggers>
+
                         <DataTrigger Binding="{Binding Path=Diff}" Value="False">
                             <Setter Property="Foreground" Value="Black"></Setter>
                             <Setter Property="FontWeight" Value="Normal" ></Setter>
                         </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=Diff}" Value="False" />
+                                <Condition  Binding='{Binding Path=IsChecked, ElementName=chk_showonlydiff}' Value='True' />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                        </MultiDataTrigger>
                         <DataTrigger Binding="{Binding Path=Diff}" Value="True">
                             <Setter Property="Foreground" Value="Red"></Setter>
                             <Setter Property="FontWeight" Value="Bold" ></Setter>
                         </DataTrigger>
                     </Style.Triggers>
-                    <EventSetter Event="MouseDoubleClick" Handler="TreeViewItem_MouseDoubleClick_1" />
+                  
                 </Style>
             </TreeView.ItemContainerStyle>
-            <!--<Style TargetType="{x:Type TreeViewItem}">
-                <EventSetter Event="MouseDoubleClick" Handler="TreeViewItem_MouseDoubleClick_1" />
-            </Style>-->
 
         </TreeView>
         <TreeView Name="Reg2Tree" Grid.Column="5" Grid.Row="1" Grid.RowSpan="3" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False" ItemsSource="{Binding Name}" KeyDown="Reg2Tree_KeyDown" SelectedItemChanged="Reg2Tree_SelectedItemChanged">
@@ -337,6 +361,15 @@
                             <Setter Property="Foreground" Value="Black"></Setter>
                             <Setter Property="FontWeight" Value="Normal" ></Setter>
                         </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=Diff}" Value="False" />
+                                <Condition  Binding='{Binding Path=IsChecked, ElementName=chk_showonlydiff}' Value='True' />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                        </MultiDataTrigger>
+
                         <DataTrigger Binding="{Binding Path=Diff}" Value="True">
                             <Setter Property="Foreground" Value="Red"></Setter>
                             <Setter Property="FontWeight" Value="Bold" ></Setter>
@@ -379,7 +412,7 @@
 
             <Button Name="btnalign" Content="Match Path" Grid.Row="1" Grid.Column="1" Click="btnalign_Click" />
             <Button Name="btnCompareKeyandsub" Content="Compare Keys" Grid.Row="2" Grid.Column="1" Click="btnCompareKeyandsub_Click" />
-         
+            <CheckBox  Grid.Row="3" Grid.Column="0" Name="chk_showonlydiff" Content="Display Only differences" Visibility="Hidden" FontWeight="Bold" FontSize="14"/>
             <Grid  Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="3" />
         </Grid>
     </Grid>
