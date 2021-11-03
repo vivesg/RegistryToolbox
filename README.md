@@ -82,6 +82,9 @@ Press to customize the Title color of the panel example in this case was red sel
 When two registries opened if you click on the Button 
 COMPARE KEYS
 
+![image](https://user-images.githubusercontent.com/8367687/140209655-44919f5d-9698-4bae-9e4b-66f341100689.png)
+
+
 You are going to see that the Registry Toolbox it's going to show on the registry Tree on Red in bold text the keys that have differences
 
 If you click in SETUP in this example you can see
@@ -98,6 +101,15 @@ Light blue: means that the value it is on a registry but not in the other in thi
 
 ***CONGRATULATIONS***
 You can now find differences on your Windows Registry data.
+
+***TIP***
+If you are comparing a value on the left and you want to see the same value on the right please press 
+MATCH PATH button this will set the values of the Registry Path equally to the same place
+
+
+![image](https://user-images.githubusercontent.com/8367687/140209995-f048fb47-9841-4db9-9f5f-aa2bb0a038a5.png)
+
+
 
 
 1. Export .REG (Experimental)
