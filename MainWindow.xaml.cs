@@ -58,8 +58,8 @@ namespace RegistryToolbox
 
             Reg1Tree.Visibility = Visibility.Hidden;
             gridClientsContainer1.Visibility = Visibility.Hidden;
-            Reg2Tree.Visibility = Visibility.Hidden;
-            Reg2Values.Visibility = Visibility.Hidden;
+            gridClientsContainer2.Visibility = Visibility.Hidden;
+            uispliter.Visibility = Visibility.Hidden;
             btnalign.Visibility = Visibility.Hidden;
             btnCompareKeyandsub.Visibility = Visibility.Hidden;
             Hide2();
@@ -79,6 +79,13 @@ namespace RegistryToolbox
             this.Title ="Registry Toolbox Version: " + version;
             checkupdate();
         }
+
+        private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;//put here your logic
+            e.Handled = true;
+        }
+
         private void checkupdate()
         {
             try
@@ -87,21 +94,21 @@ namespace RegistryToolbox
                 {
                     var json = w.DownloadString("https://registrytoolbox.blob.core.windows.net/releases/release.json");
 
-                    string version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + '.' 
+                    string version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + '.'
                         + Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString()
                         + '.' + Assembly.GetExecutingAssembly().GetName().Version.Build.ToString();
-                  
+
                     ReleaseInfo result = JsonConvert.DeserializeObject<ReleaseInfo>(json);
 
                     if (result.Version != version)
                     {
-                        UpdateDialog upd = new UpdateDialog("Version: "+  result.Version);
+                        UpdateDialog upd = new UpdateDialog("Version: " + result.Version);
                         upd.ShowDialog();
-  
+
                     }
                 }
             }
-            catch(Exception E)
+            catch (Exception E)
             {
                 MessageBox.Show("Getting Updating Information Failed", "Updates", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -117,6 +124,7 @@ namespace RegistryToolbox
             goto2.Visibility = Visibility.Hidden;
             lblPath2.Visibility = Visibility.Hidden;
             chk_showonlydiff.Visibility = Visibility.Hidden;
+            uispliter.Visibility = Visibility.Hidden;
         }
         private void Show2()
         {
@@ -127,6 +135,7 @@ namespace RegistryToolbox
             goto2.Visibility = Visibility.Visible;
             lblPath2.Visibility = Visibility.Visible;
             chk_showonlydiff.Visibility = Visibility.Visible;
+            uispliter.Visibility = Visibility.Visible;
         }
         private void btnOpenReg_Click(object sender, RoutedEventArgs e)
         {
@@ -139,7 +148,7 @@ namespace RegistryToolbox
             gridClientsContainer1.Visibility = Visibility.Visible;
             gridClientsContainer1.SetValue(Grid.ColumnSpanProperty, 2);
             Reg1Tree.Visibility = Visibility.Visible;
-            Reg1Tree.SetValue(Grid.ColumnSpanProperty, 2);
+
             Hide2();
             txtpath1.Text = "";
             txtpath2.Text = "";
@@ -182,7 +191,6 @@ namespace RegistryToolbox
                     Registry1 = registryHive;
                     registryHive.ParseHive();
                     Drawhive(Registry1.Root, _Hive1);
-
                 }
                 else
                 {
@@ -196,7 +204,6 @@ namespace RegistryToolbox
             {
                 MessageBox.Show("The file you selected for registry it is not a registry binary file", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
         }
 
         private void lookLeaf(string path, int registry)
@@ -340,6 +347,8 @@ namespace RegistryToolbox
                 column.Width = new DataGridLength(1.0, DataGridLengthUnitType.Auto);
             }
 
+            currentTable.Items.Refresh();
+
         }
         public string GetFullPath(TreeViewItem node)
         {
@@ -398,10 +407,11 @@ namespace RegistryToolbox
 
             gridClientsContainer1.Visibility = Visibility.Visible;
             gridClientsContainer1.SetValue(Grid.ColumnSpanProperty, 1);
+            gridClientsContainer2.Visibility = Visibility.Visible;
+            gridClientsContainer2.SetValue(Grid.ColumnSpanProperty, 1);
             Reg1Tree.Visibility = Visibility.Visible;
             Reg1Tree.SetValue(Grid.ColumnSpanProperty, 1);
-            Reg2Values.Visibility = Visibility.Visible;
-            Reg2Tree.Visibility = Visibility.Visible;
+
             btnalign.Visibility = Visibility.Visible;
             btnCompareKeyandsub.Visibility = Visibility.Visible;
             Show2();
@@ -872,6 +882,22 @@ namespace RegistryToolbox
         private void goto1_Click(object sender, RoutedEventArgs e)
         {
             lookLeaf(txtpath1.Text, 1);
+        }
+
+        private void GridSplitter_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+            Mouse.OverrideCursor = Cursors.SizeNS;
+        }
+
+        private void GridSplitter_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
+        private void uispliter_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.SizeWE;
         }
     }
 }
