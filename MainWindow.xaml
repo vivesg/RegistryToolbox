@@ -332,17 +332,8 @@
                   
                     <DataGrid.RowStyle>
                         <Style TargetType="{x:Type DataGridRow}">
-                            <Setter Property="Background" Value="White" />
-                            <Style.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition  Binding="{Binding Background, RelativeSource={RelativeSource Self}}" Value="White"/>
-                                        <Condition  Binding='{Binding Path=IsChecked, ElementName=chk_showonlydiff}' Value='True' />
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
+                        <Setter Property="Background" Value="White" />
+                    </Style>
                     </DataGrid.RowStyle>
                 <DataGrid.ContextMenu>
                     <ContextMenu >
@@ -409,15 +400,6 @@
                 <DataGrid.RowStyle>
                     <Style TargetType="{x:Type DataGridRow}">
                         <Setter Property="Background" Value="White" />
-                        <Style.Triggers>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition  Binding="{Binding Background, RelativeSource={RelativeSource Self}}" Value="White"/>
-                                    <Condition  Binding='{Binding Path=IsChecked, ElementName=chk_showonlydiff}' Value='True' />
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </MultiDataTrigger>
-                        </Style.Triggers>
                     </Style>
                 </DataGrid.RowStyle>
                 <DataGrid.ContextMenu>
@@ -452,7 +434,8 @@
                     <ColumnDefinition Width="10*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Name="txtpath1"   Text="" Grid.Row="0" Grid.Column="0" BorderThickness="3" ></TextBox>
+                <TextBox Name="txtpath1" Text="" Grid.Row="0" Grid.Column="0" BorderThickness="3" ></TextBox>
+               
                 <Button x:Name="goto1" Grid.Row="0" Grid.Column="1" Click="goto1_Click"  >
                     <Image Source="Resources/arrow.png" Width="20" Height="20"/>
                 </Button>
@@ -461,11 +444,11 @@
                     <Image Source="Resources/arrow.png" Width="20" Height="20"/>
                 </Button>
             </Grid>
-
+            <Button x:Name="Insights" Content="Insights" Grid.Row="2" Grid.Column="0"></Button>
             <Button Name="btnalign" Content="Match Path" Grid.Row="1" Grid.Column="1" Click="btnalign_Click" />
             <Button Name="btnCompareKeyandsub" Content="Compare Keys" Grid.Row="2" Grid.Column="1" Click="btnCompareKeyandsub_Click" />
-            <CheckBox  Grid.Row="3" Grid.Column="0" Name="chk_showonlydiff" Content="Display Only differences" Visibility="Hidden" FontWeight="Bold" FontSize="14"/>
-            <Grid  Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="3" />
+            <CheckBox  Grid.Row="3" Grid.Column="0" Name="chk_showonlydiff" Content="Display Only differences" Visibility="Hidden" FontWeight="Bold" FontSize="14" Checked="chk_showonlydiff_Checked" />
+            <Grid  Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="3"  />
         </Grid>
     </Grid>
 

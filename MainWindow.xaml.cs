@@ -21,14 +21,20 @@ namespace RegistryToolbox
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        
+
+        public bool is_samepath { get; set; }
+  
         public bool VISIBLE;
         Registry.RegistryHive Registry1 = null;
         Registry.RegistryHive Registry2 = null;
         int ACTUAL;
-        string actualpath1 = "";
-        string actualpath2 = "";
         private ObservableCollection<ModelRegistryKey> _Hive1;
         private ObservableCollection<ModelRegistryKey> _Hive2;
+
+
+
 
         public ObservableCollection<ModelRegistryKey> Hive1
         {
@@ -53,6 +59,7 @@ namespace RegistryToolbox
         {
             InitializeComponent();
 
+            this.DataContext = this;
             _Hive1 = new ObservableCollection<ModelRegistryKey>();
             _Hive2 = new ObservableCollection<ModelRegistryKey>();
 
@@ -76,7 +83,11 @@ namespace RegistryToolbox
             string version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + '.'
                        + Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString()
                        + '.' + Assembly.GetExecutingAssembly().GetName().Version.Build.ToString();
-            this.Title ="Registry Toolbox Version: " + version;
+
+            this.Title = "Registry Toolbox Version: " + version;
+#if DEBUG
+            this.Title ="BETA NON PROD Registry Toolbox Version: " + version;
+#endif
             checkupdate();
         }
 
@@ -110,7 +121,7 @@ namespace RegistryToolbox
             }
             catch (Exception E)
             {
-                MessageBox.Show("Getting Updating Information Failed", "Updates", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Getting Updating Information Failed please check manually on github", "Updates", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
         }
@@ -321,7 +332,7 @@ namespace RegistryToolbox
             }
         }
 
-        private long millisec = 0;
+       
         ItemsControl GetParentItem(ItemsControl nodo)
         {
             return ItemsControl.ItemsControlFromItemContainer(nodo);
@@ -646,7 +657,10 @@ namespace RegistryToolbox
 
             var tva = FindTviFromObjectRecursive(Reg1Tree, Selected);
             txtpath1.Text = GetFullPath(tva);
+         
             loadtable(Selected, 1);
+            UpdateLayout();
+            onlydiff_whensamepath();
             if (Selected.Diff & txtpath1.Text == txtpath2.Text)
             {
                 paintdifferences(Reg1Values, Reg2Values);
@@ -655,6 +669,20 @@ namespace RegistryToolbox
             this.ACTUAL = 1;
         }
 
+        private void onlydiff_whensamepath()
+        {
+
+
+            if (txtpath1.Text == txtpath2.Text)
+            {
+                is_samepath = true;
+                
+            }
+            else
+            {
+                is_samepath = false;
+            }
+        }
         private void Reg2Tree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             ModelRegistryKey Selected = (ModelRegistryKey)((TreeView)sender).SelectedItem;
@@ -663,6 +691,7 @@ namespace RegistryToolbox
             var tva = FindTviFromObjectRecursive(Reg2Tree, Selected);
             txtpath2.Text = GetFullPath(tva);
             loadtable(Selected, 2);
+            onlydiff_whensamepath();
             if (Selected.Diff & txtpath1.Text == txtpath2.Text)
             {
                 paintdifferences(Reg1Values, Reg2Values);
@@ -672,8 +701,11 @@ namespace RegistryToolbox
         }
         private void paintdifferences(DataGrid treevalues1, DataGrid treevalues2)
         {
+            
             treevalues1.UpdateLayout();
             treevalues2.UpdateLayout();
+
+            
             for (int i = 0; i < treevalues1.Items.Count; i++)
             {
                 DataGridRow rowA = treevalues1.ItemContainerGenerator.ContainerFromIndex(i) as DataGridRow;
@@ -695,6 +727,10 @@ namespace RegistryToolbox
                         else
                         {
                             rowA.Background = Brushes.White;
+                            if (chk_showonlydiff.IsChecked.Value & is_samepath)
+                            {
+                                rowA.Visibility = Visibility.Collapsed;
+                            }
                         }
                     }
                 }
@@ -898,6 +934,13 @@ namespace RegistryToolbox
         private void uispliter_MouseEnter(object sender, MouseEventArgs e)
         {
             Mouse.OverrideCursor = Cursors.SizeWE;
+        }
+
+        private void chk_showonlydiff_Checked(object sender, RoutedEventArgs e)
+        {
+            paintdifferences(Reg2Values, Reg1Values);
+            paintdifferences(Reg1Values, Reg2Values);
+           
         }
     }
 }
