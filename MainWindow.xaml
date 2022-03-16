@@ -211,7 +211,7 @@
                 <RowDefinition Height="2*"/>
                 <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
-                 <Button x:Name="btnManual" Grid.Row="1" HorizontalContentAlignment="Left" Click="btnManual_Click" >
+            <Button x:Name="btnManual" Grid.Row="1" HorizontalContentAlignment="Left" Click="btnManual_Click" >
                 <StackPanel Orientation="Horizontal" >
                     <Image Source="Resources\help.png" Stretch="Uniform"/>
                     <Viewbox VerticalAlignment="Stretch" >
@@ -275,7 +275,7 @@
 
             </Button>
         </Grid>
-        
+
         <StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center">
             <Viewbox>
                 <emoji:TextBlock FontWeight="Bold" Text=" Made with ♥ from Costa Rica " HorizontalAlignment="Center"/>
@@ -323,12 +323,12 @@
 
         <Grid x:Name="gridClientsContainer1"  Grid.Column="3" Grid.Row="1" Grid.RowSpan="6"  Margin="0,0,0,0">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-
-            <TreeView Name="Reg1Tree" Grid.Row="0" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False"  ItemsSource="{Binding Name}" SelectedItemChanged="Reg1Tree_SelectedItemChanged" KeyDown="Reg1Tree_KeyDown" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="10*" />
+            </Grid.ColumnDefinitions>
+          
+            <TreeView Name="Reg1Tree" Grid.Column="0" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False"  ItemsSource="{Binding Name}" SelectedItemChanged="Reg1Tree_SelectedItemChanged" KeyDown="Reg1Tree_KeyDown" >
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}" ItemsSource="{Binding Subkeys}" >
                         <TextBlock Text="{Binding Name}" />
@@ -338,7 +338,6 @@
                     <Style TargetType="{x:Type TreeViewItem}">
                         <Setter Property="Background" Value="White" />
                         <Style.Triggers>
-
                             <DataTrigger Binding="{Binding Path=Diff}" Value="False">
                                 <Setter Property="Foreground" Value="Black"></Setter>
                                 <Setter Property="FontWeight" Value="Normal" ></Setter>
@@ -361,13 +360,15 @@
                 </TreeView.ItemContainerStyle>
             </TreeView>
 
-            <GridSplitter  Grid.Row="0" Height="4" HorizontalAlignment="Stretch" Margin="10,0,0,0"
-                      VerticalAlignment="Bottom"
-                      ResizeDirection="Rows"
-                      ShowsPreview="True" MouseEnter="GridSplitter_MouseEnter" MouseLeave="GridSplitter_MouseLeave"/>
 
+            <GridSplitter x:Name="uispliterA" Grid.Column="0" Width="5" 
+            ShowsPreview="True"  ResizeDirection="Columns"
+                          VerticalAlignment="Stretch" 
+                          MouseLeave="GridSplitter_MouseLeave" 
+                          ResizeBehavior="CurrentAndNext" 
+                          MouseEnter="uispliter_MouseEnter" />
 
-            <DataGrid  Grid.Row="1"  Name="Reg1Values" ItemsSource="{Binding}"  IsReadOnly="True"  VirtualizingStackPanel.IsVirtualizing="False"  ScrollViewer.CanContentScroll="True" 
+            <DataGrid  Grid.Column="1" Name="Reg1Values" ItemsSource="{Binding}"  IsReadOnly="True"  VirtualizingStackPanel.IsVirtualizing="False"  ScrollViewer.CanContentScroll="True" 
              FontSize="14" RowBackground="White" MouseDoubleClick="Reg1Values_MouseDoubleClick" >
 
                 <DataGrid.RowStyle>
@@ -387,18 +388,18 @@
 
         </Grid>
 
-        <GridSplitter x:Name="uispliter"  Grid.Row="1" Grid.Column="3" Grid.RowSpan="6" Width="4" Margin="1"
+        <GridSplitter x:Name="uispliter"  Grid.Row="1" Grid.Column="3" Grid.RowSpan="6" Width="6" Margin="1" Background="Black"
                       ShowsPreview="True"  MouseLeave="GridSplitter_MouseLeave"  MouseEnter="uispliter_MouseEnter" />
 
         <Grid x:Name="gridClientsContainer2"  Grid.Column="4" Grid.Row="1" Grid.RowSpan="6"  Margin="0,0,0,0">
 
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
 
 
-            <TreeView Name="Reg2Tree" Grid.Row="0" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False" ItemsSource="{Binding Name}" KeyDown="Reg2Tree_KeyDown" SelectedItemChanged="Reg2Tree_SelectedItemChanged">
+            <TreeView Name="Reg2Tree" Grid.Column="0" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False" ItemsSource="{Binding Name}" KeyDown="Reg2Tree_KeyDown" SelectedItemChanged="Reg2Tree_SelectedItemChanged">
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}" ItemsSource="{Binding Subkeys}">
                         <TextBlock Text="{Binding Name}" />
@@ -430,12 +431,14 @@
 
             </TreeView>
 
-            <GridSplitter  Grid.Row="0" Height="4" HorizontalAlignment="Stretch" Margin="10,0,0,0"
-                      VerticalAlignment="Bottom"
-                      ResizeDirection="Rows"
-                      ShowsPreview="True" MouseEnter="GridSplitter_MouseEnter" MouseLeave="GridSplitter_MouseLeave"/>
+            <GridSplitter x:Name="uispliterB" Grid.Column="0" Width="5" 
+            ShowsPreview="True"  ResizeDirection="Columns"
+                          VerticalAlignment="Stretch" 
+                          MouseLeave="GridSplitter_MouseLeave" 
+                          ResizeBehavior="CurrentAndNext" 
+                          MouseEnter="uispliter_MouseEnter" />
 
-            <DataGrid Name="Reg2Values"   Grid.Row="1" VirtualizingStackPanel.IsVirtualizing="False" ItemsSource="{Binding}" IsReadOnly="True"   ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
+            <DataGrid Name="Reg2Values"  Grid.Column="1"  VirtualizingStackPanel.IsVirtualizing="False" ItemsSource="{Binding}" IsReadOnly="True"   ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
             ScrollViewer.HorizontalScrollBarVisibility="Auto" FontSize="14" RowBackground="White">
                 <DataGrid.RowStyle>
                     <Style TargetType="{x:Type DataGridRow}">

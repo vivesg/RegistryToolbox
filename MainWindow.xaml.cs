@@ -68,7 +68,7 @@ namespace RegistryToolbox
             Reg1Tree.Visibility = Visibility.Hidden;
             gridClientsContainer1.Visibility = Visibility.Hidden;
             gridClientsContainer2.Visibility = Visibility.Hidden;
-            uispliter.Visibility = Visibility.Hidden;
+            uispliter.Visibility = Visibility.Collapsed;
             btnalign.Visibility = Visibility.Hidden;
             btnCompareKeyandsub.Visibility = Visibility.Hidden;
             Hide2();
