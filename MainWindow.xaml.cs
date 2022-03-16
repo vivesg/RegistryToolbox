@@ -13,6 +13,8 @@ using System.Threading;
 using System.Net;
 using System.Reflection;
 using Newtonsoft.Json;
+using RegistryToolbox.Insights;
+using System.Text;
 
 namespace RegistryToolbox
 {
@@ -157,6 +159,7 @@ namespace RegistryToolbox
             Reg1Values.DataContext = null;
 
             gridClientsContainer1.Visibility = Visibility.Visible;
+            Insights.Visibility = Visibility.Visible;
             gridClientsContainer1.SetValue(Grid.ColumnSpanProperty, 2);
             Reg1Tree.Visibility = Visibility.Visible;
 
@@ -383,6 +386,16 @@ namespace RegistryToolbox
             return Registry2.Root;
 
         }
+        private  string ByteArrayToString(byte[] ba)
+        {
+         
+            Array.Reverse(ba, 0, ba.Length);
+           
+            StringBuilder hex = new StringBuilder(ba.Length * 2);
+            foreach (byte b in ba)
+                hex.AppendFormat("{0:x2}", b);
+            return hex.ToString();
+        }
 
         private ObservableCollection<ModelRegistryKey> Drawhive(RegistryKey bKey, ObservableCollection<ModelRegistryKey> mKey)
         {
@@ -392,8 +405,17 @@ namespace RegistryToolbox
                 ModelRegistryKey current = new ModelRegistryKey(rk.KeyName);
                 foreach (KeyValue value in rk.Values)
                 {
-
-                    ModelRegistryKeyValues currentvalue = new ModelRegistryKeyValues(value.ValueName, value.ValueType, value.ValueData, value.ValueDataRaw);
+                    ModelRegistryKeyValues currentvalue = null;
+                    if (value.ValueType == "RegDword")
+                    {
+                        string hexvalue = ByteArrayToString(value.ValueDataRaw);
+                        string val = "0x" + hexvalue + " (" + value.ValueData + ")";
+                        currentvalue = new ModelRegistryKeyValues(value.ValueName, value.ValueType, val, value.ValueDataRaw);
+                    }
+                    else
+                    {
+                         currentvalue = new ModelRegistryKeyValues(value.ValueName, value.ValueType, value.ValueData, value.ValueDataRaw);
+                    }                    
                     current.SubkeysValues.Add(currentvalue);
                 }
                 Drawhive(rk, current.Subkeys);
@@ -941,6 +963,25 @@ namespace RegistryToolbox
             paintdifferences(Reg2Values, Reg1Values);
             paintdifferences(Reg1Values, Reg2Values);
            
+        }
+
+        private void Insights_Click(object sender, RoutedEventArgs e)
+        {
+            Insight ins = new Insight(this.Registry1);
+            ins.GetDiskFilters();
+        }
+
+        private void Reg1Values_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ModelRegistryKeyValues values = (ModelRegistryKeyValues)Reg1Values.SelectedItem;
+            ValueInspector vi = new ValueInspector(values);
+            vi.ShowDialog();
+        }
+
+        private void btnManual_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/vivesg/RegistryToolbox/blob/master/README.md");
+
         }
     }
 }

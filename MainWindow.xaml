@@ -204,38 +204,78 @@
 
         </Button>
 
-        <Button x:Name="btnAbout" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="1" HorizontalContentAlignment="Left" Click="btnAbout_Click" >
 
-            <StackPanel Orientation="Horizontal" >
-                <Image Source="Resources\info.ico" Stretch="Uniform"/>
-                <Viewbox VerticalAlignment="Stretch" >
-                    <emoji:TextBlock FontWeight="Medium" Text="About this"  UseLayoutRounding="False"  LineHeight="60" LineStackingStrategy="BlockLineHeight" />
-                </Viewbox>
-            </StackPanel>
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Background" Value="White" />
-                    <Setter Property="Opacity" Value="0.7"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Opacity" Value="1"/>
-                            <Setter Property="BorderBrush" Value="Black"/>
-                            <Setter Property="BorderThickness" Value="5"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
+        <Grid  Grid.Row="6" Grid.Column="1" Grid.RowSpan="2"  Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+                 <Button x:Name="btnManual" Grid.Row="1" HorizontalContentAlignment="Left" Click="btnManual_Click" >
+                <StackPanel Orientation="Horizontal" >
+                    <Image Source="Resources\help.png" Stretch="Uniform"/>
+                    <Viewbox VerticalAlignment="Stretch" >
+                        <emoji:TextBlock FontWeight="Medium" Text="Manual"  UseLayoutRounding="False"  LineHeight="60" LineStackingStrategy="BlockLineHeight" />
+                    </Viewbox>
+                </StackPanel>
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="White" />
+                        <Setter Property="Opacity" Value="0.7"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                                <Setter Property="BorderThickness" Value="5"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button x:Name="btnAbout"  Grid.Row="2"  HorizontalContentAlignment="Left" Click="btnAbout_Click" >
 
-        </Button>
+                <StackPanel Orientation="Horizontal" >
+                    <Image Source="Resources\info.ico" Stretch="Uniform"/>
+                    <Viewbox VerticalAlignment="Stretch" >
+                        <emoji:TextBlock FontWeight="Medium" Text="About this"  UseLayoutRounding="False"  LineHeight="60" LineStackingStrategy="BlockLineHeight" />
+                    </Viewbox>
+                </StackPanel>
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="White" />
+                        <Setter Property="Opacity" Value="0.7"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                                <Setter Property="BorderThickness" Value="5"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+
+            </Button>
+        </Grid>
+        
         <StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center">
             <Viewbox>
                 <emoji:TextBlock FontWeight="Bold" Text=" Made with ♥ from Costa Rica " HorizontalAlignment="Center"/>
@@ -277,12 +317,12 @@
             <TextBox Name="txtTag2" Text="TAGS:" FontSize="16" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center"></TextBox>
         </Grid>
 
-      
+
 
 
 
         <Grid x:Name="gridClientsContainer1"  Grid.Column="3" Grid.Row="1" Grid.RowSpan="6"  Margin="0,0,0,0">
-            
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
@@ -328,13 +368,13 @@
 
 
             <DataGrid  Grid.Row="1"  Name="Reg1Values" ItemsSource="{Binding}"  IsReadOnly="True"  VirtualizingStackPanel.IsVirtualizing="False"  ScrollViewer.CanContentScroll="True" 
-             FontSize="14" RowBackground="White" >
-                  
-                    <DataGrid.RowStyle>
-                        <Style TargetType="{x:Type DataGridRow}">
+             FontSize="14" RowBackground="White" MouseDoubleClick="Reg1Values_MouseDoubleClick" >
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
                         <Setter Property="Background" Value="White" />
                     </Style>
-                    </DataGrid.RowStyle>
+                </DataGrid.RowStyle>
                 <DataGrid.ContextMenu>
                     <ContextMenu >
                         <MenuItem Command="Copy" />
@@ -344,7 +384,7 @@
                     <CommandBinding Command="Copy" CanExecute="CommandBinding_CanExecute"/>
                 </DataGrid.CommandBindings>
             </DataGrid>
-           
+
         </Grid>
 
         <GridSplitter x:Name="uispliter"  Grid.Row="1" Grid.Column="3" Grid.RowSpan="6" Width="4" Margin="1"
@@ -353,8 +393,8 @@
         <Grid x:Name="gridClientsContainer2"  Grid.Column="4" Grid.Row="1" Grid.RowSpan="6"  Margin="0,0,0,0">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
 
@@ -435,7 +475,7 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <TextBox Name="txtpath1" Text="" Grid.Row="0" Grid.Column="0" BorderThickness="3" ></TextBox>
-               
+
                 <Button x:Name="goto1" Grid.Row="0" Grid.Column="1" Click="goto1_Click"  >
                     <Image Source="Resources/arrow.png" Width="20" Height="20"/>
                 </Button>
@@ -444,7 +484,7 @@
                     <Image Source="Resources/arrow.png" Width="20" Height="20"/>
                 </Button>
             </Grid>
-            <Button x:Name="Insights" Content="Insights" Grid.Row="2" Grid.Column="0"></Button>
+            <Button x:Name="Insights" Content="Insights" Grid.Row="2" Grid.Column="0" Click="Insights_Click" Visibility="Hidden"></Button>
             <Button Name="btnalign" Content="Match Path" Grid.Row="1" Grid.Column="1" Click="btnalign_Click" />
             <Button Name="btnCompareKeyandsub" Content="Compare Keys" Grid.Row="2" Grid.Column="1" Click="btnCompareKeyandsub_Click" />
             <CheckBox  Grid.Row="3" Grid.Column="0" Name="chk_showonlydiff" Content="Display Only differences" Visibility="Hidden" FontWeight="Bold" FontSize="14" Checked="chk_showonlydiff_Checked" />
