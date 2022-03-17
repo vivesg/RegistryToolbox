@@ -138,6 +138,12 @@ namespace RegistryToolbox
             lblPath2.Visibility = Visibility.Hidden;
             chk_showonlydiff.Visibility = Visibility.Hidden;
             uispliter.Visibility = Visibility.Hidden;
+            gridClientsContainer2.Visibility = Visibility.Hidden;
+            gridClientsContainer1.SetValue(Grid.ColumnSpanProperty, 2);
+            btnCompareKeyandsub.Visibility = Visibility.Hidden;
+            btnalign.Visibility = Visibility.Hidden;
+           
+
         }
         private void Show2()
         {
@@ -149,6 +155,10 @@ namespace RegistryToolbox
             lblPath2.Visibility = Visibility.Visible;
             chk_showonlydiff.Visibility = Visibility.Visible;
             uispliter.Visibility = Visibility.Visible;
+            gridClientsContainer1.SetValue(Grid.ColumnSpanProperty, 1);
+            btnCompareKeyandsub.Visibility = Visibility.Visible;
+            btnalign.Visibility = Visibility.Visible;
+            btnInsights.Visibility = Visibility.Hidden;
         }
         private void btnOpenReg_Click(object sender, RoutedEventArgs e)
         {
@@ -159,7 +169,7 @@ namespace RegistryToolbox
             Reg1Values.DataContext = null;
 
             gridClientsContainer1.Visibility = Visibility.Visible;
-            Insights.Visibility = Visibility.Visible;
+            btnInsights.Visibility = Visibility.Visible;
             gridClientsContainer1.SetValue(Grid.ColumnSpanProperty, 2);
             Reg1Tree.Visibility = Visibility.Visible;
 

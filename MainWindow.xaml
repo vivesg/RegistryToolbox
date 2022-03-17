@@ -11,15 +11,15 @@
 
     <Grid  Margin="0,0,0,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="12*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
 
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -307,14 +307,26 @@
             <Label Name="lblPath2" Content="File Path"  Grid.Row="0" Grid.Column="3"></Label>
             <TextBox Name="txtfilepath2" Text="" Grid.Row="0" Grid.Column="4" VerticalAlignment="Top" TextWrapping="Wrap"></TextBox>
 
-            <Button Name="color1"  Grid.Row="1" Grid.Column="0" Click="color1_Click" >
-                <Image Source="Resources/ink.png" Width="20" Height="20"/>
-            </Button>
-            <TextBox Name="txtTag1" Text="TAGS:" FontSize="16" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"></TextBox>
-            <Button Name="color2"  Grid.Row="1" Grid.Column="3" Click="color2_Click" >
-                <Image Source="Resources/ink.png" Width="20" Height="20"/>
-            </Button>
-            <TextBox Name="txtTag2" Text="TAGS:" FontSize="16" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center"></TextBox>
+
+            <Grid  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Name="txtpath1" Text="" Grid.Row="0" Grid.Column="0" BorderThickness="3" ></TextBox>
+
+                <Button x:Name="goto1" Grid.Row="0" Grid.Column="1" Click="goto1_Click"  >
+                    <Image Source="Resources/arrow.png" Width="20" Height="20"/>
+                </Button>
+                <TextBox Name="txtpath2"  Text="" Grid.Row="0" Grid.Column="3" BorderThickness="3" ></TextBox>
+                <Button x:Name="goto2"  Grid.Row="0" Grid.Column="4" Click="goto2_Click"  >
+                    <Image Source="Resources/arrow.png" Width="20" Height="20"/>
+                </Button>
+            </Grid>
+
         </Grid>
 
 
@@ -469,29 +481,34 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
+
+
             <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="20*"/>
                     <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="10*"/>
-                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="20*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Name="txtpath1" Text="" Grid.Row="0" Grid.Column="0" BorderThickness="3" ></TextBox>
 
-                <Button x:Name="goto1" Grid.Row="0" Grid.Column="1" Click="goto1_Click"  >
-                    <Image Source="Resources/arrow.png" Width="20" Height="20"/>
+                <Button Name="color1"  Grid.Column="0" Click="color1_Click" >
+                    <Image Source="Resources/ink.png" Width="20" Height="20"/>
                 </Button>
-                <TextBox Name="txtpath2"  Text="" Grid.Row="0" Grid.Column="3" BorderThickness="3" ></TextBox>
-                <Button x:Name="goto2"  Grid.Row="0" Grid.Column="4" Click="goto2_Click"  >
-                    <Image Source="Resources/arrow.png" Width="20" Height="20"/>
+                <TextBox Name="txtTag1" Text="TAGS:" FontSize="16" Grid.Column="1" VerticalAlignment="Center"></TextBox>
+                <Button Name="color2"  Grid.Row="1" Grid.Column="3" Click="color2_Click" >
+                    <Image Source="Resources/ink.png" Width="20" Height="20"/>
                 </Button>
+                <TextBox Name="txtTag2" Text="TAGS:" FontSize="16" Grid.Column="4" VerticalAlignment="Center"></TextBox>
+
             </Grid>
-            <Button x:Name="Insights" Content="Insights" Grid.Row="2" Grid.Column="0" Click="Insights_Click" Visibility="Hidden"></Button>
+
+            <Button x:Name="btnInsights" Content="Insights" Grid.Row="2" Grid.Column="0" Click="Insights_Click" Visibility="Hidden"></Button>
             <Button Name="btnalign" Content="Match Path" Grid.Row="1" Grid.Column="1" Click="btnalign_Click" />
             <Button Name="btnCompareKeyandsub" Content="Compare Keys" Grid.Row="2" Grid.Column="1" Click="btnCompareKeyandsub_Click" />
-            <CheckBox  Grid.Row="3" Grid.Column="0" Name="chk_showonlydiff" Content="Display Only differences" Visibility="Hidden" FontWeight="Bold" FontSize="14" Checked="chk_showonlydiff_Checked" />
-            <Grid  Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="3"  />
+            <CheckBox  Grid.Row="3" Grid.Column="0" Name="chk_showonlydiff" Content="Display Only differences" Visibility="Visible" FontWeight="Bold" FontSize="14" Checked="chk_showonlydiff_Checked" />
+            
+        
         </Grid>
     </Grid>
 
