@@ -278,11 +278,9 @@ namespace RegistryToolbox
                         var tva = FindTviFromObjectRecursive(cTree, cur);
                         if (tva != null)
                         {
-
                             tva.IsExpanded = true;
                             UpdateLayout();
                             itemroute.Add(tva);
-
                         }
 
                     }
@@ -984,14 +982,35 @@ namespace RegistryToolbox
         private void Reg1Values_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ModelRegistryKeyValues values = (ModelRegistryKeyValues)Reg1Values.SelectedItem;
-            ValueInspector vi = new ValueInspector(values);
-            vi.ShowDialog();
+            if (values == null)
+            {
+                return;
+            }
+            if (values.Type == "RegDword")
+            {
+                ValueInspector vi = new ValueInspector(values);
+                vi.ShowDialog();
+            }
         }
 
         private void btnManual_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/vivesg/RegistryToolbox/blob/master/README.md");
 
+        }
+
+        private void Reg2Values_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ModelRegistryKeyValues values = (ModelRegistryKeyValues)Reg2Values.SelectedItem;
+            if (values == null)
+            {
+                return;
+            }
+            if (values.Type == "RegDword")
+            {
+                ValueInspector vi = new ValueInspector(values);
+                vi.ShowDialog();
+            }
         }
     }
 }

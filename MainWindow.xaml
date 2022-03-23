@@ -339,11 +339,33 @@
                 <ColumnDefinition Width="10*"/>
                 <ColumnDefinition Width="10*" />
             </Grid.ColumnDefinitions>
+
+
           
+            
             <TreeView Name="Reg1Tree" Grid.Column="0" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False"  ItemsSource="{Binding Name}" SelectedItemChanged="Reg1Tree_SelectedItemChanged" KeyDown="Reg1Tree_KeyDown" >
                 <TreeView.Resources>
+                    <BitmapImage x:Key="Icon_FolderOpen"   UriSource="pack://application:,,,/Resources/FolderOpened.png"   />
+                    <BitmapImage x:Key="Icon_FolderClosed" UriSource="pack://application:,,,/Resources/FolderClosed.png" />
                     <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}" ItemsSource="{Binding Subkeys}" >
-                        <TextBlock Text="{Binding Name}" />
+                        <StackPanel Orientation="Horizontal" Margin="1">
+                            <StackPanel.Children>
+                                <Image>
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+
+                                            <Setter Property="Source" Value="{Binding Source={StaticResource Icon_FolderClosed}, Mode=OneTime}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsExpanded}" Value="True">
+                                                    <Setter Property="Source" Value="{Binding Source={StaticResource Icon_FolderOpen}, Mode=OneTime}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                                <TextBlock Text="{Binding Name}" />
+                            </StackPanel.Children>
+                        </StackPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
                 <TreeView.ItemContainerStyle>
@@ -413,8 +435,27 @@
 
             <TreeView Name="Reg2Tree" Grid.Column="0" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False" ItemsSource="{Binding Name}" KeyDown="Reg2Tree_KeyDown" SelectedItemChanged="Reg2Tree_SelectedItemChanged">
                 <TreeView.Resources>
+                    <BitmapImage x:Key="Icon_FolderOpen"   UriSource="pack://application:,,,/Resources/FolderOpened.png"   />
+                    <BitmapImage x:Key="Icon_FolderClosed" UriSource="pack://application:,,,/Resources/FolderClosed.png" />
                     <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}" ItemsSource="{Binding Subkeys}">
-                        <TextBlock Text="{Binding Name}" />
+                        <StackPanel Orientation="Horizontal" Margin="1">
+                            <StackPanel.Children>
+                                <Image>
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+
+                                            <Setter Property="Source" Value="{Binding Source={StaticResource Icon_FolderClosed}, Mode=OneTime}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsExpanded}" Value="True">
+                                                    <Setter Property="Source" Value="{Binding Source={StaticResource Icon_FolderOpen}, Mode=OneTime}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                                <TextBlock Text="{Binding Name}" />
+                            </StackPanel.Children>
+                        </StackPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
                 <TreeView.ItemContainerStyle>
@@ -451,7 +492,7 @@
                           MouseEnter="uispliter_MouseEnter" />
 
             <DataGrid Name="Reg2Values"  Grid.Column="1"  VirtualizingStackPanel.IsVirtualizing="False" ItemsSource="{Binding}" IsReadOnly="True"   ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
-            ScrollViewer.HorizontalScrollBarVisibility="Auto" FontSize="14" RowBackground="White">
+            ScrollViewer.HorizontalScrollBarVisibility="Auto" FontSize="14" RowBackground="White" MouseDoubleClick="Reg2Values_MouseDoubleClick" >
                 <DataGrid.RowStyle>
                     <Style TargetType="{x:Type DataGridRow}">
                         <Setter Property="Background" Value="White" />

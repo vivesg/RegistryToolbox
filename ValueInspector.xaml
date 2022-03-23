@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RegistryToolbox"
         mc:Ignorable="d"
-        Title="Registry Values" Height="150" Width="400" 
-        Topmost="True" WindowStartupLocation="CenterOwner">
+        Title="Registry Values Inspector" Height="150" Width="600" 
+         WindowStartupLocation="CenterOwner" ShowInTaskbar="False" SizeToContent="WidthAndHeight">
     <Grid>
 
         <Grid.ColumnDefinitions>
