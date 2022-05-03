@@ -416,7 +416,7 @@ document.getElementById('defaultOpen').click();
 
                 // GENERATE CONTENT
 
-                string service = @"<table>
+                string serviceTemplate = @"<table>
                                   <thead>
                                       <tr>
                                           <th> Property</th>
@@ -444,10 +444,11 @@ document.getElementById('defaultOpen').click();
                                      </table>";
 
                 string filters = "";
-
+               
                 if (nic.Filters != null) {
                     foreach (Filter filter in nic.Filters)
                     {
+                        string service = serviceTemplate;
                         service = service.Replace("{NAME}", filter.service.Name);
                         service = service.Replace("{START}", filter.service.Start);
                         service = service.Replace("{IMAGEPATH}", filter.service.ImagePath);
