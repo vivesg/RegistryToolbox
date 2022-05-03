@@ -88,7 +88,7 @@ namespace RegistryToolbox
 
             this.Title = "Registry Toolbox Version: " + version;
 #if DEBUG
-            this.Title ="BETA NON PROD Registry Toolbox Version: " + version;
+            this.Title ="Registry Toolbox Version: " + version;
 #endif
             checkupdate();
         }
