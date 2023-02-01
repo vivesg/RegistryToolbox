@@ -1,7 +1,11 @@
 # RegistryToolbox
 Windows Registry binary files comparison Tool.
 
-![image](https://user-images.githubusercontent.com/8367687/115762728-02428080-a361-11eb-9f59-b583e7581531.png)
+[![image](https://user-images.githubusercontent.com/8367687/216160596-b89e711c-f493-40b8-af74-7c069a787304.png)](https://github.com/vivesg/RegistryToolbox/releases/download/v1.3.0/RegistryToolbox.exe)
+
+
+![foo](https://user-images.githubusercontent.com/8367687/115762728-02428080-a361-11eb-9f59-b583e7581531.png)
+
 
 ## Functionality
 
