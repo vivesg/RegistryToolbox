@@ -171,19 +171,19 @@ namespace Registry.Abstractions
 
                 switch (keyValue.VkRecord.DataType)
                 {
-                    case VkCellRecord.DataTypeEnum.RegSz:
+                    case VkCellRecord.DataTypeEnum.REG_SZ:
                         keyValueOut = $"\"{keyValue.ValueData.Replace("\\", "\\\\").Replace("\"", "\\\"")}\"";
                         break;
 
                     case VkCellRecord.DataTypeEnum.RegNone:
-                    case VkCellRecord.DataTypeEnum.RegDwordBigEndian:
-                    case VkCellRecord.DataTypeEnum.RegFullResourceDescription:
-                    case VkCellRecord.DataTypeEnum.RegMultiSz:
-                    case VkCellRecord.DataTypeEnum.RegQword:
+                    case VkCellRecord.DataTypeEnum.REG_DWORD_BIG_ENDIAN:
+                    case VkCellRecord.DataTypeEnum.REG_FULL_RESOURCE_DESCRIPTOR:
+                    case VkCellRecord.DataTypeEnum.REG_MULTI_SZ:
+                    case VkCellRecord.DataTypeEnum.REG_QWORD:
                     case VkCellRecord.DataTypeEnum.RegFileTime:
-                    case VkCellRecord.DataTypeEnum.RegLink:
+                    case VkCellRecord.DataTypeEnum.REG_LINK:
                     case VkCellRecord.DataTypeEnum.RegResourceRequirementsList:
-                    case VkCellRecord.DataTypeEnum.RegExpandSz:
+                    case VkCellRecord.DataTypeEnum.REG_EXPAND_SZ:
                         var prefix = $"hex({(int) keyValue.VkRecord.DataType:x}):";
                         keyValueOut =
                             $"{prefix}{BitConverter.ToString(keyValue.ValueDataRaw).Replace("-", ",")}".ToLowerInvariant
@@ -196,13 +196,13 @@ namespace Registry.Abstractions
 
                         break;
 
-                    case VkCellRecord.DataTypeEnum.RegDword:
+                    case VkCellRecord.DataTypeEnum.REG_DWORD:
                         keyValueOut =
                             $"dword:{BitConverter.ToInt32(keyValue.ValueDataRaw, 0):X8}"
                                 .ToLowerInvariant();
                         break;
 
-                    case VkCellRecord.DataTypeEnum.RegBinary:
+                    case VkCellRecord.DataTypeEnum.REG_BINARY:
                         keyValueOut =
                             $"hex:{BitConverter.ToString(keyValue.ValueDataRaw).Replace("-", ",")}"
                                 .ToLowerInvariant();

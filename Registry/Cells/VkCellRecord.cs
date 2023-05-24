@@ -25,40 +25,40 @@ namespace Registry.Cells
         public enum DataTypeEnum
         {
             [Description("Binary data (any arbitrary data)")]
-            RegBinary = 0x0003,
+            REG_BINARY = 0x0003,
 
             [Description("A DWORD value, a 32-bit unsigned integer (little-endian)")]
-            RegDword = 0x0004,
+            REG_DWORD = 0x0004,
 
             [Description("A DWORD value, a 32-bit unsigned integer (big endian)")]
-            RegDwordBigEndian = 0x0005,
+            REG_DWORD_BIG_ENDIAN = 0x0005,
 
             [Description(
                 "An 'expandable' string value that can contain environment variables, normally stored and exposed in UTF-16LE"
             )]
-            RegExpandSz = 0x0002,
+            REG_EXPAND_SZ = 0x0002,
             [Description("FILETIME data")] RegFileTime = 0x0010,
 
             [Description(
                 "A resource descriptor (used by the Plug-n-Play hardware enumeration and configuration)")]
-            RegFullResourceDescription
+            REG_FULL_RESOURCE_DESCRIPTOR
                 = 0x0009,
 
             [Description(
                 "A symbolic link (UNICODE) to another Registry key, specifying a root key and the path to the target key"
             )]
-            RegLink = 0x0006,
+            REG_LINK = 0x0006,
 
             [Description(
                 "A multi-string value, which is an ordered list of non-empty strings, normally stored and exposed in UTF-16LE, each one terminated by a NUL character"
             )]
-            RegMultiSz = 0x0007,
+            REG_MULTI_SZ = 0x0007,
 
             [Description("No type (the stored value, if any)")]
             RegNone = 0x0000,
 
             [Description("A QWORD value, a 64-bit integer (either big- or little-endian, or unspecified)")]
-            RegQword =
+            REG_QWORD =
                 0x000B,
 
             [Description(
@@ -71,7 +71,7 @@ namespace Registry.Cells
             RegResourceRequirementsList = 0x000A,
 
             [Description("A string value, normally stored and exposed in UTF-16LE")]
-            RegSz = 0x0001,
+            REG_SZ = 0x0001,
             [Description("Unknown data type")] RegUnknown = 999
         }
 
@@ -170,7 +170,7 @@ namespace Registry.Cells
 
                 if (_dataIsResident)
                 {
-                    if (DataType == DataTypeEnum.RegDwordBigEndian)
+                    if (DataType == DataTypeEnum.REG_DWORD_BIG_ENDIAN)
                     {
                         //this is a special case where the data length shows up as 2, but a dword needs 4 bytes, so adjust
                         _dataLengthInternal = 4;
@@ -437,9 +437,9 @@ namespace Registry.Cells
                             val = DateTimeOffset.FromFileTime((long) ts).ToUniversalTime();
                             break;
 
-                        case DataTypeEnum.RegExpandSz:
-                        case DataTypeEnum.RegMultiSz:
-                        case DataTypeEnum.RegSz:
+                        case DataTypeEnum.REG_EXPAND_SZ:
+                        case DataTypeEnum.REG_MULTI_SZ:
+                        case DataTypeEnum.REG_SZ:
                             var tempVal = Encoding.Unicode.GetString(localDbl, _internalDataOffset,
                                 (int) _dataLengthInternal);
                             var nullIndex = tempVal.IndexOf("\0\0", StringComparison.Ordinal);
@@ -458,21 +458,21 @@ namespace Registry.Cells
                             break;
 
                         case DataTypeEnum.RegNone: // spec says RegNone means "No defined data type", and not "no data"
-                        case DataTypeEnum.RegBinary:
+                        case DataTypeEnum.REG_BINARY:
                         case DataTypeEnum.RegResourceRequirementsList:
                         case DataTypeEnum.RegResourceList:
-                        case DataTypeEnum.RegFullResourceDescription:
+                        case DataTypeEnum.REG_FULL_RESOURCE_DESCRIPTOR:
                             val =
                                 new ArraySegment<byte>(localDbl, _internalDataOffset,
                                         (int) Math.Abs(_dataLengthInternal))
                                     .ToArray();
                             break;
 
-                        case DataTypeEnum.RegDword:
+                        case DataTypeEnum.REG_DWORD:
                             val = _dataLengthInternal == 4 ? BitConverter.ToUInt32(localDbl, 0) : 0;
                             break;
 
-                        case DataTypeEnum.RegDwordBigEndian:
+                        case DataTypeEnum.REG_DWORD_BIG_ENDIAN:
                             if (localDbl.Length > 0)
                             {
                                 var reversedBlock = localDbl;
@@ -484,7 +484,7 @@ namespace Registry.Cells
 
                             break;
 
-                        case DataTypeEnum.RegQword:
+                        case DataTypeEnum.REG_QWORD:
                             val = _dataLengthInternal == 8 ? BitConverter.ToUInt64(localDbl, _internalDataOffset) : 0;
                             break;
 
@@ -492,7 +492,7 @@ namespace Registry.Cells
                             val = localDbl;
                             break;
 
-                        case DataTypeEnum.RegLink:
+                        case DataTypeEnum.REG_LINK:
                             val =
                                 Encoding.Unicode.GetString(localDbl, _internalDataOffset, (int) _dataLengthInternal)
                                     .Replace("\0", " ")
@@ -707,18 +707,18 @@ namespace Registry.Cells
 
             switch (DataType)
             {
-                case DataTypeEnum.RegSz:
-                case DataTypeEnum.RegExpandSz:
-                case DataTypeEnum.RegMultiSz:
-                case DataTypeEnum.RegLink:
+                case DataTypeEnum.REG_SZ:
+                case DataTypeEnum.REG_EXPAND_SZ:
+                case DataTypeEnum.REG_MULTI_SZ:
+                case DataTypeEnum.REG_LINK:
                     sb.AppendLine($"Value Data: {ValueData}");
                     break;
 
                 case DataTypeEnum.RegNone:
-                case DataTypeEnum.RegBinary:
+                case DataTypeEnum.REG_BINARY:
                 case DataTypeEnum.RegResourceList:
                 case DataTypeEnum.RegResourceRequirementsList:
-                case DataTypeEnum.RegFullResourceDescription:
+                case DataTypeEnum.REG_FULL_RESOURCE_DESCRIPTOR:
                     sb.AppendLine($"Value Data: {BitConverter.ToString((byte[]) ValueData)}");
                     break;
 
@@ -732,9 +732,9 @@ namespace Registry.Cells
 
                     break;
 
-                case DataTypeEnum.RegDwordBigEndian:
-                case DataTypeEnum.RegDword:
-                case DataTypeEnum.RegQword:
+                case DataTypeEnum.REG_DWORD_BIG_ENDIAN:
+                case DataTypeEnum.REG_DWORD:
+                case DataTypeEnum.REG_QWORD:
                     sb.AppendLine($"Value Data: {ValueData:N}");
                     break;
                 default:

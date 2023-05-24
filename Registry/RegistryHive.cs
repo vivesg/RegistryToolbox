@@ -1697,7 +1697,7 @@ namespace Registry
                     var asAscii = keyValue.ValueData;
                     var asUnicode = keyValue.ValueData;
 
-                    if (keyValue.VkRecord.DataType == VkCellRecord.DataTypeEnum.RegBinary)
+                    if (keyValue.VkRecord.DataType == VkCellRecord.DataTypeEnum.REG_BINARY)
                     {
                         //this takes the raw bytes and converts it to a string, which we can then search
                         //the regex will find us the hit with exact capitalization, which we can then convert to a byte string

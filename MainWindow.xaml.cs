@@ -414,7 +414,7 @@ namespace RegistryToolbox
                 foreach (KeyValue value in rk.Values)
                 {
                     ModelRegistryKeyValues currentvalue = null;
-                    if (value.ValueType == "RegDword")
+                    if (value.ValueType == "REG_DWORD")
                     {
                         string hexvalue = ByteArrayToString(value.ValueDataRaw);
                         string val = "0x" + hexvalue + " (" + value.ValueData + ")";
@@ -986,7 +986,7 @@ namespace RegistryToolbox
             {
                 return;
             }
-            if (values.Type == "RegDword")
+            if (values.Type == "REG_DWORD")
             {
                 ValueInspector vi = new ValueInspector(values);
                 vi.ShowDialog();
@@ -1006,7 +1006,7 @@ namespace RegistryToolbox
             {
                 return;
             }
-            if (values.Type == "RegDword")
+            if (values.Type == "REG_DWORD")
             {
                 ValueInspector vi = new ValueInspector(values);
                 vi.ShowDialog();

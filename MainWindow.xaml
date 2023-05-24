@@ -7,7 +7,7 @@
         xmlns:models="clr-namespace:RegistryToolbox.Models"
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         mc:Ignorable="d"
-        Title="Registry Toolbox Version  1.1.2 " MinHeight="768" MinWidth="1024" Icon="Resources\registry.ico" Closing="Window_Closing" >
+        Title="Registry Toolbox Version  1.1.4 " MinHeight="768" MinWidth="1024" Icon="Resources\registry.ico" Closing="Window_Closing" >
 
     <Grid  Margin="0,0,0,0">
         <Grid.RowDefinitions>
@@ -24,7 +24,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.1*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="0.1*"/>
             <ColumnDefinition Width="11*"/>
             <ColumnDefinition Width="11*"/>
@@ -41,14 +41,11 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <Button x:Name="btnOpenReg" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1"  HorizontalContentAlignment="Left" Click="btnOpenReg_Click">
+        <Button x:Name="btnOpenReg" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1"  HorizontalContentAlignment="Center" Click="btnOpenReg_Click">
 
-            <StackPanel Orientation="Horizontal" >
-                <Image Source="Resources\registry.ico" Stretch="Uniform"/>
-                <Viewbox VerticalAlignment="Stretch" >
-                    <emoji:TextBlock FontWeight="Medium" Text="Load Registry"  UseLayoutRounding="False"  LineHeight="60" LineStackingStrategy="BlockLineHeight" />
-
-                </Viewbox>
+            <StackPanel Orientation="Vertical" >
+                <Image Source="Resources\registry.ico" Stretch="UniformToFill" Width="48px" Height="48px" />
+                <TextBlock FontWeight="Medium" Text="Load Registry"  UseLayoutRounding="False" HorizontalAlignment="Center"   />
             </StackPanel>
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
@@ -58,7 +55,7 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
@@ -73,14 +70,14 @@
                 </Style>
             </Button.Style>
 
-        </Button>
-        <Button x:Name="btnCMPReg" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1"  HorizontalContentAlignment="Left" Click="btnCMPReg_Click">
 
-            <StackPanel Orientation="Horizontal" >
-                <Image Source="Resources\compare.ico" Stretch="Uniform"/>
-                <Viewbox VerticalAlignment="Stretch" >
-                    <emoji:TextBlock FontWeight="Medium" Text="Load 2 Hives"  UseLayoutRounding="False"  LineHeight="60" LineStackingStrategy="BlockLineHeight" TextAlignment="Center" HorizontalAlignment="Center" />
-                </Viewbox>
+        </Button>
+        <Button x:Name="btnCMPReg" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1"  HorizontalContentAlignment="center" Click="btnCMPReg_Click">
+
+            <StackPanel Orientation="Vertical" >
+                <Image Source="Resources\compare.ico" Stretch="UniformToFill" Width="50px" Height="50px" />
+                <TextBlock FontWeight="Medium" Text="Load 2 Hives"   UseLayoutRounding="False" HorizontalAlignment="Center"   LineStackingStrategy="BlockLineHeight" />
+              
             </StackPanel>
             <Button.Style>
                 <Style TargetType="{x:Type Button}">

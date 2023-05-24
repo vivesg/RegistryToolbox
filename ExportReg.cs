@@ -74,28 +74,28 @@ namespace RegistryToolbox
             {
                 string a = "\"" + value.Name.ToString() + "\""; 
                 string type = "";
-                if (value.Type.ToString() == "RegDword")
+                if (value.Type.ToString() == "REG_DWORD")
                 {
                     type = "dword";
                     string b = "=" + type + ":" + ByteArrayToString_LittleEndian(value.ValueRaw); //THIS ASSUMES dword
                     a = a + b;
                     output.Add(a);
                 }
-                else if (value.Type.ToString() == "RegSz")
+                else if (value.Type.ToString() == "REG_SZ")
                 {
 
                     string b = "=" + "\"" + value.Value + "\""; //THIS ASSUMES dword
                     a = a + b;
                     output.Add(a);
                 }
-                else if (value.Type.ToString() == "RegQword")
+                else if (value.Type.ToString() == "REG_QWORD")
                 {
 
                     string b = "=" + "\"" + value.Value + "\""; //THIS ASSUMES dword
                     a = a + b;
                     output.Add(a);
                 }
-                else if (value.Type.ToString() == "RegBinary")
+                else if (value.Type.ToString() == "REG_BINARY")
                 {
                     List<string> lineas = new List<string>();
                     string linea = "";
