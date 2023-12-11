@@ -20,7 +20,12 @@ i.e  *System*, *Software* from a Windows PC or VM
 ![image](https://user-images.githubusercontent.com/8367687/140194670-20f095da-1050-4cfb-ad87-ea8823cb0319.png)
 
 You can find this files from differente sources *(IaaS Disk report)*
-or tools like https://github.com/Azure/azure-diskinspect-service
+or tools like https://github.com/Azure/azure-diskinspect-service or the new VM Inspector 
+(https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/vm-inspector-azure-virtual-machines)
+
+
+![image](https://github.com/vivesg/RegistryToolbox/assets/8367687/70542b54-e1c9-40de-9a81-d6055998c87f)
+
 
 When selected it's going to ask for a File path
 
