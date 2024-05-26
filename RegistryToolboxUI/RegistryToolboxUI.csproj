@@ -64,4 +64,8 @@
     <PackageReference Include="WPF-UI" Version="3.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Registry\Registry.csproj" />
+  </ItemGroup>
+
 </Project>

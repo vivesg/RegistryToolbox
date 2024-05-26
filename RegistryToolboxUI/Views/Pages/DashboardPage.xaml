@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:RegistryToolboxUI.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:models="clr-namespace:RegistryToolboxUI.Models"
     Title="DashboardPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -14,18 +15,77 @@
     Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     mc:Ignorable="d">
 
-    <Grid Margin="42" VerticalAlignment="Top">
+
+    <Grid >
         <Grid.RowDefinitions>
-            <RowDefinition Height="13*"/>
-            <RowDefinition Height="6*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        
-        
-        
-        
+
+        <Label Content="File Path"  Grid.Row="0" Grid.Column="0" />
+        <TextBox Name="txtfilepath1" Text="" Grid.Row="0" Grid.Column="1" TextWrapping="Wrap" />
+        <ui:Button Grid.Column="2" Margin="13,0,0,0" >LOAD FILE</ui:Button>
+
+
+        <TreeView Name="Reg1Tree"  Grid.Row="1"  Grid.Column="0"  Grid.ColumnSpan="3" FontSize="15" VirtualizingStackPanel.IsVirtualizing="False"  ItemsSource="{Binding Name}" >
+            <TreeView.Resources>
+                <BitmapImage x:Key="Icon_FolderOpen"   UriSource="pack://application:,,,/Resources/FolderOpened.png"   />
+                <BitmapImage x:Key="Icon_FolderClosed" UriSource="pack://application:,,,/Resources/FolderClosed.png" />
+                <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}" ItemsSource="{Binding Subkeys}" >
+                    <StackPanel Orientation="Horizontal" Margin="1">
+                        <StackPanel.Children>
+                            <Image>
+                                <Image.Style>
+                                    <Style TargetType="Image">
+
+                                        <Setter Property="Source" Value="{Binding Source={StaticResource Icon_FolderClosed}, Mode=OneTime}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsExpanded}" Value="True">
+                                                <Setter Property="Source" Value="{Binding Source={StaticResource Icon_FolderOpen}, Mode=OneTime}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel.Children>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="Background" Value="White" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=Diff}" Value="False">
+                            <Setter Property="Foreground" Value="Black"></Setter>
+                            <Setter Property="FontWeight" Value="Normal" ></Setter>
+                        </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=Diff}" Value="False" />
+                                <Condition  Binding='{Binding Path=IsChecked, ElementName=chk_showonlydiff}' Value='True' />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                        </MultiDataTrigger>
+                        <DataTrigger Binding="{Binding Path=Diff}" Value="True">
+                            <Setter Property="Foreground" Value="Red"></Setter>
+                            <Setter Property="FontWeight" Value="Bold" ></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
+
+
+
+
     </Grid>
 </Page>

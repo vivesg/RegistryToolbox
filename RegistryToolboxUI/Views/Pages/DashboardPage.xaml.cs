@@ -3,7 +3,7 @@
 // </copyright>
 
 
-namespace RegistryToolboxUI.Views.Pages;
+namespace RegistryToolboxUI.Views.Pages; 
 
 using System.Windows;
 /// <summary>
@@ -26,3 +26,4 @@ public partial class DashboardPage
        
     }
 }
+
