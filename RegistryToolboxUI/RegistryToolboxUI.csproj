@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>applicationIcon.ico</ApplicationIcon>
+    <Platforms>AnyCPU;x64</Platforms>
+    <NoWarn>$(NoWarn);SA1601</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="applicationIcon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\applicationIcon-1024.png" />
+    <None Remove="Assets\applicationIcon-256.png" />
+    <None Remove="Resources\ABOUT.PNG" />
+    <None Remove="Resources\arrow.png" />
+    <None Remove="Resources\azure-icon.png" />
+    <None Remove="Resources\compare-icon-22.jpg" />
+    <None Remove="Resources\compare-icon-22.png" />
+    <None Remove="Resources\compare.ico" />
+    <None Remove="Resources\engine.png" />
+    <None Remove="Resources\export.ico" />
+    <None Remove="Resources\export.PNG" />
+    <None Remove="Resources\file.PNG" />
+    <None Remove="Resources\folder.png" />
+    <None Remove="Resources\FolderClosed.png" />
+    <None Remove="Resources\FolderOpened.png" />
+    <None Remove="Resources\help.png" />
+    <None Remove="Resources\info.ico" />
+    <None Remove="Resources\Ink.png" />
+    <None Remove="Resources\Notification.gif" />
+    <None Remove="Resources\registry.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\applicationIcon-1024.png" />
+    <Resource Include="Assets\applicationIcon-256.png" />
+    <Resource Include="Resources\ABOUT.PNG" />
+    <Resource Include="Resources\arrow.png" />
+    <Resource Include="Resources\azure-icon.png" />
+    <Resource Include="Resources\compare-icon-22.png" />
+    <Resource Include="Resources\compare.ico" />
+    <Resource Include="Resources\engine.png" />
+    <Resource Include="Resources\export.ico" />
+    <Resource Include="Resources\export.PNG" />
+    <Resource Include="Resources\file.PNG" />
+    <Resource Include="Resources\folder.png" />
+    <Resource Include="Resources\FolderClosed.png" />
+    <Resource Include="Resources\FolderOpened.png" />
+    <Resource Include="Resources\help.png" />
+    <Resource Include="Resources\info.ico" />
+    <Resource Include="Resources\Ink.png" />
+    <Resource Include="Resources\Notification.gif" />
+    <Resource Include="Resources\registry.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WPF-UI" Version="3.0.4" />
+  </ItemGroup>
+
+</Project>

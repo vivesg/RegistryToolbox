@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30104.148
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistryToolbox", "RegistryToolbox.csproj", "{333FEFB8-551B-4A95-8FDE-7A4DE2E7AACD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Registry", "Registry\Registry.csproj", "{42B0B969-F279-42E3-B97B-5A072EF231D1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistryToolboxUI", "RegistryToolboxUI\RegistryToolboxUI.csproj", "{ACDD92A8-2525-42EF-B32E-D70332D1FE82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,14 @@ Global
 		{42B0B969-F279-42E3-B97B-5A072EF231D1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{42B0B969-F279-42E3-B97B-5A072EF231D1}.Release|x64.ActiveCfg = Release|Any CPU
 		{42B0B969-F279-42E3-B97B-5A072EF231D1}.Release|x64.Build.0 = Release|Any CPU
+		{ACDD92A8-2525-42EF-B32E-D70332D1FE82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACDD92A8-2525-42EF-B32E-D70332D1FE82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACDD92A8-2525-42EF-B32E-D70332D1FE82}.Debug|x64.ActiveCfg = Debug|x64
+		{ACDD92A8-2525-42EF-B32E-D70332D1FE82}.Debug|x64.Build.0 = Debug|x64
+		{ACDD92A8-2525-42EF-B32E-D70332D1FE82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACDD92A8-2525-42EF-B32E-D70332D1FE82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACDD92A8-2525-42EF-B32E-D70332D1FE82}.Release|x64.ActiveCfg = Release|x64
+		{ACDD92A8-2525-42EF-B32E-D70332D1FE82}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
