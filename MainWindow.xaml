@@ -66,12 +66,23 @@
                         <ui:SymbolIcon Symbol="Settings24"/>
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
+                <ui:NavigationViewItem
+                Content="About"
+                NavigationCacheMode="Disabled">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:SymbolIcon Symbol="Info24"/>
+                    </ui:NavigationViewItem.Icon>
+                </ui:NavigationViewItem>
             </ui:NavigationView.FooterMenuItems>
         </ui:NavigationView>
         <ui:TitleBar
-            Title="Registry Toolbox"
             Grid.Row="0"
-            Icon="Resources\info.ico"/>
+            Title="Registry Toolbox"
+            FontSize="18">
+            <ui:TitleBar.Icon >
+                <ui:ImageIcon Source="/Resources/registry.ico"/>
+            </ui:TitleBar.Icon>
+        </ui:TitleBar>
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,15,0">
             <TextBlock Text="German Vives © 2025  Version: 2.0" />

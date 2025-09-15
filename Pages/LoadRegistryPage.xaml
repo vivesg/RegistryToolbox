@@ -9,7 +9,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LoadRegistryPage">
 
-    <Grid Background="White">
+    <Grid>
 
         <ui:TextBox x:Name="textBox" Foreground="Black" HorizontalAlignment="Left" Margin="259,189,0,0" TextWrapping="Wrap" Text="HOLA MUNDO" VerticalAlignment="Top" Width="120"/>
 

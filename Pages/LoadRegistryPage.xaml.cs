@@ -23,6 +23,18 @@ namespace RegistryToolbox.Pages
         public LoadRegistryPage()
         {
             InitializeComponent();
+            Loaded += (sender, args) =>
+            {
+                var window = Window.GetWindow(this); // Get the parent Window
+                if (window != null)
+                {
+                    Wpf.Ui.Appearance.SystemThemeWatcher.Watch(
+                        window,                                 // Pass Window instance
+                        Wpf.Ui.Controls.WindowBackdropType.Acrylic,
+                        true
+                    );
+                }
+            };
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
