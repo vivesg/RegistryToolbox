@@ -4,13 +4,98 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:RegistryToolbox.Pages"
-      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" x:Class="RegistryToolbox.Pages.LoadRegistryPage"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" xmlns:models="clr-namespace:RegistryToolbox.Models" x:Class="RegistryToolbox.Pages.LoadRegistryPage"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LoadRegistryPage">
-    <Grid>
+    
+    <Grid x:Name="gridClientsContainer1"   Margin="0,0,0,0">
 
-        <ui:TextBox x:Name="textBox" Foreground="Black" HorizontalAlignment="Left" Margin="259,189,0,0" TextWrapping="Wrap" Text="HOLA MUNDO" VerticalAlignment="Top" Width="120"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+
+
+        <TextBlock Name="txtpath1" Text="Registry Keys"  Grid.Row="0" FontSize="16" Grid.Column="0" Grid.ColumnSpan="1" />
+
+
+        <ScrollViewer  Grid.Row="1" Grid.Column="0"   VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,0">
+          
+
+            <TreeView Name="Reg1Tree"  FontSize="15" VirtualizingStackPanel.IsVirtualizing="False" 
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                            ScrollViewer.CanContentScroll="True"
+                          Height="Auto"
+                          ItemsSource="{Binding Name}" SelectedItemChanged="Reg1Tree_SelectedItemChanged" KeyDown="Reg1Tree_KeyDown"  Margin="0,0,0,0" >
+                <TreeView.Resources>
+                    <BitmapImage x:Key="Icon_FolderOpen"   UriSource="pack://application:,,,/Resources/FolderOpened.png"   />
+                    <BitmapImage x:Key="Icon_FolderClosed" UriSource="pack://application:,,,/Resources/FolderClosed.png" />
+                    <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}" ItemsSource="{Binding Subkeys}" >
+                        <StackPanel Orientation="Horizontal" Margin="1">
+                            <StackPanel.Children>
+                                <Image>
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Width" Value="20"></Setter>
+                                            <Setter Property="Source" Value="{Binding Source={StaticResource Icon_FolderClosed}, Mode=OneTime}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsExpanded}" Value="True">
+                                                    <Setter Property="Source"  Value="{Binding Source={StaticResource Icon_FolderClosed}, Mode=OneTime}"/>
+
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                                <TextBlock Text="{Binding Name}" />
+                            </StackPanel.Children>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.Resources>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="Foreground" Value="White"/>
+
+
+                    </Style>
+                </TreeView.ItemContainerStyle>
+            </TreeView>
+        </ScrollViewer>
+          
+
+
+                <!--<GridSplitter x:Name="uispliterA" Grid.Column="0" Grid.Row="1" Width="5" 
+            ShowsPreview="True"  ResizeDirection="Columns"
+                          VerticalAlignment="Stretch" 
+                          MouseLeave="GridSplitter_MouseLeave" 
+                          ResizeBehavior="CurrentAndNext" 
+                          MouseEnter="uispliter_MouseEnter" />-->
+
+        <Grid Grid.Column="1" Grid.Row="1"  Margin="0,0,0,0" >
+            <DataGrid   Name="Reg1Values" ItemsSource="{Binding}"  IsReadOnly="True"  VirtualizingStackPanel.IsVirtualizing="False"  
+      FontSize="14" RowBackground="White" MouseDoubleClick="Reg1Values_MouseDoubleClick" >
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Setter Property="Background" Value="White" />
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.ContextMenu>
+                    <ContextMenu >
+                        <MenuItem Command="Copy" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+                <DataGrid.CommandBindings>
+                    <CommandBinding Command="Copy" CanExecute="CommandBinding_CanExecute"/>
+                </DataGrid.CommandBindings>
+            </DataGrid>
+        </Grid>
+       
 
     </Grid>
 </Page>
