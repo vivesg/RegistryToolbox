@@ -7,8 +7,11 @@
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" xmlns:models="clr-namespace:RegistryToolbox.Models" x:Class="RegistryToolbox.Pages.LoadRegistryPage"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="LoadRegistryPage">
-    
+     MinHeight="768"
+      MinWidth="1024"
+      Title="LoadRegistryPage"
+      Name="LoadRegistryPageName">
+
     <Grid x:Name="gridClientsContainer1"   Margin="0,0,0,0">
 
         <Grid.ColumnDefinitions>
@@ -16,22 +19,20 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="10*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
 
         <TextBlock Name="txtpath1" Text="Registry Keys"  Grid.Row="0" FontSize="16" Grid.Column="0" Grid.ColumnSpan="1" />
 
 
-        <ScrollViewer  Grid.Row="1" Grid.Column="0"   VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,0">
-          
-
-            <TreeView Name="Reg1Tree"  FontSize="15" VirtualizingStackPanel.IsVirtualizing="False" 
-                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                            ScrollViewer.CanContentScroll="True"
-                          Height="Auto"
-                          ItemsSource="{Binding Name}" SelectedItemChanged="Reg1Tree_SelectedItemChanged" KeyDown="Reg1Tree_KeyDown"  Margin="0,0,0,0" >
+        <Grid  Grid.Row="1" Grid.Column="0"  >
+            <TreeView  Name="Reg1Tree"  FontSize="15" VirtualizingStackPanel.IsVirtualizing="True" 
+          ScrollViewer.VerticalScrollBarVisibility="Visible"
+             
+              Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"
+              ItemsSource="{Binding Name}" SelectedItemChanged="Reg1Tree_SelectedItemChanged" KeyDown="Reg1Tree_KeyDown"  Margin="0,0,0,0" >
                 <TreeView.Resources>
                     <BitmapImage x:Key="Icon_FolderOpen"   UriSource="pack://application:,,,/Resources/FolderOpened.png"   />
                     <BitmapImage x:Key="Icon_FolderClosed" UriSource="pack://application:,,,/Resources/FolderClosed.png" />
@@ -65,8 +66,9 @@
                     </Style>
                 </TreeView.ItemContainerStyle>
             </TreeView>
-        </ScrollViewer>
-          
+        </Grid>
+            
+        
 
 
                 <!--<GridSplitter x:Name="uispliterA" Grid.Column="0" Grid.Row="1" Width="5" 
@@ -78,7 +80,7 @@
 
         <Grid Grid.Column="1" Grid.Row="1"  Margin="0,0,0,0" >
             <DataGrid   Name="Reg1Values" ItemsSource="{Binding}"  IsReadOnly="True"  VirtualizingStackPanel.IsVirtualizing="False"  
-      FontSize="14" RowBackground="White" MouseDoubleClick="Reg1Values_MouseDoubleClick" >
+      FontSize="14" RowBackground="White" MouseDoubleClick="Reg1Values_MouseDoubleClick"  >
 
                 <DataGrid.RowStyle>
                     <Style TargetType="{x:Type DataGridRow}">
