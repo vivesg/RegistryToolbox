@@ -12,72 +12,69 @@
       Title="LoadRegistryPage"
       Name="LoadRegistryPageName"
     >
-        <ScrollViewer VerticalScrollBarVisibility="Disabled">
+    <ScrollViewer VerticalScrollBarVisibility="Disabled">
 
         <Grid x:Name="gridClientsContainer1" Margin="0,0,0,0"
-          ScrollViewer.VerticalScrollBarVisibility="Disabled"
+          ScrollViewer.VerticalScrollBarVisibility="Visible"
           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
           VerticalAlignment="Stretch">
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-        <TextBlock Name="txtpath1" Text="Registry Keys" Grid.Row="0" FontSize="16" Grid.Column="0" Grid.ColumnSpan="2" />
+            <TextBlock Name="txtpath1" Text="Registry Keys" Grid.Row="0" FontSize="12" Grid.Column="0" Grid.ColumnSpan="2" />
 
-        <Grid Grid.Row="1" Grid.Column="0"
-              ScrollViewer.VerticalScrollBarVisibility="Disabled"
-              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <TreeView Name="Reg1Tree"
+            <Grid Grid.Row="1" Grid.Column="0">
+                <TreeView Name="Reg1Tree"
                       FontSize="15"
-                      ScrollViewer.PanningMode="VerticalFirst"
                       VirtualizingStackPanel.IsVirtualizing="False"
                       VerticalAlignment="Stretch"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       ItemsSource="{Binding Name}"
                       SelectedItemChanged="Reg1Tree_SelectedItemChanged"
                       KeyDown="Reg1Tree_KeyDown"
                       Margin="0,0,0,0">
-                <TreeView.Resources>
-                    <BitmapImage x:Key="Icon_FolderOpen" UriSource="pack://application:,,,/Resources/FolderOpened.png" />
-                    <BitmapImage x:Key="Icon_FolderClosed" UriSource="pack://application:,,,/Resources/FolderClosed.png" />
-                    <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}" ItemsSource="{Binding Subkeys}">
-                        <StackPanel Orientation="Horizontal" Margin="1">
-                            <StackPanel.Children>
-                                <Image>
-                                    <Image.Style>
-                                        <Style TargetType="Image">
-                                            <Setter Property="Width" Value="20" />
-                                            <Setter Property="Source" Value="{Binding Source={StaticResource Icon_FolderClosed}, Mode=OneTime}" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsExpanded}" Value="True">
-                                                    <Setter Property="Source" Value="{Binding Source={StaticResource Icon_FolderClosed}, Mode=OneTime}" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Image.Style>
-                                </Image>
-                                <TextBlock Text="{Binding Name}" />
-                            </StackPanel.Children>
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
-                </TreeView.Resources>
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="{x:Type TreeViewItem}">
-                        <Setter Property="Foreground" Value="White" />
-                    </Style>
-                </TreeView.ItemContainerStyle>
-            </TreeView>
-        </Grid>
+                    <TreeView.Resources>
+                        <BitmapImage x:Key="Icon_FolderOpen" UriSource="pack://application:,,,/Resources/FolderOpened.png" />
+                        <BitmapImage x:Key="Icon_FolderClosed" UriSource="pack://application:,,,/Resources/FolderClosed.png" />
+                        <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}" ItemsSource="{Binding Subkeys}">
+                            <StackPanel Orientation="Horizontal" Margin="1">
+                                <StackPanel.Children>
+                                    <Image>
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Width" Value="20" />
+                                                <Setter Property="Source" Value="{Binding Source={StaticResource Icon_FolderClosed}, Mode=OneTime}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsExpanded}" Value="True">
+                                                        <Setter Property="Source" Value="{Binding Source={StaticResource Icon_FolderClosed}, Mode=OneTime}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel.Children>
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                    </TreeView.Resources>
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <Setter Property="Foreground" Value="White" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                </TreeView>
+            </Grid>
 
-        <GridSplitter x:Name="uispliterA"
+            <GridSplitter x:Name="uispliterA"
                       Grid.Column="0"
                       Grid.Row="1"
                       Width="5"
@@ -88,10 +85,10 @@
                       ResizeBehavior="CurrentAndNext"
                       MouseEnter="uispliter_MouseEnter" />
 
-        <Grid Grid.Column="1" Grid.Row="1" Margin="0,0,0,0"
+            <Grid Grid.Column="1" Grid.Row="1" Margin="0,0,0,0"
               ScrollViewer.VerticalScrollBarVisibility="Disabled"
               ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <DataGrid Name="Reg1Values"
+                <DataGrid Name="Reg1Values"
                       ItemsSource="{Binding}"
                       IsReadOnly="True"
                       VirtualizingStackPanel.IsVirtualizing="False"
@@ -101,23 +98,25 @@
                       ScrollViewer.VerticalScrollBarVisibility="Disabled"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       ScrollViewer.CanContentScroll="False">
-                <DataGrid.RowStyle>
-                    <Style TargetType="{x:Type DataGridRow}">
-                        <Setter Property="Background" Value="White" />
-                        <Setter Property="Foreground" Value="Black" />
-                    </Style>
-                </DataGrid.RowStyle>
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Command="Copy" />
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
-                <DataGrid.CommandBindings>
-                    <CommandBinding Command="Copy" CanExecute="CommandBinding_CanExecute" />
-                </DataGrid.CommandBindings>
-            </DataGrid>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="{x:Type DataGridRow}">
+                            <Setter Property="Background" Value="White" />
+                            <Setter Property="Foreground" Value="Black" />
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Command="Copy" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.CommandBindings>
+                        <CommandBinding Command="Copy" CanExecute="CommandBinding_CanExecute" />
+                    </DataGrid.CommandBindings>
+                </DataGrid>
+            </Grid>
+
+            <TextBlock Text="VALUE" Grid.Row="2" Grid.ColumnSpan="2" FontSize="16" Grid.Column="0" Margin="0,0,0,0" />
         </Grid>
-    </Grid>
     </ScrollViewer>
 
 </Page>

@@ -49,8 +49,6 @@ namespace RegistryToolbox.Pages
             };
 
             
-       
-            this.Loaded += MyPage_Loaded;
             _Hive1 = new ObservableCollection<ModelRegistryKey>();
             Reg1Tree.DataContext = Hive1;
             Reg1Tree.ItemsSource = Hive1;
@@ -178,23 +176,6 @@ namespace RegistryToolbox.Pages
 
             navigation_on_tree(1, e.Key.ToString());
         }
-
-        private void MyPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Get the parent Window
-            Window parentWindow = Window.GetWindow(this);
-
-            if (parentWindow != null)
-            {
-                // Access the Window's size properties
-                double windowWidth = parentWindow.ActualWidth;
-                double windowHeight = parentWindow.ActualHeight;
-                this.Height = windowHeight;
-                this.Width = parentWindow.ActualWidth;
-            }
-        }
-
-
 
 
         private void OpenFile()
