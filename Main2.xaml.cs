@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 
 namespace RegistryToolbox
@@ -18,11 +19,13 @@ namespace RegistryToolbox
     /// <summary>
     /// Interaction logic for Main2.xaml
     /// </summary>
-    public partial class Main2 
+    public partial class Main2
     {
         public Main2()
         {
             InitializeComponent();
+            ApplicationThemeManager.ApplySystemTheme();
+
         }
 
         // Remove the problematic line in the NavigationViewItem_Click method
@@ -43,5 +46,20 @@ namespace RegistryToolbox
             }
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Light)
+            {
+                ApplicationThemeManager.Apply(
+                ApplicationTheme.Dark,
+                    WindowBackdropType.Mica
+            );
+                return;
+            }
+            ApplicationThemeManager.Apply(
+                ApplicationTheme.Light,
+                    WindowBackdropType.Mica
+            );
+        }
     }
 }
