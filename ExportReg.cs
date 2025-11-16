@@ -16,7 +16,7 @@ namespace RegistryToolbox
     {
         private ModelRegistryKey myHive;
         private string Path;
-        private string root;
+        private string root = "";
 
         public ExportReg(ModelRegistryKey myHive, string path, string proot)
         {

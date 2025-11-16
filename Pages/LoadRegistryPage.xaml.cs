@@ -26,12 +26,38 @@ namespace RegistryToolbox.Pages
     {
 
         public bool VISIBLE;
-        Registry.RegistryHive Registry1 = null;
-        Registry.RegistryHive Registry2 = null;
-        int ACTUAL;
+        Registry.RegistryHive Registry1;
         private List<ModelRegistryKey> lastselected1;
         private ObservableCollection<ModelRegistryKey> _Hive1;
         private ObservableCollection<ModelRegistryKey> lastparentselected1;
+
+
+        public LoadRegistryPage()
+        {
+            InitializeComponent();
+            Loaded += (sender, args) =>
+            {
+                var window = Window.GetWindow(this); // Get the parent Window
+                if (window != null)
+                {
+                    Wpf.Ui.Appearance.SystemThemeWatcher.Watch(
+                        window,                                 // Pass Window instance
+                        Wpf.Ui.Controls.WindowBackdropType.Acrylic,
+                        true
+                    );
+                }
+            };
+
+            
+       
+            this.Loaded += MyPage_Loaded;
+            _Hive1 = new ObservableCollection<ModelRegistryKey>();
+            Reg1Tree.DataContext = Hive1;
+            Reg1Tree.ItemsSource = Hive1;
+
+          
+            OpenFile();
+        }
 
         public ItemsControl GetSelectedTreeViewItemParent(TreeViewItem item)
         {
@@ -137,7 +163,6 @@ namespace RegistryToolbox.Pages
         public void CleanMemory()
         {
             this.Registry1 = null;
-            this.Registry2 = null;
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
@@ -154,30 +179,27 @@ namespace RegistryToolbox.Pages
             navigation_on_tree(1, e.Key.ToString());
         }
 
-        public LoadRegistryPage()
+        private void MyPage_Loaded(object sender, RoutedEventArgs e)
         {
-            InitializeComponent();
-            Loaded += (sender, args) =>
+            // Get the parent Window
+            Window parentWindow = Window.GetWindow(this);
+
+            if (parentWindow != null)
             {
-                var window = Window.GetWindow(this); // Get the parent Window
-                if (window != null)
-                {
-                    Wpf.Ui.Appearance.SystemThemeWatcher.Watch(
-                        window,                                 // Pass Window instance
-                        Wpf.Ui.Controls.WindowBackdropType.Acrylic,
-                        true
-                    );
-                }
-            };
-            _Hive1 = new ObservableCollection<ModelRegistryKey>();
-            Reg1Tree.DataContext = Hive1;
-            Reg1Tree.ItemsSource = Hive1;
-            OpenFile();
+                // Access the Window's size properties
+                double windowWidth = parentWindow.ActualWidth;
+                double windowHeight = parentWindow.ActualHeight;
+                this.Height = windowHeight;
+                this.Width = parentWindow.ActualWidth;
+            }
         }
+
+
+
 
         private void OpenFile()
         {
-
+            
 
             _Hive1.Clear();
           
@@ -310,7 +332,6 @@ namespace RegistryToolbox.Pages
             UpdateLayout();
          
            
-            this.ACTUAL = 1;
         }
         public string GetFullPath(TreeViewItem node)
         {

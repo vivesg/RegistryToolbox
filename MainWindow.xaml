@@ -294,10 +294,17 @@
                 </Label >
                 <Image gif:ImageBehavior.AnimatedSource="Resources/old.gif" Height="220" />
                 <Label HorizontalAlignment="Center" FontSize="20" Foreground="Black">
-                    <emoji:TextBlock Text="It's being a while when i started this project &#x0a; at the time i needed a tool to compare registries and wanted to do more coding &#x0a; i thought only myself and maybe other 2 or 3 colleagues would find it interesting,&#x0a;
-however this was not the case and it is being used more that i think of originally&#x0a; Thanks for more than 5K official github downloads during this 4+ years &#x0a; I hope you will enjoy the new experience &#x0a; if you want to provide feedback send me an email or ping me
-if this tool helped you i'm happy to know how, that makes my day &#x0a; THANK YOU FOR USING THIS"
-               TextWrapping="Wrap" TextAlignment="Center"/>
+                    <TextBlock TextAlignment="Justify" Margin="12,0" TextWrapping="Wrap" Width="600" FontSize="18">
+                       It’s been a while since I first started this project. Back then, I was simply looking for a way to compare registries to solve cases, and practice coding. I honestly thought it would be useful to just me and maybe two or three colleagues at most.
+But I was wrong. The response has exceeded all expectations.
+
+Today, this tool has been downloaded over 5,000 times on GitHub across more than four years and it has been run more 20K times and provided help on analysis and research. That’s incredible, and I’m truly grateful for the support.
+
+I hope you enjoy this update and the new experience it brings. If you have feedback, feel free to email me or ping me directly. 
+                        
+                        And if this tool has helped you in any way, I’d love to hear about it that message makes my day
+                    </TextBlock>
+                    <!-- Additional content not shown. -->
                 </Label >
                 <emoji:TextBlock FontSize="26" HorizontalAlignment="Center"  Text=" Welcome to the 🆕 Registry Toolbox V2"  UseLayoutRounding="False"  LineHeight="60" LineStackingStrategy="BlockLineHeight" />
                 <Image Source="/Resources/BILLANDGERMAN.png" Height="250px" HorizontalAlignment="Right"></Image>
