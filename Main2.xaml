@@ -67,23 +67,14 @@
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
                 <ui:NavigationViewItem  Click="Button_Click"
-                                       NavigationCacheMode="Disabled">
+                                        NavigationCacheMode="Disabled">
                     <ui:NavigationViewItem.Icon>
                         <ui:SymbolIcon Symbol="DarkTheme20" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
             </ui:NavigationView.FooterMenuItems>
         </ui:NavigationView>
-
-        <ui:Button Grid.Row="0"
-                   Appearance="Secondary"
-                   HorizontalAlignment="Right"
-                   Margin="0,0,150,0"
-                   Icon="{ui:SymbolIcon Symbol=DarkTheme20}"
-                  >
-        </ui:Button>
-
-
+        
         <ui:TitleBar Title="Registry Toolbox 2"
                          FontSize="18" Grid.Row="0">
                 <ui:TitleBar.Icon>
@@ -91,19 +82,14 @@
                 </ui:TitleBar.Icon>
                
             </ui:TitleBar>
-       
-
-
 
         <StackPanel Orientation="Horizontal"
                     Grid.Row="2"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
                     Margin="0,0,15,0">
-           
             <TextBlock Text="German Vives © 2025  Version 2.0" />
         </StackPanel>
-
 
     </Grid>
 </ui:FluentWindow>

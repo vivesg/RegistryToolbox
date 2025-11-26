@@ -48,18 +48,23 @@ namespace RegistryToolbox
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+           
             if (ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Light)
             {
+                Application.Current.Resources["PrimaryTreeItemForegroundBrush"] = new SolidColorBrush(Colors.White);
                 ApplicationThemeManager.Apply(
                 ApplicationTheme.Dark,
                     WindowBackdropType.Mica
             );
+               
                 return;
             }
+            Application.Current.Resources["PrimaryTreeItemForegroundBrush"] = new SolidColorBrush(Colors.Black);
             ApplicationThemeManager.Apply(
                 ApplicationTheme.Light,
                     WindowBackdropType.Mica
             );
+          
         }
     }
 }

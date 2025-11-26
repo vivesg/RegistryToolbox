@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace RegistryToolbox.Pages
 {
@@ -31,11 +33,11 @@ namespace RegistryToolbox.Pages
         private ObservableCollection<ModelRegistryKey> _Hive1;
         private ObservableCollection<ModelRegistryKey> lastparentselected1;
 
-
         public LoadRegistryPage()
         {
             InitializeComponent();
-            Loaded += (sender, args) =>
+
+            Loaded += async (sender, args) =>
             {
                 var window = Window.GetWindow(this); // Get the parent Window
                 if (window != null)
@@ -46,15 +48,14 @@ namespace RegistryToolbox.Pages
                         true
                     );
                 }
+
+
+                _Hive1 = new ObservableCollection<ModelRegistryKey>();
+                Reg1Tree.DataContext = Hive1;
+                Reg1Tree.ItemsSource = Hive1;
+
+                OpenFile();
             };
-
-            
-            _Hive1 = new ObservableCollection<ModelRegistryKey>();
-            Reg1Tree.DataContext = Hive1;
-            Reg1Tree.ItemsSource = Hive1;
-
-          
-            OpenFile();
         }
 
         public ItemsControl GetSelectedTreeViewItemParent(TreeViewItem item)
@@ -79,13 +80,13 @@ namespace RegistryToolbox.Pages
             ref ObservableCollection<ModelRegistryKey> Hive = ref _Hive1;
             ref List<ModelRegistryKey> clastselected = ref lastselected1;
             ref ObservableCollection<ModelRegistryKey> clastparentselected = ref lastparentselected1;
-           
-         
-                clastselected = ref lastselected1;
-                clastparentselected = ref lastparentselected1;
-                Hive = ref _Hive1;
-                RegTree = ref Reg1Tree;
-         
+
+
+            clastselected = ref lastselected1;
+            clastparentselected = ref lastparentselected1;
+            Hive = ref _Hive1;
+            RegTree = ref Reg1Tree;
+
 
             ModelRegistryKey selected = (ModelRegistryKey)RegTree.SelectedItem;
             var tva = FindTviFromObjectRecursive(RegTree, selected);
@@ -156,7 +157,7 @@ namespace RegistryToolbox.Pages
             get { return _Hive1; }
             set { _Hive1 = value; }
         }
-       
+
 
         public void CleanMemory()
         {
@@ -180,21 +181,11 @@ namespace RegistryToolbox.Pages
 
         private void OpenFile()
         {
-            
-
             _Hive1.Clear();
-          
-
             Reg1Values.DataContext = null;
-
-            gridClientsContainer1.Visibility = Visibility.Visible;
-         //  gridClientsContainer1.SetValue(Grid.ColumnSpanProperty, 2);
-   
             Reg1Tree.Visibility = Visibility.Visible;
-
-           
             txtpath1.Text = "";
-   
+
 
 
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
@@ -212,11 +203,9 @@ namespace RegistryToolbox.Pages
                     MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
                     $"Details:\n\n{ex.StackTrace}");
                 }
-                MessageBox.Show("Please wait", "Processing your file", MessageBoxButton.OK, MessageBoxImage.Information);
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 File_Load(path, 1);
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
-
             }
         }
 
@@ -287,11 +276,12 @@ namespace RegistryToolbox.Pages
             var registryHive = new RegistryHive(path);
             try
             {
-                
-                    Registry1 = registryHive;
-                    registryHive.ParseHive();
-                    Drawhive(Registry1.Root, _Hive1);
-                
+
+                Registry1 = registryHive;
+                registryHive.ParseHive();
+                Drawhive(Registry1.Root, _Hive1);
+                Thread.Sleep(5000);
+
             }
             catch (Exception)
             {
@@ -301,7 +291,7 @@ namespace RegistryToolbox.Pages
 
         private void Reg1Tree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-       
+
             ModelRegistryKey Selected = (ModelRegistryKey)((TreeView)sender).SelectedItem;
             if (Selected == null)
                 return;
@@ -311,8 +301,8 @@ namespace RegistryToolbox.Pages
 
             loadtable(Selected, 1);
             UpdateLayout();
-         
-           
+
+
         }
         public string GetFullPath(TreeViewItem node)
         {

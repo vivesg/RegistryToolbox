@@ -1,139 +1,155 @@
-﻿<Page
-    x:Class="RegistryToolbox.Pages.LoadRegistryPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:RegistryToolbox.Pages"
-    xmlns:models="clr-namespace:RegistryToolbox.Models"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    mc:Ignorable="d"
-    Title="LoadRegistryPage"
-    Name="LoadRegistryPageName">
+﻿<Page x:Class="RegistryToolbox.Pages.LoadRegistryPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:RegistryToolbox.Pages"
+      xmlns:models="clr-namespace:RegistryToolbox.Models"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      mc:Ignorable="d"
+      Title="LoadRegistryPage"
+      Name="LoadRegistryPageName">
 
-    <!-- Remove Page's default ScrollViewer so only TreeView can scroll -->
-    <Page.Template>
-        <ControlTemplate TargetType="Page">
-            <Grid Background="{TemplateBinding Background}">
-                <ContentPresenter />
+
+    <ScrollViewer VerticalScrollBarVisibility="Disabled"
+                  HorizontalScrollBarVisibility="Disabled">
+        <Grid x:Name="gridClientsContainer1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="6*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <!-- header -->
+                <RowDefinition Height="*" />
+                <!-- scrollable area -->
+                <RowDefinition Height="20px" />
+                <!-- footer -->
+            </Grid.RowDefinitions>
+
+            <TextBlock Name="txtpath1"
+                       Text="Registry Keys"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="3"
+                       FontSize="12" />
+
+            <!-- Only this control should scroll -->
+            <Grid  Grid.Row="1"
+                   Grid.Column="0"
+                   ScrollViewer.CanContentScroll="True"
+                   ScrollViewer.VerticalScrollBarVisibility="Visible"
+                   Margin="0,0,0,0">
+                <ScrollViewer VerticalScrollBarVisibility="Visible">
+                    <TreeView Name="Reg1Tree"
+                              ScrollViewer.CanContentScroll="True"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible"
+                              MinHeight="400"
+                              Height="Auto"
+                              FontSize="15"
+                              VirtualizingStackPanel.IsVirtualizing="False"
+                              VerticalAlignment="Stretch"
+                              HorizontalAlignment="Left"
+                              ItemsSource="{Binding Name}"
+                              SelectedItemChanged="Reg1Tree_SelectedItemChanged"
+                              KeyDown="Reg1Tree_KeyDown"
+                              Margin="0">
+                        <TreeView.Resources>
+                            <BitmapImage x:Key="Icon_FolderOpen"
+                                         UriSource="pack://application:,,,/Resources/FolderOpened.png" />
+                            <BitmapImage x:Key="Icon_FolderClosed"
+                                         UriSource="pack://application:,,,/Resources/FolderClosed.png" />
+                            <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}"
+                                                      ItemsSource="{Binding Subkeys}">
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="1">
+                                    <Image Width="20">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Source"
+                                                        Value="{Binding Source={StaticResource Icon_FolderClosed}}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsExpanded}"
+                                                                 Value="True">
+                                                        <Setter Property="Source"
+                                                                Value="{Binding Source={StaticResource Icon_FolderOpen}}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                    <TextBlock Text="{Binding Name}"
+                                               Margin="4,0,0,0">
+                                    </TextBlock>
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                        </TreeView.Resources>
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="TreeViewItem">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource    ResourceKey=PrimaryTreeItemForegroundBrush}" />
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                    </TreeView>
+                </ScrollViewer>
             </Grid>
-        </ControlTemplate>
-    </Page.Template>
 
-    <Grid x:Name="gridClientsContainer1">
+            <GridSplitter x:Name="uispliterA"
+                          Grid.Column="1"
+                          Grid.Row="1"
+                          Width="5"
+                          ResizeDirection="Columns"
+                          ResizeBehavior="PreviousAndNext"
+                          ShowsPreview="True"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Stretch"
+                          MouseEnter="uispliter_MouseEnter"
+                          MouseLeave="GridSplitter_MouseLeave" />
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>   <!-- header -->
-            <RowDefinition Height="*"/>     <!-- scrollable area -->
-            <RowDefinition Height="Auto"/>   <!-- footer -->
-        </Grid.RowDefinitions>
+            <Grid Grid.Row="1"
+                  Grid.Column="2">
+                <DataGrid Name="Reg1Values"
+                          ItemsSource="{Binding}"
+                          IsReadOnly="True"
+                          VirtualizingStackPanel.IsVirtualizing="True"
+                          VirtualizingStackPanel.VirtualizationMode="Recycling"
+                          ScrollViewer.CanContentScroll="True"
+                          ScrollViewer.VerticalScrollBarVisibility="Visible"
+                          FontSize="14"
+                          RowBackground="White"
+                          Background="Transparent"
+                          MouseDoubleClick="Reg1Values_MouseDoubleClick"
+                          Margin="0">
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background"
+                                    Value="White" />
+                            <Setter Property="Foreground"
+                                    Value="Black" />
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Command="Copy" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.CommandBindings>
+                        <CommandBinding Command="Copy"
+                                        CanExecute="CommandBinding_CanExecute" />
+                    </DataGrid.CommandBindings>
+                </DataGrid>
+            </Grid>
 
-        <TextBlock Name="txtpath1"
-                   Text="Registry Keys"
-                   Grid.Row="0"
-                   Grid.Column="0"
-                   Grid.ColumnSpan="3"
-                   FontSize="12"/>
+            <TextBlock Text="VALUE"
+                       Grid.Row="2"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="3"
+                       FontSize="16"
+                       Margin="0" />
+        </Grid>
+    </ScrollViewer>
 
-        <!-- Only this control should scroll -->
-        <TreeView Name="Reg1Tree"
-                  Grid.Row="1"
-                  Grid.Column="0"
-                  FontSize="15"
-                  VirtualizingStackPanel.IsVirtualizing="True"
-                  VirtualizingStackPanel.VirtualizationMode="Recycling"
-                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ScrollViewer.CanContentScroll="True"
-                  VerticalAlignment="Stretch"
-                  HorizontalAlignment="Stretch"
-                  ItemsSource="{Binding Name}"
-                  SelectedItemChanged="Reg1Tree_SelectedItemChanged"
-                  KeyDown="Reg1Tree_KeyDown"
-                  Background="Transparent"
-                  Margin="0">
-            <TreeView.Resources>
-                <BitmapImage x:Key="Icon_FolderOpen" UriSource="pack://application:,,,/Resources/FolderOpened.png" />
-                <BitmapImage x:Key="Icon_FolderClosed" UriSource="pack://application:,,,/Resources/FolderClosed.png" />
-                <HierarchicalDataTemplate DataType="{x:Type models:ModelRegistryKey}" ItemsSource="{Binding Subkeys}">
-                    <StackPanel Orientation="Horizontal" Margin="1">
-                        <Image Width="20">
-                            <Image.Style>
-                                <Style TargetType="Image">
-                                    <Setter Property="Source" Value="{Binding Source={StaticResource Icon_FolderClosed}}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsExpanded}" Value="True">
-                                            <Setter Property="Source" Value="{Binding Source={StaticResource Icon_FolderOpen}}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Image.Style>
-                        </Image>
-                        <TextBlock Text="{Binding Name}" Margin="4,0,0,0"/>
-                    </StackPanel>
-                </HierarchicalDataTemplate>
-            </TreeView.Resources>
-            <TreeView.ItemContainerStyle>
-                <Style TargetType="TreeViewItem">
-                    <Setter Property="Foreground"
-                            Value="{DynamicResource   Primar  }"/>
-                </Style>
-            </TreeView.ItemContainerStyle>
-        </TreeView>
 
-        <GridSplitter x:Name="uispliterA"
-                      Grid.Column="1"
-                      Grid.Row="1"
-                      Width="5"
-                      ResizeDirection="Columns"
-                      ResizeBehavior="PreviousAndNext"
-                      ShowsPreview="True"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Stretch"
-                      MouseEnter="uispliter_MouseEnter"
-                      MouseLeave="GridSplitter_MouseLeave"/>
-
-        <!-- Disable scrolling here -->
-        <DataGrid Name="Reg1Values"
-                  Grid.Row="1"
-                  Grid.Column="2"
-                  ItemsSource="{Binding}"
-                  IsReadOnly="True"
-                  VirtualizingStackPanel.IsVirtualizing="True"
-                  VirtualizingStackPanel.VirtualizationMode="Recycling"
-                  ScrollViewer.CanContentScroll="True" 
-                  ScrollViewer.VerticalScrollBarVisibility="Visible"
-                  FontSize="14"
-                  RowBackground="White"
-                  Background="Transparent"
-                  MouseDoubleClick="Reg1Values_MouseDoubleClick"
-                  Margin="0">
-            <DataGrid.RowStyle>
-                <Style TargetType="DataGridRow">
-                    <Setter Property="Background" Value="White"/>
-                    <Setter Property="Foreground" Value="Black"/>
-                </Style>
-            </DataGrid.RowStyle>
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Command="Copy"/>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-            <DataGrid.CommandBindings>
-                <CommandBinding Command="Copy" CanExecute="CommandBinding_CanExecute"/>
-            </DataGrid.CommandBindings>
-        </DataGrid>
-
-        <TextBlock Text="VALUE"
-                   Grid.Row="2"
-                   Grid.Column="0"
-                   Grid.ColumnSpan="3"
-                   FontSize="16"
-                   Margin="0"/>
-    </Grid>
 </Page>

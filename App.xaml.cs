@@ -42,7 +42,7 @@ namespace RegistryToolbox
                 newMainWindow.Show();
             }
 
-           
+
         }
     }
 }
