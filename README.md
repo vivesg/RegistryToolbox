@@ -20,8 +20,8 @@ It brings fresh features, modern improvements, and a lot of value. I highly reco
 
 To everyone who used RegistryToolbox, thank you. Your support, comments, and encouragement over the years meant more than you know.
 
-                                                                                             With gratitude,
-                                                                                             German Vives — Software Engineer 🖥️
+                                                        With gratitude,
+                                                        German Vives — Software Engineer 🖥️
 
 ---
 
