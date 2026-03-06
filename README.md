@@ -1,4 +1,31 @@
-# RegistryToolbox
+# Farewell
+It has been quite a journey since I first started this project. The initial commit dates back to June 15, 2020, and nearly six years have passed since then. Time moves quickly, and looking back, I’m grateful for everything this project allowed me to learn and build.
+
+
+<img src="https://github.com/user-attachments/assets/a3ed406a-fefc-4757-bfa5-dc71bb068394" alt="Description" width="400">
+
+`Release Date 08/11/2020`
+
+When I began, my goal was simple: create a tool that could quickly compare registry hives to help troubleshoot Windows issues in my support role. At the same time, I dreamed of building software, creating tools of my own, and eventually becoming a Software Engineer. This project became my personal challenge proof to myself, and to others, that support engineers can create meaningful and impactful solutions.
+
+I believe I achieved that goal. I learned more than I ever expected, and this project played a real part in my growth as an engineer. As my career evolved and I moved into new roles, I gradually became less involved in maintaining and improving this tool.
+
+I want to encourage anyone reading this: don’t be afraid to build, experiment, and create. 
+
+With today’s technologies especially AI as claude or copilot, developing powerful tools is more accessible than ever. Innovation is no longer limited to a specific role or title; anyone with curiosity and determination can bring ideas to life.
+
+Recently, I discovered another excellent tool in this space:
+https://github.com/bowenzhang85/RegistryExpert
+It brings fresh features, modern improvements, and a lot of value. I highly recommend trying it out and sharing feedback with its developer.
+
+To everyone who used RegistryToolbox, thank you. Your support, comments, and encouragement over the years meant more than you know.
+
+                                                                                             With gratitude,
+                                                                                             German Vives — Software Engineer 🖥️
+
+---
+
+# RegistryToolbox (ARCHIVED)
 Windows Registry binary files comparison Tool.
 
 [![image](https://user-images.githubusercontent.com/8367687/216160596-b89e711c-f493-40b8-af74-7c069a787304.png)](https://github.com/vivesg/RegistryToolbox/releases/download/v1.3.0/RegistryToolbox.exe)
